@@ -3,7 +3,7 @@
 
 ## Information
 
-AQLite is a client made for AQWorlds that provides all sorts of Quality of Life tools that have been longed for. With the approach of the new versions of AQWorlds, I am releasing AQLite to help players wait for the long awaited changes to the game. I am also having it open-sourced to show that there is no malicious intent of account stealing in this program.
+AQLite is a client made for AQWorlds that provides all sorts of Quality of Life tools that have been longed for. With the approach of the new versions of AQWorlds (AQW2 and AQW:Mobile), I am releasing AQLite to help players wait for the forever-waited changes to the game. AQLite is open-sourced to assure that there is no account-stealing, or any funny business contained in the client!
 
 ## Features
 * Disable Skill Animations
@@ -14,8 +14,6 @@ AQLite is a client made for AQWorlds that provides all sorts of Quality of Life 
 * Hide Players
 * Show Monster Type
 * Show Quest Drop Rates
-
-
 
 ## Installation
 * Go to "Releases" (or goto this link https://github.com/133spider/AQLite/releases)
