@@ -8,6 +8,7 @@ package net.spider.modules{
 	import flash.utils.*;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
+	import net.spider.handlers.SFSEvent;
 	
 	public class drops extends MovieClip{
 
@@ -16,6 +17,7 @@ package net.spider.modules{
 
 		public static function onCreate():void{
 			drops.events.addEventListener(ClientEvent.onToggle, onToggle);
+			main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 		}
 
 		public static function onToggle(e:Event):void{
@@ -28,6 +30,34 @@ package net.spider.modules{
 				dropTimer.removeEventListener(TimerEvent.TIMER, onTimer);
 			}
 		}
+
+        public static function onExtensionResponseHandler(e:*):void{
+            var dID:*;
+            var protocol:* = e.params.type;
+            if (protocol == "json")
+                {
+                    var resObj:* = e.params.dataObj;
+                    var cmd:* = resObj.cmd;
+                    switch (cmd)
+                    {
+                        case "dropItem":
+							var itemA:MovieClip;
+							var itemB:MovieClip;
+							var i:*;
+							i = (main.Game.ui.dropStack.numChildren - 2);
+							while (i > -1)
+							{
+								itemA = (main.Game.ui.dropStack.getChildAt(i) as MovieClip);
+								itemB = (main.Game.ui.dropStack.getChildAt((i + 1)) as MovieClip);
+								(itemA.fY = (itemA.y = (itemB.fY - (itemB.fHeight + 8))));
+								itemB.fX = (main.Game.ui.dropStack.getChildAt(0) as MovieClip).fX;
+								itemB.x = (main.Game.ui.dropStack.getChildAt(0) as MovieClip).x;
+								i--;
+							};
+                        	break;
+                    }
+                }
+        }
 
         public static function onTimer(e:TimerEvent):void{
 			if(main.Game.ui.dropStack.numChildren < 1)

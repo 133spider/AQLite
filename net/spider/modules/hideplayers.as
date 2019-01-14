@@ -33,8 +33,8 @@ package net.spider.modules{
 			if(!main.Game.sfc.isConnected || !main.Game.world.myAvatar)
 				return;
 			for(var playerMC:* in main.Game.world.avatars)
-				if(!main.Game.world.avatars[playerMC].isMyAvatar)
-					main.Game.world.avatars[playerMC].hideMC();
+				if(!main.Game.world.avatars[playerMC].isMyAvatar && main.Game.world.avatars[playerMC].pMC)
+					main.Game.world.avatars[playerMC].pMC.mcChar.visible = false;
 		}
 	}
 	

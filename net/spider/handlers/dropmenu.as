@@ -76,6 +76,7 @@ package net.spider.handlers{
 
         var itemCount:Object;
         public function onExtensionResponseHandler(e:*):void{
+            var dItem:*;
             var dID:*;
             var protocol:* = e.params.type;
             if (protocol == "json")
@@ -89,13 +90,32 @@ package net.spider.handlers{
                             {
                                 if(itemCount[dID] == null){
                                     itemCount[dID] = 1;
-                                    invTree.push(main.Game.copyObj(resObj.items[dID]));
+                                    if(main.Game.world.invTree[dID] == null){
+                                        invTree.push(main.Game.copyObj(resObj.items[dID]));
+                                    }else{
+                                        dItem = main.Game.copyObj(main.Game.world.invTree[dID]);
+                                        dItem.iQty = int(resObj.items[dID].iQty);
+                                        invTree.push(dItem);
+                                    }
                                     invTree[invTree.length-1].dID = dID;
                                 }else{
                                     itemCount[dID] += 1;
                                 }
                             };
                         fOpen();
+                        break;
+                        case "getDrop":
+                            for(var val:* in invTree){
+                                if (invTree[val].ItemID == resObj.ItemID)
+                                {
+                                    if (resObj.bSuccess == 1)
+                                    {
+                                        itemCount[invTree[val].dID] = null;
+                                        invTree.splice(val, 1);
+                                        fOpen();
+                                    };
+                                };
+                            }
                         break;
                     }
                 }
@@ -365,6 +385,7 @@ package net.spider.handlers{
                         trace("Loading " + item.sLink + ":" + item.sFile);
                         ldr.load(new URLRequest(("http://aqworldscdn.aq.com/game/gamefiles/" + item.sFile)), new LoaderContext(false, ApplicationDomain.currentDomain)); //rootClass.sFilePath
                         ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
+                        ldr.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
                         break;
                 }
             };
@@ -418,6 +439,41 @@ package net.spider.handlers{
                     itemClip.scaleX = itemClip.scaleY = .3;
                     break;
             }
+            item = (mc.addChild(itemClip) as MovieClip);
+            addGlow(itemClip);
+            item.ItemID = obj.ItemID;
+            MovieClip(this).preview.item = obj;
+            MovieClip(this).preview.bAdd.visible = true;
+            MovieClip(this).preview.bDel.visible = true;
+            MovieClip(this).preview.tPreview.visible = true;
+            MovieClip(this).preview.t2.visible = false;
+            MovieClip(this).cnt.visible = true;
+            MovieClip(this).pMC.visible = false;
+            MovieClip(this).cnt.alpha = 1;
+            if(obj.bCoins)
+                MovieClip(this).preview.mcCoin.visible = true;
+            else
+                MovieClip(this).preview.mcCoin.visible = false;
+            resizeMe();
+            repositionPreview(itemClip);
+        }
+
+        public function onLoadError(e:IOErrorEvent):void{
+            var s:String;
+            var itemC:Class;
+            var mc:MovieClip;
+            var item:*;
+            var obj:* = item_load;
+            var itemClip:MovieClip;
+            mc = (MovieClip(this).cnt as MovieClip);
+            if (mc.numChildren > 0)
+            {
+                mc.removeChildAt(0);
+            };
+            itemC = (rootClass.world.getClass("iibag") as Class);
+            itemClip = new (itemC)();
+            itemClip.scaleX = itemClip.scaleY = 1;
+            itemClip.y = itemClip.y - 35;
             item = (mc.addChild(itemClip) as MovieClip);
             addGlow(itemClip);
             item.ItemID = obj.ItemID;
@@ -598,12 +654,6 @@ package net.spider.handlers{
         public function onItemAddClick(e:MouseEvent):void{
             var item:Object;
             item = MovieClip(e.currentTarget.parent).item;
-            for(var val:* in invTree){
-                if(invTree[val].ItemID == item.ItemID){
-                    itemCount[invTree[val].dID] = null;
-                    invTree.splice(val, 1);
-                }
-            }
             for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
                 if(item.iStk == 1){
                     if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == item.sName){
@@ -619,7 +669,6 @@ package net.spider.handlers{
                     }
                 }
             }
-            fOpen();
         }
 
         public function onItemDelClick(e:MouseEvent):void{
