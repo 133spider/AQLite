@@ -42,7 +42,10 @@ package net.spider.modules{
 						if(frame.cnt.core.rewardsRoll.getChildAt(i).strType.text.indexOf("%") >= 0)
 							continue;
 						for each(var s:* in frame.qData.reward){
-							if(s["ItemID"] == frame.cnt.core.rewardsRoll.getChildAt(i).ItemID && s["iQty"].toString() == frame.cnt.core.rewardsRoll.getChildAt(i).strQ.text.substring(1)){
+							if(s["ItemID"] == frame.cnt.core.rewardsRoll.getChildAt(i).ItemID){
+								if(frame.cnt.core.rewardsRoll.getChildAt(i).strQ.visible)
+									if(s["iQty"].toString() != frame.cnt.core.rewardsRoll.getChildAt(i).strQ.text.substring(1))
+										continue;
 								frame.cnt.core.rewardsRoll.getChildAt(i).strType.text += " (" + s["iRate"] + "%)";
 								frame.cnt.core.rewardsRoll.getChildAt(i).strType.width = 100;
 								break;
