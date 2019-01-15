@@ -11,21 +11,23 @@ package net.spider.handlers{
     import net.spider.handlers.ClientEvent;
 	import net.spider.handlers.SFSEvent;
 	
-	public class skills extends MovieClip {
+	public class targetskills extends MovieClip {
 		
         public static var events:EventDispatcher = new EventDispatcher();
         private static var skillTimer:Timer;
 
-		public function skills() {
+		public function targetskills() {
 			this.visible = false;
 			this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
 			this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
-            skills.events.addEventListener(ClientEvent.onToggle, onToggle);
+            targetskills.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
         public function onToggle(e:Event):void{
             this.visible = options.skill;
             if(options.skill){
+				this.activesTxt.text = "";
+				resizeMe();
 				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 				auras = new Object();
 				skillTimer = new Timer(0);
@@ -60,7 +62,7 @@ package net.spider.handlers{
 											auras[j.nam] = 1;
 										}else{
 											auras[j.nam] += 1;
-											for each(var a:* in auraLeaf){
+											for each(var a:* in main.Game.world.myAvatar.target.dataLeaf.auras){
 												if(a.nam == j.nam){
 													a.ts = j.ts;
 													break;
@@ -78,15 +80,17 @@ package net.spider.handlers{
         }
 
 		var dateObj:*;
-		var auraLeaf:*;
         public function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.actions.passive)
+			if(!main.Game.sfc.isConnected || !main.Game.world.myAvatar.target){
+				if(this.activesTxt.text != ""){
+					this.activesTxt.text = "";
+					resizeMe();
+				}
 				return;
-			//world.actions.active = []; world.actions.passive = [];
+			}
 			dateObj = new Date();
             this.activesTxt.text = "";
-			auraLeaf = main.Game.world.myAvatar.dataLeaf.auras;
-            for each(var a:* in auraLeaf){
+            for each(var a:* in main.Game.world.myAvatar.target.dataLeaf.auras){
                 this.activesTxt.appendText("[" + a.nam + "]: (" + (!auras.hasOwnProperty(a.nam) ? "NaN" : auras[a.nam].toString()) + " stacks) (" + (a.dur - Math.floor((dateObj.getTime() - a.ts)/1000)).toString() + "s)\n");
             }
 			resizeMe();

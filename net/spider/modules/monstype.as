@@ -33,7 +33,8 @@ package net.spider.modules{
 			if(!main.Game.sfc.isConnected || !(main.Game.world.myAvatar.target != null))
 				return;
 			if(main.Game.world.myAvatar.target.npcType == "monster")
-				main.Game.ui.mcPortraitTarget.strClass.text = main.Game.world.myAvatar.target.objData.sRace;
+				if(main.Game.ui.mcPortraitTarget.strClass.text != main.Game.world.myAvatar.target.objData.sRace)
+					main.Game.ui.mcPortraitTarget.strClass.text = main.Game.world.myAvatar.target.objData.sRace;
 		}
 	}
 	

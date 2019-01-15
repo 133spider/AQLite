@@ -9,7 +9,9 @@ package net.spider.modules{
     import net.spider.main;
     import net.spider.handlers.flags;
     import net.spider.handlers.dropmenu;
+    import net.spider.handlers.targetskills;
     import net.spider.handlers.skills;
+    import net.spider.handlers.passives;
     import net.spider.handlers.ClientEvent;
     import net.spider.modules.*;
 	
@@ -20,6 +22,7 @@ package net.spider.modules{
         public static var disableSkillAnim:Boolean;
         public static var myAnim:Boolean;
         public static var skill:Boolean;
+        public static var passive:Boolean;
         public static var cDrops:Boolean;
         public static var draggable:Boolean;
         public static var hideP:Boolean;
@@ -46,6 +49,8 @@ package net.spider.modules{
             this.btnRightQRates.addEventListener(MouseEvent.CLICK, onQRates, false, 0, true);
             this.btnLeftSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
             this.btnRightSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
+            this.btnLeftSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
+            this.btnRightSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
             optTimer = new Timer(0);
 			optTimer.addEventListener(TimerEvent.TIMER, onTimer);
             optTimer.start();
@@ -77,10 +82,20 @@ package net.spider.modules{
         public function onSkill(evt:MouseEvent):void{
             skill = !skill;
             dispatch(skills);
+            dispatch(targetskills);
             if(!skill)
                 this.txtSkill.text = "OFF";
             else
                 this.txtSkill.text = "ON";
+        }
+
+        public function onSkillP(evt:MouseEvent):void{
+            passive = !passive;
+            dispatch(passives);
+            if(!passive)
+                this.txtSkillP.text = "OFF";
+            else
+                this.txtSkillP.text = "ON";
         }
 
         public function onCDrops(evt:MouseEvent):void{
@@ -135,8 +150,6 @@ package net.spider.modules{
                 return;
             }
             this.visible = flags.isOptions();
-            if(!this.visible)
-                return;
 		}
 
         public function onDestroy():void{

@@ -34,7 +34,8 @@ package net.spider.modules{
 				return;
 			for(var playerMC:* in main.Game.world.avatars)
 				if(!main.Game.world.avatars[playerMC].isMyAvatar && main.Game.world.avatars[playerMC].pMC)
-					main.Game.world.avatars[playerMC].pMC.mcChar.visible = false;
+					if(main.Game.world.avatars[playerMC].pMC.mcChar.visible)
+						main.Game.world.avatars[playerMC].pMC.mcChar.visible = false;
 		}
 	}
 	

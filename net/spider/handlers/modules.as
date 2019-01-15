@@ -17,7 +17,6 @@
 			hideplayers.onCreate();
 			monstype.onCreate();
 			qrates.onCreate();
-            flags.isOptions();
 		}
 	}
 	
