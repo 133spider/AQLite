@@ -27,7 +27,7 @@ AQLite is a client made for AQWorlds that provides all sorts of Quality of Life 
 ## For MAC Users - Not Supported?
 You have two options:
 
-#Playing with the Flash Projector
+# Playing with the Flash Projector
 1. Go to "Releases" (or goto this link https://github.com/133spider/AQLite/releases)
 2. Download **AQLite - SWF.zip**
 3. Extract the file
