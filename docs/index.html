@@ -11,19 +11,15 @@
 	</head>
 	<body>
 		<div id="flashContent">
-				<object type="application/x-shockwave-flash" data="client.swf" width="960" height="550">
-					<param name="movie" value="client.swf" />
-					<param name="quality" value="high" />
-					<param name="bgcolor" value="#222222" />
-					<param name="play" value="true" />
-					<param name="loop" value="true" />
-					<param name="wmode" value="window" />
-					<param name="scale" value="showall" />
-					<param name="menu" value="true" />
-					<param name="devicefont" value="false" />
-					<param name="salign" value="" />
-					<param name="allowScriptAccess" value="sameDomain" />
-				</object>
+			<object classic="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" Code base="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,124,0" width="960" height="550" id="aqlite" salign="middle">
+				<param name="allowNetworking" value="internal" /> 
+				<param name="movie" value="client.swf" /> 
+				<param name="bgcolor" value="#333333" />  
+				<embed src="client.swf" allowNetworking="none"  
+					width="600" height="400" 
+					name="client" align="middle" type="application/x-shockwave-flash"  
+					pluginspage="http://www.macromedia.com/go/getflashplayer" /> 
+			</object>
 		</div>
 	</body>
 </html>
