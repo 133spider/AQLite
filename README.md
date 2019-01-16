@@ -34,17 +34,21 @@ If you are unsure, message me on twitter for help! @133spider
 3. Extract the file anywhere (or the desktop)
 
 4. Go to this link in your browser: https://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html
+
 ![](https://i.imgur.com/dEVGhJy.png)
 5. At the link, there should be a panel called "Adobe Flash Player Settings Manager". In the panel, near the bottom right: click "Edit Locations", then "Add Locations"
+
 ![](https://i.imgur.com/XwUO0Ib.png)
 6. Inside the textbox for "Trusted location:" enter the FULL directory/path to where the .swf file has been extracted from step #3! After, press the confirm button.
 Example: */Users/Me/Desktop/aqlite.swf*
 Please note that this HAS to be the correct directory/path otherwise the client will be stuck at the loading screen/bar!
+
 ![](https://i.imgur.com/ZPjnENE.png)
 
 7. Download Adobe Flash Player's Official Mac Projector at this link: https://fpdownload.macromedia.com/pub/flashplayer/updaters/32/flashplayer_32_sa.dmg
 8. Open the projector (.dmg file) and no window should open or pop-up. This is normal. The top left corner of your computer should now say "Flash Player"
 9. Now, on the top left corner of your computer, choose the options: *File > Open File > Browse* 
+
 ![](https://i.imgur.com/jQQcYKu.png)
 10. Browse to the swf file that you had extracted earlier from step #3!
 11. AQLite should now work!
