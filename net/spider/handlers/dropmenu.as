@@ -66,12 +66,31 @@ package net.spider.handlers{
             dropmenu.events.addEventListener(ClientEvent.onToggle, onToggle);
         }
 
+        private static var dropTimer:Timer;
         public function onToggle(e:Event):void{
             if(options.cDrops){
                 main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+                dropTimer = new Timer(0);
+				dropTimer.addEventListener(TimerEvent.TIMER, onDropTimer);
+				dropTimer.start();
             }else{
                 main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+                dropTimer.reset();
+				dropTimer.removeEventListener(TimerEvent.TIMER, onDropTimer);
             }
+        }
+
+        public function onDropTimer(e:TimerEvent):void{
+            if(main.Game.ui.dropStack.numChildren < 1)
+				return;
+			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+				try{
+					if((main.Game.ui.dropStack.getChildAt(i) as MovieClip).cnt.ybtn)
+						(main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible = false;
+				}catch(exception){
+					trace("Error handling drops: " + exception);
+				}
+			}
         }
 
         var itemCount:Object;
@@ -88,8 +107,6 @@ package net.spider.handlers{
                         case "dropItem":
                             for (dID in resObj.items)
                             {
-                                if(main.Game.ui.dropStack.visible && options.cDrops)
-                                    main.Game.ui.dropStack.visible = false;
                                 if(itemCount[dID] == null){
                                     itemCount[dID] = 1;
                                     if(main.Game.world.invTree[dID] == null){

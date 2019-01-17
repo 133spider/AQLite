@@ -246,7 +246,6 @@ package net.spider.modules{
 
         public function onCDrops(evt:MouseEvent):void{
             cDrops = !cDrops;
-            main.Game.ui.dropStack.visible = !cDrops;
             dispatch(dropmenu);
             if(!cDrops)
                 this.txtCDrops.text = "OFF";
