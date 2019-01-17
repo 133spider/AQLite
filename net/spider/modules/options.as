@@ -54,6 +54,8 @@ package net.spider.modules{
             btnChat.buttonMode = true;
 
             this.btnClose.addEventListener(MouseEvent.CLICK, onClose, false, 0, true);
+            filterChecks["chkRed"] = true;
+            filterChecks["chkBlue"] = false;
             optTimer = new Timer(0);
 			optTimer.addEventListener(TimerEvent.TIMER, onTimer);
             optTimer.start();
@@ -89,6 +91,12 @@ package net.spider.modules{
         private function setup(e:String):void{
             switch(e){
                 case "btnGeneral":
+                    this.txtCDrops.text = (cDrops ? "ON" : "OFF");
+                    this.txtDraggable.text = (draggable ? "ON" : "OFF");
+                    this.txtHideP.text = (hideP ? "ON" : "OFF");
+                    this.txtMType.text = (mType ? "ON" : "OFF");
+                    this.txtQRates.text = (qRates ? "ON" : "OFF");
+                    this.txtQLog.text = (qLog ? "ON" : "OFF");
                     if(this.btnLeftCDrops.hasEventListener(MouseEvent.CLICK))
                         return;
                     this.btnLeftCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
@@ -106,6 +114,11 @@ package net.spider.modules{
                     this.btnColor.addEventListener(MouseEvent.CLICK, onBtColor, false, 0, true);
                     break;
                 case "btnCombat":
+                    this.txtSkillAnim.text = (disableSkillAnim ? "ON" : "OFF");
+                    this.txtMyAnim.text = (myAnim ? "ON" : "OFF");
+                    this.txtSkill.text = (skill ? "ON" : "OFF");
+                    this.txtSkillP.text = (passive ? "ON" : "OFF");
+                    this.txtEsc.text = (untargetMon ? "ON" : "OFF");
                     if(this.btnLeftSkillAnim.hasEventListener(MouseEvent.CLICK))
                         return;
                     this.btnLeftSkillAnim.addEventListener(MouseEvent.CLICK, onSkillAnim, false, 0, true);
@@ -120,10 +133,11 @@ package net.spider.modules{
                     this.btnRightEsc.addEventListener(MouseEvent.CLICK, onEsc, false, 0, true);
                     break;
                 case "btnChat":
+                    this.txtChat.text = (chatFilter ? "ON" : "OFF");
+                    this.chkRed.checkmark.visible = filterChecks["chkRed"];
+                    this.chkBlue.checkmark.visible = filterChecks["chkBlue"];
                     if(this.btnLeftChat.hasEventListener(MouseEvent.CLICK))
                         return;
-                    filterChecks["chkRed"] = true;
-                    filterChecks["chkBlue"] = false;
                     this.btnLeftChat.addEventListener(MouseEvent.CLICK, onChat, false, 0, true);
                     this.btnRightChat.addEventListener(MouseEvent.CLICK, onChat, false, 0, true);
                     this.chkRed.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
