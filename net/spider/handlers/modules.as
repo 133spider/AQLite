@@ -17,6 +17,9 @@
 			hideplayers.onCreate();
 			monstype.onCreate();
 			qrates.onCreate();
+			qlog.onCreate();
+			untarget.onCreate();
+			chatfilter.onCreate();
 		}
 	}
 	

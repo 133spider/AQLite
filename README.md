@@ -1,8 +1,10 @@
-![](https://i.imgur.com/B9FFkEg.png)
+![](https://i.imgur.com/IJcM5a4.jpg)
 
-![](https://i.imgur.com/Pp2iNnC.png)
+![](https://i.imgur.com/Ek6aGGg.png)  |  ![](https://i.imgur.com/R4gH5hh.png)
 
-![](https://i.imgur.com/FsIAjgp.png)
+![](https://i.imgur.com/zWL8s1L.png)  |  ![](https://i.imgur.com/FsIAjgp.png)
+
+![](https://i.imgur.com/IFngi61.png)  |  ![](https://i.imgur.com/Pp2iNnC.png)
 
 
 ## Information
@@ -12,12 +14,18 @@ AQLite is a client made for AQWorlds that provides all sorts of Quality of Life 
 ## Features
 * Disable Skill Animations
 * Show Your Skill Animations Only (must have disable skill animations enabled)
-* Class Skill Passives/Auras UI (BETA) (draggable UI)
+* Class Actives/Auras UI (draggable UI)
+* Class Passives UI (draggable UI)
+* Auto-Untarget Dead Targets
 * Custom Drops UI
 * Draggable Drops
 * Hide Players
 * Show Monster Type
 * Show Quest Drop Rates
+* Allow Turn-Ins In Your Quests Log (No more quest tab glitching!) 
+![](https://i.imgur.com/gLmfggY.png)
+* Color Picker (eyedropper tool)
+* Chat Filter (hide error and server messages!)
 
 ## Installation
 * Go to "Releases" (or goto this link https://github.com/133spider/AQLite/releases)

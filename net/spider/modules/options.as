@@ -1,5 +1,6 @@
 package net.spider.modules{
 	
+    import fl.motion.Color;
 	import flash.display.*;
 	import flash.events.*;
 	import flash.net.*;
@@ -19,45 +20,167 @@ package net.spider.modules{
 
         private var optTimer:Timer;
         
-        public static var disableSkillAnim:Boolean;
-        public static var myAnim:Boolean;
-        public static var skill:Boolean;
-        public static var passive:Boolean;
         public static var cDrops:Boolean;
         public static var draggable:Boolean;
         public static var hideP:Boolean;
         public static var mType:Boolean;
         public static var qRates:Boolean;
+        public static var qLog:Boolean;
+
+        public static var disableSkillAnim:Boolean;
+        public static var myAnim:Boolean;
+        public static var skill:Boolean;
+        public static var passive:Boolean;
+        public static var untargetMon:Boolean;
+
+        public static var chatFilter:Boolean;
 
         public function options():void{
             this.visible = false;
 
+            this.gotoAndStop("general");
+            btnGeneral.gotoAndStop(2);
+            btnCombat.gotoAndStop(1);
+            btnChat.gotoAndStop(1);
+            btnAccount.gotoAndStop(1);
+
+            btnGeneral.addEventListener(MouseEvent.CLICK, onCategoryClick, false, 0, true);
+            btnGeneral.gotoAndStop(2);
+            btnGeneral.buttonMode = true;
+            setup("btnGeneral");
+            btnCombat.addEventListener(MouseEvent.CLICK, onCategoryClick, false, 0, true);
+            btnCombat.buttonMode = true;
+            btnChat.addEventListener(MouseEvent.CLICK, onCategoryClick, false, 0, true);
+            btnChat.buttonMode = true;
+
             this.btnClose.addEventListener(MouseEvent.CLICK, onClose, false, 0, true);
-            this.btnLeftSkillAnim.addEventListener(MouseEvent.CLICK, onSkillAnim, false, 0, true);
-            this.btnRightSkillAnim.addEventListener(MouseEvent.CLICK, onSkillAnim, false, 0, true);
-            this.btnLeftMyAnim.addEventListener(MouseEvent.CLICK, onMyAnim, false, 0, true);
-            this.btnRightMyAnim.addEventListener(MouseEvent.CLICK, onMyAnim, false, 0, true);
-            this.btnLeftCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
-            this.btnRightCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
-            this.btnLeftDraggable.addEventListener(MouseEvent.CLICK, onDraggable, false, 0, true);
-            this.btnRightDraggable.addEventListener(MouseEvent.CLICK, onDraggable, false, 0, true);
-            this.btnLeftHideP.addEventListener(MouseEvent.CLICK, onHideP, false, 0, true);
-            this.btnRightHideP.addEventListener(MouseEvent.CLICK, onHideP, false, 0, true);
-            this.btnLeftMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
-            this.btnRightMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
-            this.btnLeftQRates.addEventListener(MouseEvent.CLICK, onQRates, false, 0, true);
-            this.btnRightQRates.addEventListener(MouseEvent.CLICK, onQRates, false, 0, true);
-            this.btnLeftSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
-            this.btnRightSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
-            this.btnLeftSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
-            this.btnRightSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
             optTimer = new Timer(0);
 			optTimer.addEventListener(TimerEvent.TIMER, onTimer);
             optTimer.start();
         }
 
+        private function onCategoryClick(e:MouseEvent):void
+        {
+            btnGeneral.gotoAndStop(1);
+            btnCombat.gotoAndStop(1);
+            btnChat.gotoAndStop(1);
+            btnAccount.gotoAndStop(1);
+            e.currentTarget.gotoAndStop(2);
+            switch (e.currentTarget.name)
+            {
+                case "btnGeneral":
+                    if (this.currentLabel != "general")
+                        this.gotoAndStop("general");
+                    break;
+                case "btnCombat":
+                    if (this.currentLabel != "combat")
+                        this.gotoAndStop("combat");
+                    break;
+                case "btnChat":
+                    if (this.currentLabel != "chat")
+                        this.gotoAndStop("chat");
+                    break;
+                default:
+                    break;
+            }
+            setup(e.currentTarget.name);
+        }
+
+        private function setup(e:String):void{
+            switch(e){
+                case "btnGeneral":
+                    if(this.btnLeftCDrops.hasEventListener(MouseEvent.CLICK))
+                        return;
+                    this.btnLeftCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
+                    this.btnRightCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
+                    this.btnLeftDraggable.addEventListener(MouseEvent.CLICK, onDraggable, false, 0, true);
+                    this.btnRightDraggable.addEventListener(MouseEvent.CLICK, onDraggable, false, 0, true);
+                    this.btnLeftHideP.addEventListener(MouseEvent.CLICK, onHideP, false, 0, true);
+                    this.btnRightHideP.addEventListener(MouseEvent.CLICK, onHideP, false, 0, true);
+                    this.btnLeftMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
+                    this.btnRightMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
+                    this.btnLeftQRates.addEventListener(MouseEvent.CLICK, onQRates, false, 0, true);
+                    this.btnRightQRates.addEventListener(MouseEvent.CLICK, onQRates, false, 0, true);
+                    this.btnLeftQLog.addEventListener(MouseEvent.CLICK, onQLog, false, 0, true);
+                    this.btnRightQLog.addEventListener(MouseEvent.CLICK, onQLog, false, 0, true);
+                    this.btnColor.addEventListener(MouseEvent.CLICK, onBtColor, false, 0, true);
+                    break;
+                case "btnCombat":
+                    if(this.btnLeftSkillAnim.hasEventListener(MouseEvent.CLICK))
+                        return;
+                    this.btnLeftSkillAnim.addEventListener(MouseEvent.CLICK, onSkillAnim, false, 0, true);
+                    this.btnRightSkillAnim.addEventListener(MouseEvent.CLICK, onSkillAnim, false, 0, true);
+                    this.btnLeftMyAnim.addEventListener(MouseEvent.CLICK, onMyAnim, false, 0, true);
+                    this.btnRightMyAnim.addEventListener(MouseEvent.CLICK, onMyAnim, false, 0, true);
+                    this.btnLeftSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
+                    this.btnRightSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
+                    this.btnLeftSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
+                    this.btnRightSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
+                    this.btnLeftEsc.addEventListener(MouseEvent.CLICK, onEsc, false, 0, true);
+                    this.btnRightEsc.addEventListener(MouseEvent.CLICK, onEsc, false, 0, true);
+                    break;
+                case "btnChat":
+                    if(this.btnLeftChat.hasEventListener(MouseEvent.CLICK))
+                        return;
+                    filterChecks["chkRed"] = true;
+                    filterChecks["chkBlue"] = false;
+                    this.btnLeftChat.addEventListener(MouseEvent.CLICK, onChat, false, 0, true);
+                    this.btnRightChat.addEventListener(MouseEvent.CLICK, onChat, false, 0, true);
+                    this.chkRed.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
+                    this.chkBlue.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
+                    break;
+                default: break;
+            }
+        }
+
+        private function onBtColor(evt:MouseEvent):void{
+            main.Game.ui.mcPopup.onClose();
+            stage.addEventListener(MouseEvent.MOUSE_DOWN, getColor);
+        }
+
+        private var _stageBitmap:BitmapData;
+        private function getColor(evt:MouseEvent):void{
+            if (_stageBitmap == null) 
+                _stageBitmap = new BitmapData(stage.width, stage.height);
+            _stageBitmap.draw(stage);
+
+            var rgb:uint = _stageBitmap.getPixel(stage.mouseX,stage.mouseY);
+
+            var red:int =  (rgb >> 16 & 0xff);
+            var green:int =  (rgb >> 8 & 0xff);
+            var blue:int =  (rgb & 0xff);
+
+            this.txtRed.text = red.toString();
+            this.txtGreen.text = green.toString();
+            this.txtBlue.text = blue.toString();
+
+            this.txtHex.text = "#" + rgb.toString(16);
+
+            var c:Color=new Color();
+            c.setTint(rgb, 1);
+            this.colorPreview.transform.colorTransform = c;
+
+            main.Game.ui.mcPopup.fOpen("Option");
+            stage.removeEventListener(MouseEvent.MOUSE_DOWN, getColor);
+        }
+
+        public static var filterChecks:Object = new Object();
+        public function onCheckPressed(evt:MouseEvent):void{
+            evt.currentTarget.checkmark.visible = !evt.currentTarget.checkmark.visible;
+            filterChecks[evt.currentTarget.name] = evt.currentTarget.checkmark.visible;
+        }
+
         public function onClose(evt:MouseEvent):void{
             main.Game.ui.mcPopup.onClose();
+        }
+
+        public function onChat(evt:MouseEvent):void{
+            chatFilter = !chatFilter;
+            dispatch(chatfilter);
+            if(!chatFilter)
+                this.txtChat.text = "OFF";
+            else
+                this.txtChat.text = "ON";
         }
 
         public function onSkillAnim(evt:MouseEvent):void{
@@ -96,6 +219,15 @@ package net.spider.modules{
                 this.txtSkillP.text = "OFF";
             else
                 this.txtSkillP.text = "ON";
+        }
+
+        public function onEsc(evt:MouseEvent):void{
+            untargetMon = !untargetMon;
+            dispatch(untarget);
+            if(!untargetMon)
+                this.txtEsc.text = "OFF";
+            else
+                this.txtEsc.text = "ON";
         }
 
         public function onCDrops(evt:MouseEvent):void{
@@ -142,6 +274,15 @@ package net.spider.modules{
                 this.txtQRates.text = "OFF";
             else
                 this.txtQRates.text = "ON";
+        }
+
+        public function onQLog(e:MouseEvent):void{
+            qLog = !qLog;
+            dispatch(qlog);
+            if(!qLog)
+                this.txtQLog.text = "OFF";
+            else
+                this.txtQLog.text = "ON";
         }
 
         public function onTimer(e:TimerEvent):void{

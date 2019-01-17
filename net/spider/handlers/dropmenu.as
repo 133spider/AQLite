@@ -88,6 +88,8 @@ package net.spider.handlers{
                         case "dropItem":
                             for (dID in resObj.items)
                             {
+                                if(main.Game.ui.dropStack.visible && options.cDrops)
+                                    main.Game.ui.dropStack.visible = false;
                                 if(itemCount[dID] == null){
                                     itemCount[dID] = 1;
                                     if(main.Game.world.invTree[dID] == null){

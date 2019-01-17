@@ -34,9 +34,40 @@ package net.spider.modules{
 				return;
 			for(var playerMC:* in main.Game.world.avatars)
 				if(!main.Game.world.avatars[playerMC].isMyAvatar && main.Game.world.avatars[playerMC].pMC)
-					if(main.Game.world.avatars[playerMC].pMC.mcChar.visible)
+					if(main.Game.world.avatars[playerMC].pMC.mcChar.visible){
 						main.Game.world.avatars[playerMC].pMC.mcChar.visible = false;
+						if(!main.Game.world.avatars[playerMC].pMC.shadow.hasEventListener(MouseEvent.CLICK)){
+							main.Game.world.avatars[playerMC].pMC.shadow.addEventListener(MouseEvent.CLICK, onClickHandler, false, 0, true);
+							main.Game.world.avatars[playerMC].pMC.shadow.mouseEnabled = true;
+						}
+					}
 		}
+
+		private static function onClickHandler(e:MouseEvent):void{
+            var tAvt:*;
+            tAvt = e.currentTarget.parent.pAV;
+            if (e.shiftKey)
+            {
+                main.Game.world.onWalkClick();
+            }
+            else
+            {
+                if (!e.ctrlKey)
+                {
+                    if (((((((!((tAvt == main.Game.world.myAvatar))) && (main.Game.world.bPvP))) && (!((tAvt.dataLeaf.pvpTeam == main.Game.world.myAvatar.dataLeaf.pvpTeam))))) && ((tAvt == main.Game.world.myAvatar.target))))
+                    {
+                        main.Game.world.approachTarget();
+                    }
+                    else
+                    {
+                        if (tAvt != main.Game.world.myAvatar.target)
+                        {
+                            main.Game.world.setTarget(tAvt);
+                        }
+                    }
+                }
+            }
+        }
 	}
 	
 }
