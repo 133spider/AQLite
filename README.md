@@ -25,7 +25,7 @@ AQLite is a client made for AQWorlds that provides all sorts of Quality of Life 
 * Allow Turn-Ins In Your Quests Log (No more quest tab glitching!) 
 ![](https://i.imgur.com/gLmfggY.png)
 * Color Picker (eyedropper tool)
-* Chat Filter (hide error and server messages!)
+* Chat Filter (hide error and server messages!) (does NOT hide Server Shutdown messages!)
 
 ## Installation
 * Go to "Releases" (or goto this link https://github.com/133spider/AQLite/releases)
