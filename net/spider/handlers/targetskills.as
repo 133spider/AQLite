@@ -55,22 +55,49 @@ package net.spider.handlers{
 							if (resObj.a == null)
 								return;
 							for each(var i:* in resObj.a){
-								for each(var j:* in i.auras){
+								if(main.Game.world.myAvatar.target)
+									if(main.Game.world.myAvatar.target.dataLeaf.MonID)
+										if(i.tInf != "m:" + main.Game.world.myAvatar.target.dataLeaf.MonMapID.toString())
+											continue;
+								if(i.auras){
+									for each(var j:* in i.auras){
+										if (i.cmd.indexOf("+") > -1)
+										{
+											if(!auras.hasOwnProperty(j.nam)){
+												auras[j.nam] = 1;
+											}else{
+												auras[j.nam] += 1;
+												if(!main.Game.world.myAvatar.target)
+													auras = new Object();
+												for each(var a:* in main.Game.world.myAvatar.target.dataLeaf.auras){
+													if(a.nam == j.nam){
+														a.ts = j.ts;
+														break;
+													}
+												}
+											}
+										}else if(i.cmd.indexOf("-") > -1) {
+											auras[j.nam] = null;
+										}
+									}
+								}else{
 									if (i.cmd.indexOf("+") > -1)
 									{
-										if(!auras.hasOwnProperty(j.nam)){
-											auras[j.nam] = 1;
+										if(!auras.hasOwnProperty(i.aura.nam)){
+											auras[i.aura.nam] = 1;
 										}else{
-											auras[j.nam] += 1;
-											for each(var a:* in main.Game.world.myAvatar.target.dataLeaf.auras){
-												if(a.nam == j.nam){
-													a.ts = j.ts;
+											auras[i.aura.nam] += 1;
+											if(!main.Game.world.myAvatar.target)
+												auras = new Object();
+											for each(var b:* in main.Game.world.myAvatar.target.dataLeaf.auras){
+												if(b.nam == i.aura.nam){
+													b.ts = i.aura.ts;
 													break;
 												}
 											}
 										}
 									}else if(i.cmd.indexOf("-") > -1) {
-										auras[j.nam] = null;
+										auras[i.aura.nam] = null;
 									}
 								}
 							}
@@ -86,6 +113,7 @@ package net.spider.handlers{
 					this.activesTxt.text = "";
 					resizeMe();
 				}
+				auras = new Object();
 				return;
 			}
 			dateObj = new Date();

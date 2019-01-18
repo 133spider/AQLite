@@ -20,6 +20,7 @@
 			qlog.onCreate();
 			untarget.onCreate();
 			chatfilter.onCreate();
+			untargetself.onCreate();
 		}
 	}
 	

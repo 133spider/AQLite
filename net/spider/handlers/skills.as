@@ -53,22 +53,43 @@ package net.spider.handlers{
 							if (resObj.a == null)
 								return;
 							for each(var i:* in resObj.a){
-								for each(var j:* in i.auras){
+								if(i.tInf.indexOf("p") == -1)
+									continue;
+								if(i.auras){
+									for each(var j:* in i.auras){
+										if (i.cmd.indexOf("+") > -1)
+										{
+											if(!auras.hasOwnProperty(j.nam)){
+												auras[j.nam] = 1;
+											}else{
+												auras[j.nam] += 1;
+												for each(var a:* in main.Game.world.myAvatar.dataLeaf.auras){
+													if(a.nam == j.nam){
+														a.ts = j.ts;
+														break;
+													}
+												}
+											}
+										}else if(i.cmd.indexOf("-") > -1) {
+											auras[j.nam] = null;
+										}
+									}
+								}else{
 									if (i.cmd.indexOf("+") > -1)
 									{
-										if(!auras.hasOwnProperty(j.nam)){
-											auras[j.nam] = 1;
+										if(!auras.hasOwnProperty(i.aura.nam)){
+											auras[i.aura.nam] = 1;
 										}else{
-											auras[j.nam] += 1;
-											for each(var a:* in auraLeaf){
-												if(a.nam == j.nam){
-													a.ts = j.ts;
+											auras[i.aura.nam] += 1;
+											for each(var b:* in main.Game.world.myAvatar.dataLeaf.auras){
+												if(b.nam == i.aura.nam){
+													b.ts = i.aura.ts;
 													break;
 												}
 											}
 										}
 									}else if(i.cmd.indexOf("-") > -1) {
-										auras[j.nam] = null;
+										auras[i.aura.nam] = null;
 									}
 								}
 							}
@@ -78,15 +99,15 @@ package net.spider.handlers{
         }
 
 		var dateObj:*;
-		var auraLeaf:*;
         public function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.actions.passive)
+			if(!main.Game.sfc.isConnected || !main.Game.world.actions.passive){
+				auras = new Object();
 				return;
+			}
 			//world.actions.active = []; world.actions.passive = [];
 			dateObj = new Date();
             this.activesTxt.text = "";
-			auraLeaf = main.Game.world.myAvatar.dataLeaf.auras;
-            for each(var a:* in auraLeaf){
+            for each(var a:* in main.Game.world.myAvatar.dataLeaf.auras){
                 this.activesTxt.appendText("[" + a.nam + "]: (" + (!auras.hasOwnProperty(a.nam) ? "NaN" : auras[a.nam].toString()) + " stacks) (" + (a.dur - Math.floor((dateObj.getTime() - a.ts)/1000)).toString() + "s)\n");
             }
 			resizeMe();

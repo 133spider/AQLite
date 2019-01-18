@@ -32,6 +32,7 @@ package net.spider.modules{
         public static var skill:Boolean;
         public static var passive:Boolean;
         public static var untargetMon:Boolean;
+        public static var selfTarget:Boolean;
 
         public static var chatFilter:Boolean;
 
@@ -119,6 +120,7 @@ package net.spider.modules{
                     this.txtSkill.text = (skill ? "ON" : "OFF");
                     this.txtSkillP.text = (passive ? "ON" : "OFF");
                     this.txtEsc.text = (untargetMon ? "ON" : "OFF");
+                    this.txtEscSelf.text = (selfTarget ? "ON" : "OFF");
                     if(this.btnLeftSkillAnim.hasEventListener(MouseEvent.CLICK))
                         return;
                     this.btnLeftSkillAnim.addEventListener(MouseEvent.CLICK, onSkillAnim, false, 0, true);
@@ -131,6 +133,8 @@ package net.spider.modules{
                     this.btnRightSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
                     this.btnLeftEsc.addEventListener(MouseEvent.CLICK, onEsc, false, 0, true);
                     this.btnRightEsc.addEventListener(MouseEvent.CLICK, onEsc, false, 0, true);
+                    this.btnLeftEscSelf.addEventListener(MouseEvent.CLICK, onEscSelf, false, 0, true);
+                    this.btnRightEscSelf.addEventListener(MouseEvent.CLICK, onEscSelf, false, 0, true);
                     break;
                 case "btnChat":
                     this.txtChat.text = (chatFilter ? "ON" : "OFF");
@@ -244,6 +248,15 @@ package net.spider.modules{
                 this.txtEsc.text = "ON";
         }
 
+        public function onEscSelf(evt:MouseEvent):void{
+            selfTarget = !selfTarget;
+            dispatch(untargetself);
+            if(!selfTarget)
+                this.txtEscSelf.text = "OFF";
+            else
+                this.txtEscSelf.text = "ON";
+        }
+
         public function onCDrops(evt:MouseEvent):void{
             cDrops = !cDrops;
             dispatch(dropmenu);
@@ -299,7 +312,11 @@ package net.spider.modules{
         }
 
         public function onTimer(e:TimerEvent):void{
-            if(!main.Game.ui || !main.Game){
+            if(!main.Game){
+                this.visible = false;
+                return;
+            }
+            if(!main.Game.ui){
                 this.visible = false;
                 return;
             }
