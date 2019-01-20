@@ -77,10 +77,26 @@ package net.spider.handlers{
                 main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
                 dropTimer.reset();
 				dropTimer.removeEventListener(TimerEvent.TIMER, onDropTimer);
+                if(main.Game.ui.dropStack.numChildren < 1)
+                    return;
+                for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+                    try{
+                        if(!(main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible)
+                            (main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible = true;
+                    }catch(exception){
+                        trace("Error handling drops: " + exception);
+                    }
+                }
             }
         }
 
         public function onDropTimer(e:TimerEvent):void{
+            if(!main.Game.sfc.isConnected){
+                itemCount = {};
+                invTree = new Array();
+                fOpen();
+                return;
+            }
             if(main.Game.ui.dropStack.numChildren < 1)
 				return;
 			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){

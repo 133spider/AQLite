@@ -13,6 +13,10 @@ package net.spider.handlers{
 		public static function isOptions():Boolean{
             return (main.Game.ui.mcPopup.currentLabel == "Option");
         }
+
+		public static function isInventory():Boolean{
+			return (main.Game.ui.mcPopup.currentLabel == "Inventory");
+		}
 	}
 	
 }

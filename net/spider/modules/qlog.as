@@ -8,6 +8,7 @@ package net.spider.modules{
 	import flash.utils.*;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
+	import net.spider.draw.cMenu;
 	
 	public class qlog extends MovieClip{
 

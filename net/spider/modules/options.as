@@ -57,6 +57,7 @@ package net.spider.modules{
             this.btnClose.addEventListener(MouseEvent.CLICK, onClose, false, 0, true);
             filterChecks["chkRed"] = true;
             filterChecks["chkBlue"] = false;
+            filterChecks["chkName"] = false;
             optTimer = new Timer(0);
 			optTimer.addEventListener(TimerEvent.TIMER, onTimer);
             optTimer.start();
@@ -92,6 +93,7 @@ package net.spider.modules{
         private function setup(e:String):void{
             switch(e){
                 case "btnGeneral":
+                    this.chkName.checkmark.visible = filterChecks["chkName"];
                     this.txtCDrops.text = (cDrops ? "ON" : "OFF");
                     this.txtDraggable.text = (draggable ? "ON" : "OFF");
                     this.txtHideP.text = (hideP ? "ON" : "OFF");
@@ -106,6 +108,7 @@ package net.spider.modules{
                     this.btnRightDraggable.addEventListener(MouseEvent.CLICK, onDraggable, false, 0, true);
                     this.btnLeftHideP.addEventListener(MouseEvent.CLICK, onHideP, false, 0, true);
                     this.btnRightHideP.addEventListener(MouseEvent.CLICK, onHideP, false, 0, true);
+                    this.chkName.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
                     this.btnLeftMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
                     this.btnRightMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
                     this.btnLeftQRates.addEventListener(MouseEvent.CLICK, onQRates, false, 0, true);

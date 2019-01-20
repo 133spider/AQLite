@@ -26,6 +26,13 @@ package net.spider.modules{
 			}else{
 				hideTimer.reset();
 				hideTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+				for(var playerMC:* in main.Game.world.avatars)
+					if(!main.Game.world.avatars[playerMC].isMyAvatar && main.Game.world.avatars[playerMC].pMC)
+						if(!main.Game.world.avatars[playerMC].pMC.mcChar.visible){
+							main.Game.world.avatars[playerMC].pMC.mcChar.visible = true;
+							main.Game.world.avatars[playerMC].pMC.pname.visible = true;
+							main.Game.world.avatars[playerMC].pMC.shadow.visible = true;
+						}
 			}
 		}
 
@@ -36,7 +43,8 @@ package net.spider.modules{
 				if(!main.Game.world.avatars[playerMC].isMyAvatar && main.Game.world.avatars[playerMC].pMC)
 					if(main.Game.world.avatars[playerMC].pMC.mcChar.visible){
 						main.Game.world.avatars[playerMC].pMC.mcChar.visible = false;
-						main.Game.world.avatars[playerMC].pMC.pname.visible = false;
+						if(!options.filterChecks["chkName"])
+							main.Game.world.avatars[playerMC].pMC.pname.visible = false;
 						main.Game.world.avatars[playerMC].pMC.shadow.visible = false;
 						/**if(!main.Game.world.avatars[playerMC].pMC.shadow.hasEventListener(MouseEvent.CLICK)){
 							main.Game.world.avatars[playerMC].pMC.shadow.addEventListener(MouseEvent.CLICK, onClickHandler, false, 0, true);
