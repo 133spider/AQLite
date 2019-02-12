@@ -24,10 +24,20 @@ package net.spider.handlers{
             this.menu.visible = false;
             this.txtQty.mouseEnabled = false;
             this.menuBar.addEventListener(MouseEvent.CLICK, onToggleMenu);
+            this.menuBar.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
+			this.menuBar.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
             dropmenutwo.events.addEventListener(ClientEvent.onToggle, onToggle);
             dropmenutwo.events.addEventListener(DrawEvent.onBtNo, onBtNo);
             dropmenutwo.events.addEventListener(ClientEvent.onUpdate, onUpdate);
         }
+
+        private function onHold(e:MouseEvent):void{
+			this.startDrag();
+		}
+		
+		private function onMouseRelease(e:MouseEvent):void{
+			this.stopDrag();
+		}
 
         public function onUpdate(e:ClientEvent){
             itemCount = {};

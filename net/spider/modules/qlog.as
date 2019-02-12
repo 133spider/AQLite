@@ -34,6 +34,7 @@ package net.spider.modules{
 		}
 
 		public static function onKey(e:KeyboardEvent){
+			trace("register click keybind");
 			var chatF:* = main.Game.chatF;
 			var world:* = main.Game.world;
 			var ui:* = main.Game.ui;
@@ -43,34 +44,38 @@ package net.spider.modules{
                 {
                     if (stage.focus != ui.mcInterface.te)
                     {
-						main.Game.world.toggleQuestLog();
-                        var mcQFrame:*;
-						mcQFrame = main.Game.getInstanceFromModalStack("QFrameMC");
-						if (mcQFrame == null)
-							main.Game.world.showQuests(main.Game.world.getActiveQuests(), "q");
-						else
-							mcQFrame.open();
+
+						var delay:* = new Timer(100, 1);
+						delay.addEventListener(TimerEvent.TIMER_COMPLETE,
+							function(e:TimerEvent):void{
+								main.Game.world.toggleQuestLog();
+								main.Game.world.showQuests(main.Game.world.getActiveQuests(), "q");
+							});
+						delay.start();
                     }
                 }
             }
         }
 
 		public static function onRegister(e:MouseEvent):void{
+			trace("register click");
 			try{
 				main.Game.ui.mcInterface.mcMenu.btnQuest.getChildAt(1).addEventListener(MouseEvent.CLICK, showQuests, false, 0, true);
-			}catch(exception){}
+			}catch(exception){
+				main.Game.ui.mcInterface.mcMenu.btnQuest.getChildAt(1).addEventListener(MouseEvent.CLICK, showQuests, false, 0, true);
+			}
 		}
 
 		public static function showQuests(e:MouseEvent):void{
 			if(e.target.mTxt.text != "Quests")
 				return;
-			main.Game.world.toggleQuestLog();
-			var mcQFrame:*;
-            mcQFrame = main.Game.getInstanceFromModalStack("QFrameMC");
-            if (mcQFrame == null)
-                main.Game.world.showQuests(main.Game.world.getActiveQuests(), "q");
-            else
-                mcQFrame.open();
+			var delay:* = new Timer(100, 1);
+			delay.addEventListener(TimerEvent.TIMER_COMPLETE,
+				function(e:TimerEvent):void{
+					main.Game.world.toggleQuestLog();
+					main.Game.world.showQuests(main.Game.world.getActiveQuests(), "q");
+				});
+			delay.start();
 		}
 	}
 	
