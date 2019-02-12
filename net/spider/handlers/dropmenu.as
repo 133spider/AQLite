@@ -11,6 +11,7 @@ package net.spider.handlers{
     import net.spider.main;
     import net.spider.modules.options;
     import net.spider.handlers.*;
+    import net.spider.draw.dEntry;
 
     public class dropmenu extends MovieClip {
 
@@ -64,6 +65,18 @@ package net.spider.handlers{
             invTree = new Array();
             ldr = new Loader();
             dropmenu.events.addEventListener(ClientEvent.onToggle, onToggle);
+            dropmenu.events.addEventListener(ClientEvent.onShow, onShow);
+            dropmenu.events.addEventListener(ClientEvent.onUpdate, onUpdate);
+        }
+
+        function onUpdate(e:ClientEvent){
+            itemCount = {};
+            invTree = new Array();
+            fOpen();
+        }
+
+        public function onShow(e:Event):void{
+            fOpen();
         }
 
         private static var dropTimer:Timer;
@@ -94,7 +107,6 @@ package net.spider.handlers{
             if(!main.Game.sfc.isConnected){
                 itemCount = {};
                 invTree = new Array();
-                fOpen();
                 return;
             }
             if(main.Game.ui.dropStack.numChildren < 1)
@@ -124,7 +136,7 @@ package net.spider.handlers{
                             for (dID in resObj.items)
                             {
                                 if(itemCount[dID] == null){
-                                    itemCount[dID] = 1;
+                                    itemCount[dID] = int(resObj.items[dID].iQty);
                                     if(main.Game.world.invTree[dID] == null){
                                         invTree.push(main.Game.copyObj(resObj.items[dID]));
                                     }else{
@@ -132,9 +144,10 @@ package net.spider.handlers{
                                         dItem.iQty = int(resObj.items[dID].iQty);
                                         invTree.push(dItem);
                                     }
+                                    main.Game.showItemDrop(resObj.items[dID], false);
                                     invTree[invTree.length-1].dID = dID;
                                 }else{
-                                    itemCount[dID] += 1;
+                                    itemCount[dID] += int(resObj.items[dID].iQty);
                                 }
                             };
                         fOpen();
@@ -537,7 +550,7 @@ package net.spider.handlers{
             s = obj.sLink;
             trace("Obj type: " + obj.sType);
             var objChar:Object = new Object();
-            objChar.strGender = "M";
+            objChar.strGender = main.Game.world.myAvatar.objData.strGender;
             mc = (MovieClip(this).cnt as MovieClip);
             if (mc.numChildren > 0)
             {

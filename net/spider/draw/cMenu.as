@@ -29,7 +29,7 @@ package net.spider.draw{
             mc.addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
             fData = {};
             fData.params = {};
-            fData.user = ["Char Page", "Is Staff?", "Hide Weapon", "Hide Player", "Whisper", "Add Friend", "Go To", "Invite", "Report", "Delete Friend", "Ignore", "Close"];
+            fData.user = ["Char Page", "Is Staff?", "Hide Weapon", "Hide Player", "Disable Wep Anim", "Whisper", "Add Friend", "Go To", "Invite", "Report", "Delete Friend", "Ignore", "Close"];
             fData.party = ["Char Page", "Whisper", "Add Friend", "Go To", "Remove", "Summon", "Promote", "Report", "Delete Friend", "Ignore", "Close"];
             fData.self = ["Char Page", "Reputation", "Leave Party", "Close"];
             fData.pvpqueue = ["Leave Queue", "Close"];
@@ -249,6 +249,21 @@ package net.spider.draw{
                         }
                     }
                     break;
+                case "disable wep anim":
+                    for(var playerMC3:* in rootClass.world.avatars){
+                        if(!rootClass.world.avatars[playerMC3].objData)
+                           continue;
+                        if(!(rootClass.world.avatars[playerMC3].objData.strUsername == _local4))
+                           continue;
+                        if(!rootClass.world.avatars[playerMC3].isMyAvatar && rootClass.world.avatars[playerMC3].pMC){
+                            rootClass.world.avatars[playerMC3].pMC.mcChar.weapon.mcWeapon.gotoAndStop(0);
+                            (rootClass.world.avatars[playerMC3].pMC.mcChar.weaponOff.getChildAt(0) as MovieClip).gotoAndStop(0);
+                            movieClipStopAll(rootClass.world.avatars[playerMC3].pMC.mcChar.weapon.mcWeapon);
+                            movieClipStopAll((rootClass.world.avatars[playerMC3].pMC.mcChar.weaponOff.getChildAt(0) as MovieClip));
+                           break;
+                        }
+                    }
+                    break;
                 case "reputation":
                     rootClass.mixer.playSound("Click");
                     rootClass.showFactionInterface();
@@ -312,6 +327,13 @@ package net.spider.draw{
                     rootClass.world.requestPVPQueue("none");
                     break;
             };
+        }
+        function movieClipStopAll(container:MovieClip):void {
+            for (var i:uint = 0; i < container.numChildren; i++)
+                if (container.getChildAt(i) is MovieClip) {
+                    (container.getChildAt(i) as MovieClip).gotoAndStop(0);
+                    movieClipStopAll(container.getChildAt(i) as MovieClip);
+                }
         }
         private var toPM:String;
         private function updateMsg():void{

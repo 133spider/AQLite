@@ -30,7 +30,11 @@ package net.spider.modules{
 		}
 
         public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !(main.Game.world.myAvatar.target != null))
+			if(!main.Game.sfc.isConnected)
+				return;
+			if(main.Game.world.myAvatar == null)
+				return;
+			if(main.Game.world.myAvatar.target == null)
 				return;
 			if(main.Game.world.myAvatar.target.npcType == "monster")
 				if(main.Game.ui.mcPortraitTarget.strClass.text != main.Game.world.myAvatar.target.objData.sRace)

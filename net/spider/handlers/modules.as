@@ -17,10 +17,16 @@
 			hideplayers.onCreate();
 			monstype.onCreate();
 			qrates.onCreate();
+			qprev.onCreate();
 			qlog.onCreate();
 			untarget.onCreate();
 			chatfilter.onCreate();
 			untargetself.onCreate();
+			diswepanim.onCreate();
+			detaildrops.onCreate();
+			detailquests.onCreate();
+
+			options.events.dispatchEvent(new ClientEvent(ClientEvent.onEnable));
 		}
 	}
 	

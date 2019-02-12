@@ -30,13 +30,15 @@ package net.spider.modules{
 		}
 
         public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.myAvatar.pMC.spFX)
+			if(!main.Game.sfc.isConnected)
 				return;
-			if(main.Game.world.avatars.length < 2 && !options.myAnim)
+			if(!main.Game.world.myAvatar.pMC.spFX)
+				return;
+			if(main.Game.world.avatars.length < 2 && !options.filterChecks["chkSelfOnly"])
 				main.Game.world.myAvatar.pMC.spFX.strl = "";
 			else
 				for(var playerMC:* in main.Game.world.avatars){
-					if(options.myAnim)
+					if(options.filterChecks["chkSelfOnly"])
 						if(main.Game.world.avatars[playerMC].isMyAvatar)
 							continue;
 					if(main.Game.world.avatars[playerMC].pMC)

@@ -6,6 +6,9 @@ package net.spider.modules{
 	import flash.system.*;
 	import flash.ui.*;
 	import flash.utils.*;
+	import flash.text.TextFormat;
+	import net.spider.draw.dRender;
+	import net.spider.handlers.DrawEvent;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
 	
@@ -39,16 +42,17 @@ package net.spider.modules{
 					if(!frame.cnt.core.rewardsRoll)
 						return;
 					for(var i:Number = 1; i < frame.cnt.core.rewardsRoll.numChildren; i++){
-						if(frame.cnt.core.rewardsRoll.getChildAt(i).strType.text.indexOf("%") >= 0)
+						var rItem:* = frame.cnt.core.rewardsRoll.getChildAt(i);
+						if(rItem.strType.text.indexOf("%") >= 0)
 							continue;
-						for each(var s:* in frame.qData.reward){
-							if(s["ItemID"] == frame.cnt.core.rewardsRoll.getChildAt(i).ItemID){
-								if(frame.cnt.core.rewardsRoll.getChildAt(i).strQ.visible)
-									if(s["iQty"].toString() != frame.cnt.core.rewardsRoll.getChildAt(i).strQ.text.substring(1))
+						inner: for each(var s:* in frame.qData.reward){
+							if(s["ItemID"] == rItem.ItemID){
+								if(rItem.strQ.visible)
+									if(s["iQty"].toString() != rItem.strQ.text.substring(1))
 										continue;
-								frame.cnt.core.rewardsRoll.getChildAt(i).strType.text += " (" + s["iRate"] + "%)";
-								frame.cnt.core.rewardsRoll.getChildAt(i).strType.width = 100;
-								break;
+								rItem.strType.text += " (" + s["iRate"] + "%)";
+								rItem.strType.width = 100;
+								break inner;
 							}
 						}
 					}

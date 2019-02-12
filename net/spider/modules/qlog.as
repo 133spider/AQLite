@@ -23,13 +23,13 @@ package net.spider.modules{
 
 		public static function onToggle(e:Event):void{
 			if(options.qLog){
-				main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, showQuests);
+				//main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister);
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
-				main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, main.Game.ui.mcInterface.mcMenu.onMouseClick);
+				//main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, main.Game.ui.mcInterface.mcMenu.onMouseClick);
 			}else{
-				main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, showQuests);
+				//main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, onRegister);
 				stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKey);
-				main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, main.Game.ui.mcInterface.mcMenu.onMouseClick);
+				//main.Game.ui.mcInterface.mcMenu.btnQuest.getChildByName(menu.btnOpen).addEventListener(MouseEvent.CLICK, main.Game.ui.mcInterface.mcMenu.onMouseClick);
 			}
 		}
 
@@ -55,7 +55,16 @@ package net.spider.modules{
             }
         }
 
+		public static function onRegister(e:MouseEvent):void{
+			try{
+				main.Game.ui.mcInterface.mcMenu.btnQuest.getChildAt(1).addEventListener(MouseEvent.CLICK, showQuests, false, 0, true);
+			}catch(exception){}
+		}
+
 		public static function showQuests(e:MouseEvent):void{
+			if(e.target.mTxt.text != "Quests")
+				return;
+			main.Game.world.toggleQuestLog();
 			var mcQFrame:*;
             mcQFrame = main.Game.getInstanceFromModalStack("QFrameMC");
             if (mcQFrame == null)
