@@ -16,8 +16,9 @@ AQLite is a client made for AQWorlds that provides all sorts of Quality of Life 
 * Make sure to Force Update your client!
 
 ## Stuck at 0%
-* Client stuck at 0?
-Make sure that the directory that AQLite is in does not contain any accents!
+Client stuck at 0?
+
+Make sure that the directory that AQLite in it does not contain any accents!
 
 Example of a directory containing accent marks: C:\Users\André\Desktop\AQLite
 
