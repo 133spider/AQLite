@@ -29,7 +29,7 @@ To fix this issue, put AQLite in your C:\ Drive, or any other directories that d
 AQLite is in Beta; be cautious of potential bugs and glitches!
 
 ## Donation
-I love to create programs for free for those that need it.
+I love to create programs for free for those that need it.    
 If you'd like to donate some money to help out a College kid like me, that would be much appreciated!
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/133spider)
