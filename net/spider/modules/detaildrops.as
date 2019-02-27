@@ -65,11 +65,8 @@ package net.spider.modules{
 					if(getQualifiedClassName(mcDrop) != "DFrame2MC")
 						continue;
 					if(!mcDrop.cnt.bg.getChildByName("flag")){
-						trace("DROPS DRAW");
 						var sName:String = mcDrop.cnt.strName.text.replace(/ x[0-9]/g, "");
-						trace("sName: " + sName + ":" + mcDrop.cnt.strName.text + "|" + itemArchive.length);
 						for each(var item:* in itemArchive){
-							trace("Looping " + item.sName);
 							if(item.sName == sName){
 								if(item.bCoins == 1){
 									var ac:mcCoin = new mcCoin();

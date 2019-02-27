@@ -27,13 +27,11 @@ package net.spider.draw{
             this.visible = flags.isInventory();
         }
 
-        var items:Array;
         var toSend:Array;
 		function onInvSearch(e:MouseEvent):void{
 			if(main.Game.ui.mcPopup.getChildByName("mcInventory")){
                 toSend = new Array();
 				for each(var t:* in main.Game.world.myAvatar.items){
-                    trace(t.sName + " : " + this.txtSearch.text);
 					if(t.sName.toLowerCase().indexOf(this.txtSearch.text.toLowerCase()) > -1){
 						toSend.push(t);
                     }

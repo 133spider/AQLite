@@ -34,7 +34,6 @@ package net.spider.modules{
 		}
 
 		public static function onKey(e:KeyboardEvent){
-			trace("register click keybind");
 			var chatF:* = main.Game.chatF;
 			var world:* = main.Game.world;
 			var ui:* = main.Game.ui;
@@ -58,7 +57,6 @@ package net.spider.modules{
         }
 
 		public static function onRegister(e:MouseEvent):void{
-			trace("register click");
 			try{
 				main.Game.ui.mcInterface.mcMenu.btnQuest.getChildAt(1).addEventListener(MouseEvent.CLICK, showQuests, false, 0, true);
 			}catch(exception){

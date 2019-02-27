@@ -58,7 +58,6 @@ package net.spider.modules{
 				itemUI = core.getChildAt(i);
 				if(itemUI.getChildByName("flag"))
 					continue;
-				trace("DROPS DRAW");
 				inner: for each(var s:* in frame.qData.reward){
 					if(s["ItemID"] == itemUI.ItemID){
 						for each(var j:* in frame.qData.oRewards){

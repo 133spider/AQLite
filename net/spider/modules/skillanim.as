@@ -32,11 +32,13 @@ package net.spider.modules{
         public static function onTimer(e:TimerEvent):void{
 			if(!main.Game.sfc.isConnected)
 				return;
+			if(!main.Game.world.myAvatar)
+				return;
 			if(!main.Game.world.myAvatar.pMC.spFX)
 				return;
-			if(main.Game.world.avatars.length < 2 && !options.filterChecks["chkSelfOnly"])
+			if(main.Game.world.avatars.length < 2 && !options.filterChecks["chkSelfOnly"]){
 				main.Game.world.myAvatar.pMC.spFX.strl = "";
-			else
+			}else{
 				for(var playerMC:* in main.Game.world.avatars){
 					if(options.filterChecks["chkSelfOnly"])
 						if(main.Game.world.avatars[playerMC].isMyAvatar)
@@ -44,6 +46,7 @@ package net.spider.modules{
 					if(main.Game.world.avatars[playerMC].pMC)
 						main.Game.world.avatars[playerMC].pMC.spFX.strl = "";
 				}
+			}
 		}
 	}
 	

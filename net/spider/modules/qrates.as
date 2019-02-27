@@ -32,6 +32,7 @@ package net.spider.modules{
 			}
 		}
 
+		public static var doneOnce:Boolean = false;
         public static function onTimer(e:TimerEvent):void{
 			if(!main.Game.sfc.isConnected)
 				return;

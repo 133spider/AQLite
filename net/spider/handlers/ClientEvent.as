@@ -9,6 +9,7 @@ package net.spider.handlers
         public static const onShow:String = "onShow";
         public static const onEnable:String = "onEnable";
         public static const onUpdate:String = "onUpdate";
+        public static const onCostumePending:String = "onCostumePending";
 
         public function ClientEvent(param1:String)
         {

@@ -26,12 +26,12 @@ package net.spider.draw{
             this.iconAC.visible = (resObj.bCoins == 1);
             this.txtDrop.text = "";
             this.txtDrop.htmlText = "";
-            if(resObj.bUpg)
+            if(resObj.bUpg == 1)
                 this.txtDrop.htmlText = "<font color='#FCC749'>" + resObj.sName + " x " + relQty + "</font>";
             else
                 this.txtDrop.text = (resObj.sName + " x " + relQty);
 
-            if(this.txtDrop.textWidth > 135){
+            /**if(this.txtDrop.textWidth > 135){
                 var testSize:int = 200;
                 while( testSize > 10 ){
                     updateFormat( testSize );
@@ -41,7 +41,7 @@ package net.spider.draw{
                         testSize = 10;
                     }
                 }
-            }
+            }**/
 
             if(this.iconAC.visible)
                 this.iconAC.x = this.txtDrop.textWidth + 35;

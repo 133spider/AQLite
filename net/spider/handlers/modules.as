@@ -25,6 +25,7 @@
 			diswepanim.onCreate();
 			detaildrops.onCreate();
 			detailquests.onCreate();
+			dismonanim.onCreate();
 
 			options.events.dispatchEvent(new ClientEvent(ClientEvent.onEnable));
 		}

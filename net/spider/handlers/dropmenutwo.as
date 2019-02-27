@@ -46,7 +46,7 @@ package net.spider.handlers{
         }
 
         public function onBtNo(e:*):void{
-            for(var val:* in invTree){
+            for(var val:* in invTree){ //add this to onBtYes in dEntry!!! bug issue with wrong quantity!
                 if(invTree[val].ItemID == e.data.ItemID){
                     itemCount[invTree[val].dID] = null;
                     invTree.splice(val, 1);
@@ -68,6 +68,9 @@ package net.spider.handlers{
 
         public function onToggleMenu(e:MouseEvent):void{
             this.menu.visible = !this.menu.visible;
+            if(this.menu.visible){
+                reDraw();
+            }
         }
 
         private static var dropTimer:Timer;
@@ -116,6 +119,17 @@ package net.spider.handlers{
 			}
         }
 
+        public function isBlacklisted(item:String):Boolean{
+            for each(var blacklisted:* in options.blackListed){
+                if(item.indexOf(" x") != -1)
+                    item = item.substring(0, item.lastIndexOf(" x"));
+                if(item == blacklisted.label){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         var itemCount:Object;
         var invTree:Array;
         public function onExtensionResponseHandler(e:*):void{
@@ -131,6 +145,8 @@ package net.spider.handlers{
                         case "dropItem":
                             for (dID in resObj.items)
                             {
+                                if(isBlacklisted(resObj.items[dID].sName.toUpperCase()))
+                                    continue;
                                 if(itemCount[dID] == null){
                                     itemCount[dID] = int(resObj.items[dID].iQty);
                                     if(main.Game.world.invTree[dID] == null){
@@ -171,16 +187,26 @@ package net.spider.handlers{
             var ctr:int = 0;
             for each(var item:* in invTree){
                 var dropItemGet:* = new dEntry(item, itemCount[item.dID]);
-                dropItemGet.x = 2;
-                dropItemGet.y = (108)-(21.5*ctr);
+                if(options.filterChecks["chkInvertDrop"]){
+                    dropItemGet.x = 2;
+                    dropItemGet.y = (161)+(21.5*ctr);
+                }else{
+                    dropItemGet.x = 2;
+                    dropItemGet.y = (108)-(21.5*ctr);
+                }
                 dropItemGet.name = item.sName;
                 this.menu.addChild(dropItemGet);
                 qtyCtr += itemCount[item.dID];
                 ctr++;
             }
             this.txtQty.text = " x " + qtyCtr;
-            this.menu.menuBG.y = ((108)-(21.5*(ctr-1))) - 3; //26
-            this.menu.menuBG.height = 21.5*(ctr) + 6;
+            if(options.filterChecks["chkInvertDrop"]){
+                this.menu.menuBG.y = ((158)); 
+                this.menu.menuBG.height = 21.5*(ctr) + 6;
+            }else{
+                this.menu.menuBG.y = ((108)-(21.5*(ctr-1))) - 3; //26
+                this.menu.menuBG.height = 21.5*(ctr) + 6;
+            }
         }
     }
 }

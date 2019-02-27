@@ -10,6 +10,8 @@ package net.spider.modules{
     import net.spider.main;
     import net.spider.handlers.*;
     import net.spider.modules.*;
+    import flash.media.SoundTransform;
+    import fl.data.DataProvider;
 	
 	public class options extends MovieClip{
 
@@ -36,8 +38,10 @@ package net.spider.modules{
 
         public static var hideP:Boolean;
         public static var disWepAnim:Boolean;
+        public static var disMonAnim:Boolean;
 
         public static var chatFilter:Boolean;
+        public static var disableFX:Boolean;
 
         public function options():void{
             this.visible = false;
@@ -95,6 +99,11 @@ package net.spider.modules{
                 main.sharedObject.flush();
             }
             filterChecks["chkDisWepAnim"] = main.sharedObject.data.filterChecks["chkDisWepAnim"];
+            if(main.sharedObject.data.filterChecks["chkInvertDrop"] == null){
+                main.sharedObject.data.filterChecks["chkInvertDrop"] = false;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkInvertDrop"] = main.sharedObject.data.filterChecks["chkInvertDrop"];
             cDrops = main.sharedObject.data.cDrops;
             if(cDrops)
                 dispatch(dropmenu);
@@ -169,6 +178,17 @@ package net.spider.modules{
             if(chatFilter)
                 dispatch(chatfilter);
 
+            disableFX = main.sharedObject.data.disableFX;
+            if(disableFX)
+                main.Game.mixer.stf = new SoundTransform(0);
+
+            disMonAnim = main.sharedObject.data.disMonAnim;
+            if(disMonAnim)
+                dispatch(dismonanim);
+            
+            if(main.sharedObject.data.listBlack)
+                blackListed = main.sharedObject.data.listBlack;
+
             setup("btnGeneral");
         }
 
@@ -206,27 +226,21 @@ package net.spider.modules{
         private function setup(e:String):void{
             switch(e){
                 case "btnGeneral":
-                    this.txtCDrops.text = (cDrops ? "ON" : "OFF");
-                    this.txtSBPCDrops.text = (sbpcDrops ? "ON" : "OFF");
                     this.txtDraggable.text = (draggable ? "ON" : "OFF");
                     this.txtDetailDrop.text = (detaildrop ? "ON" : "OFF");
-                    this.txtMType.text = (mType ? "ON" : "OFF");
+                    this.txtBoosts.text = (boost ? "ON" : "OFF");
                     this.txtQRates.text = (qRates ? "ON" : "OFF");
                     this.txtQPrev.text = (qPrev ? "ON" : "OFF");
                     this.txtDetailQuest.text = (detailquest ? "ON" : "OFF");
                     this.txtQLog.text = (qLog ? "ON" : "OFF");
-                    if(this.btnLeftCDrops.hasEventListener(MouseEvent.CLICK))
+                    if(this.btnLeftDraggable.hasEventListener(MouseEvent.CLICK))
                         return;
-                    this.btnLeftCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
-                    this.btnRightCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
-                    this.btnLeftSBPCDrops.addEventListener(MouseEvent.CLICK, onSBPCDrops, false, 0, true);
-                    this.btnRightSBPCDrops.addEventListener(MouseEvent.CLICK, onSBPCDrops, false, 0, true);
                     this.btnLeftDraggable.addEventListener(MouseEvent.CLICK, onDraggable, false, 0, true);
                     this.btnRightDraggable.addEventListener(MouseEvent.CLICK, onDraggable, false, 0, true);
                     this.btnLeftDetailDrop.addEventListener(MouseEvent.CLICK, onDetailDrop, false, 0, true);
                     this.btnRightDetailDrop.addEventListener(MouseEvent.CLICK, onDetailDrop, false, 0, true);
-                    this.btnLeftMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
-                    this.btnRightMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
+                    this.btnLeftBoosts.addEventListener(MouseEvent.CLICK, onBoosts, false, 0, true);
+                    this.btnRightBoosts.addEventListener(MouseEvent.CLICK, onBoosts, false, 0, true);
                     this.btnLeftQRates.addEventListener(MouseEvent.CLICK, onQRates, false, 0, true);
                     this.btnRightQRates.addEventListener(MouseEvent.CLICK, onQRates, false, 0, true);
                     this.btnLeftQPrev.addEventListener(MouseEvent.CLICK, onQPrev, false, 0, true);
@@ -241,7 +255,7 @@ package net.spider.modules{
                     this.txtSkillAnim.text = (disableSkillAnim ? "ON" : "OFF");
                     this.txtSkill.text = (skill ? "ON" : "OFF");
                     this.txtSkillP.text = (passive ? "ON" : "OFF");
-                    this.txtBoosts.text = (boost ? "ON" : "OFF");
+                    this.txtMType.text = (mType ? "ON" : "OFF");
                     this.txtEsc.text = (untargetMon ? "ON" : "OFF");
                     this.txtEscSelf.text = (selfTarget ? "ON" : "OFF");
                     if(this.btnLeftSkillAnim.hasEventListener(MouseEvent.CLICK))
@@ -253,8 +267,8 @@ package net.spider.modules{
                     this.btnRightSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
                     this.btnLeftSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
                     this.btnRightSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
-                    this.btnLeftBoosts.addEventListener(MouseEvent.CLICK, onBoosts, false, 0, true);
-                    this.btnRightBoosts.addEventListener(MouseEvent.CLICK, onBoosts, false, 0, true);
+                    this.btnLeftMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
+                    this.btnRightMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
                     this.btnLeftEsc.addEventListener(MouseEvent.CLICK, onEsc, false, 0, true);
                     this.btnRightEsc.addEventListener(MouseEvent.CLICK, onEsc, false, 0, true);
                     this.btnLeftEscSelf.addEventListener(MouseEvent.CLICK, onEscSelf, false, 0, true);
@@ -263,8 +277,12 @@ package net.spider.modules{
                 case "btnGraphics":
                     this.chkName.checkmark.visible = filterChecks["chkName"];
                     this.chkDisWepAnim.checkmark.visible = filterChecks["chkDisWepAnim"];
+                    this.chkInvertDrop.checkmark.visible = filterChecks["chkInvertDrop"];
                     this.txtHideP.text = (hideP ? "ON" : "OFF");
                     this.txtDisWepAnim.text = (disWepAnim ? "ON" : "OFF");
+                    this.txtDisMonAnim.text = (disMonAnim ? "ON" : "OFF");
+                    this.txtCDrops.text = (cDrops ? "ON" : "OFF");
+                    this.txtSBPCDrops.text = (sbpcDrops ? "ON" : "OFF");
                     if(this.btnLeftHideP.hasEventListener(MouseEvent.CLICK))
                         return;
                     this.btnLeftHideP.addEventListener(MouseEvent.CLICK, onHideP, false, 0, true);
@@ -273,11 +291,21 @@ package net.spider.modules{
                     this.btnLeftDisWepAnim.addEventListener(MouseEvent.CLICK, onDisWepAnim, false, 0, true);
                     this.btnRightDisWepAnim.addEventListener(MouseEvent.CLICK, onDisWepAnim, false, 0, true);
                     this.chkDisWepAnim.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
+                    this.btnLeftDisMonAnim.addEventListener(MouseEvent.CLICK, onDisMonAnim, false, 0, true);
+                    this.btnRightDisMonAnim.addEventListener(MouseEvent.CLICK, onDisMonAnim, false, 0, true);
+                    this.btnLeftCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
+                    this.btnRightCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
+                    this.btnLeftSBPCDrops.addEventListener(MouseEvent.CLICK, onSBPCDrops, false, 0, true);
+                    this.btnRightSBPCDrops.addEventListener(MouseEvent.CLICK, onSBPCDrops, false, 0, true);
+                    this.chkInvertDrop.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
                     break;
                 case "btnMisc":
-                    this.txtChat.text = (chatFilter ? "ON" : "OFF");
                     this.chkRed.checkmark.visible = filterChecks["chkRed"];
                     this.chkBlue.checkmark.visible = filterChecks["chkBlue"];
+                    this.txtChat.text = (chatFilter ? "ON" : "OFF");
+                    this.txtDisableFX.text = (disableFX ? "ON" : "OFF");
+                    if(main.sharedObject.data.listBlack)
+                        this.listBlack.dataProvider = new DataProvider(main.sharedObject.data.listBlack);
                     if(this.btnLeftChat.hasEventListener(MouseEvent.CLICK))
                         return;
                     this.btnLeftChat.addEventListener(MouseEvent.CLICK, onChat, false, 0, true);
@@ -287,8 +315,55 @@ package net.spider.modules{
                     this.btnColor.addEventListener(MouseEvent.CLICK, onBtColor, false, 0, true);
                     this.btnClear.addEventListener(MouseEvent.CLICK, onBtClear, false, 0, true);
                     this.btnShowCDrop.addEventListener(MouseEvent.CLICK, onBtShowCDrop, false, 0, true);
+                    this.btnLeftDisableFX.addEventListener(MouseEvent.CLICK, onBtDisableFX, false, 0, true);
+                    this.btnRightDisableFX.addEventListener(MouseEvent.CLICK, onBtDisableFX, false, 0, true);
+                    this.btnAddBlacklist.addEventListener(MouseEvent.CLICK, onBtnAddBlacklist, false, 0, true);
+                    this.btnRemoveBlacklist.addEventListener(MouseEvent.CLICK, onBtnRemoveBlacklist, false, 0, true);
+                    this.btnClearBlacklist.addEventListener(MouseEvent.CLICK, onBtnClearBlacklist, false, 0, true);
                     break;
                 default: break;
+            }
+        }
+
+        public static var blackListed:Array = new Array();
+        private function onBtnAddBlacklist(evt:MouseEvent):void{
+            if(!this.listBlack)
+                return;
+            this.listBlack.dataProvider.addItem( { label: this.txtBlacklist.text.toUpperCase(), value: this.txtBlacklist.text.toUpperCase()} );
+            main.sharedObject.data.listBlack = this.listBlack.dataProvider.toArray();
+			main.sharedObject.flush();
+            blackListed = this.listBlack.dataProvider.toArray();
+            this.txtBlacklist.text = "";
+        }
+
+        private function onBtnRemoveBlacklist(evt:MouseEvent):void{
+            if(!this.listBlack)
+                return;
+            if(this.listBlack.selectedIndex != -1){
+                this.listBlack.removeItemAt(this.listBlack.selectedIndex);
+                this.listBlack.selectedIndex = -1;
+            }
+            main.sharedObject.data.listBlack = this.listBlack.dataProvider.toArray();
+			main.sharedObject.flush();
+            blackListed = this.listBlack.dataProvider.toArray();
+        }
+
+        private function onBtnClearBlacklist(evt:MouseEvent):void{
+            if(!this.listBlack)
+                return;
+            this.listBlack.removeAll();
+            main.sharedObject.data.listBlack = this.listBlack.dataProvider.toArray();
+			main.sharedObject.flush();
+            blackListed = this.listBlack.dataProvider.toArray();
+        }
+
+        private function onBtDisableFX(evt:MouseEvent):void{
+            disableFX = !disableFX;
+            this.txtDisableFX.text = (disableFX ? "ON" : "OFF");
+            if(disableFX){
+                main.Game.mixer.stf = new SoundTransform(0);
+            }else{
+                main.Game.mixer.stf = new SoundTransform(1);
             }
         }
 
@@ -475,6 +550,14 @@ package net.spider.modules{
 			main.sharedObject.flush();
         }
 
+        public function onDisMonAnim(evt:MouseEvent):void{
+            disMonAnim = !disMonAnim;
+            dispatch(dismonanim);
+            this.txtDisMonAnim.text = disMonAnim ? "ON" : "OFF";
+            main.sharedObject.data.disMonAnim = disMonAnim;
+			main.sharedObject.flush();
+        }
+
         public function onMType(e:MouseEvent):void{
             mType = !mType;
             dispatch(monstype);
@@ -515,6 +598,17 @@ package net.spider.modules{
 			main.sharedObject.flush();
         }
 
+        public function isBlacklisted(item:String):Boolean{
+            for each(var blacklisted:* in blackListed){
+                if(item.indexOf(" x") != -1)
+                    item = item.substring(0, item.lastIndexOf(" x"));
+                if(item == blacklisted.label){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public function onTimer(e:TimerEvent):void{
             if(!main.Game){
                 this.visible = false;
@@ -525,6 +619,20 @@ package net.spider.modules{
                 return;
             }
             this.visible = flags.isOptions();
+            if((main.Game.ui.dropStack.numChildren < 1) || (blackListed.length < 1))
+				return;
+			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+				try{
+					var mcDrop:* = (main.Game.ui.dropStack.getChildAt(i) as MovieClip);
+					var nutext:String = mcDrop.cnt.strName.text;
+                    nutext = nutext.substring(0, nutext.lastIndexOf(" x"));
+                    if(isBlacklisted(nutext.toUpperCase())){
+                        mcDrop.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                    }
+				}catch(exception){
+					trace("Error handling drops: " + exception);
+				}
+			}
 		}
 
         public function onDestroy():void{

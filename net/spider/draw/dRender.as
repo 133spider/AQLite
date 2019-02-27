@@ -5,9 +5,11 @@ package net.spider.draw
     import flash.filters.*;
     import flash.net.*;
     import flash.system.*;
+    import flash.utils.*;
     import net.spider.main;
     import net.spider.handlers.DrawEvent;
     import net.spider.avatar.*;
+    import net.spider.handlers.ClientEvent;
 
     public class dRender extends MovieClip
     {
@@ -20,6 +22,7 @@ package net.spider.draw
         var sLinkHelm:String = "";
         var sLinkPet:String = "";
         var sLinkWeapon:String = "";
+        var sLinkHouse:String = "";
         var pLoaderD:ApplicationDomain;
         var pLoaderC:LoaderContext;
 
@@ -34,6 +37,7 @@ package net.spider.draw
             this.x = 50;
             this.y = 90;
             this.btnClose.addEventListener(MouseEvent.CLICK, xClick, false, 0, true);
+            this.btnTryMe.addEventListener(MouseEvent.CLICK, xTryMe, false, 0, true);
             this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
 			this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
             mcStage = MovieClip(this.addChild(new MovieClip()));
@@ -46,14 +50,95 @@ package net.spider.draw
             return;
         }// end function
 
+        private function xTryMe(event:MouseEvent)
+        {
+            switch(curItem.sES)
+            {
+                case "Weapon":
+                case "he":
+                case "ba":
+                case "pe":
+                case "ar":
+                case "co":
+                    var sES:String = curItem.sES;
+                    if(sES == "ar")
+                        sES = "co";
+                    if(sES == "pe"){
+                        if(main.Game.world.myAvatar.objData.eqp["pe"]){
+                            main.Game.world.myAvatar.unloadPet();
+                        }
+                    }
+                    if(!main.Game.world.myAvatar.objData.eqp[sES]){
+                        main.Game.world.myAvatar.objData.eqp[sES] = {};
+                        main.Game.world.myAvatar.objData.eqp[sES].wasCreated = true;
+                    }
+                    if(!main.Game.world.myAvatar.objData.eqp[sES].isPreview){
+                        main.Game.world.myAvatar.objData.eqp[sES].isPreview = true;
+                        if("sType" in curItem){
+                            main.Game.world.myAvatar.objData.eqp[sES].oldType = main.Game.world.myAvatar.objData.eqp[sES].sType;
+                            main.Game.world.myAvatar.objData.eqp[sES].sType = curItem.sType;
+                        }
+                        main.Game.world.myAvatar.objData.eqp[sES].oldFile = main.Game.world.myAvatar.objData.eqp[sES].sFile;
+                        main.Game.world.myAvatar.objData.eqp[sES].oldLink = main.Game.world.myAvatar.objData.eqp[sES].sLink;
+                        main.Game.world.myAvatar.objData.eqp[sES].sFile = (curItem.sFile == "undefined" ? "" : curItem.sFile);
+                        main.Game.world.myAvatar.objData.eqp[sES].sLink = curItem.sLink;
+                    }else{
+                        if("sType" in curItem){
+                            main.Game.world.myAvatar.objData.eqp[sES].sType = curItem.sType;
+                        }
+                        main.Game.world.myAvatar.objData.eqp[sES].sFile = (curItem.sFile == "undefined" ? "" : curItem.sFile);
+                        main.Game.world.myAvatar.objData.eqp[sES].sLink = curItem.sLink;
+                    }
+                    main.Game.world.myAvatar.loadMovieAtES(sES, curItem.sFile, curItem.sLink);
+                    if((sES == "pe") && (curItem.sName.indexOf("Bank Pet") != -1)){
+                        petDisable.addEventListener(TimerEvent.TIMER, onPetDisable, false, 0, true);
+                        petDisable.start();
+                    }
+                    this.visible = false;
+                    main.events.dispatchEvent(new ClientEvent(ClientEvent.onCostumePending));
+                    break;
+            }
+        }
+
+        var petDisable:Timer = new Timer(0);
+        function onPetDisable(e:TimerEvent):void{
+            if(!main.Game.world.myAvatar.petMC.mcChar)
+                return;
+            main.Game.world.myAvatar.petMC.mcChar.mouseEnabled = false;
+            main.Game.world.myAvatar.petMC.mcChar.mouseChildren = false;
+            main.Game.world.myAvatar.petMC.mcChar.enabled = false;
+            petDisable.reset();
+            petDisable.removeEventListener(TimerEvent.TIMER, onPetDisable);
+        }
+
         public function loadItem(e:*) : void
         {
             this.visible = true;
+            this.btnTryMe.visible = false;
             var param1:* = e.data;
             if (curItem != param1)
             {
                 this.pMC.visible = false;
                 curItem = param1;
+                switch(curItem.sES)
+                {
+                    case "Weapon":
+                    case "he":
+                    case "ba":
+                    case "pe":
+                    case "ar":
+                    case "co":
+                        if(curItem.bUpg == 1){
+                            if(!main.Game.world.myAvatar.isUpgraded()){
+                                this.btnTryMe.visible = false;
+                            }else{
+                                this.btnTryMe.visible = true;
+                            }
+                        }else{
+                            this.btnTryMe.visible = true;
+                        }
+                    break;
+                }
                 switch(param1.sES)
                 {
                     case "Weapon":
@@ -87,6 +172,11 @@ package net.spider.draw
                         loadHouse(param1.sFile);
                         break;
                     }
+                    case "hi":
+                    {
+                        loadHouseItem(param1.sFile,param1.sLink);
+                        break;
+                    }
                     default:
                     {
                         loadItemFile();
@@ -110,6 +200,26 @@ package net.spider.draw
         }// end function
 
         var ldr:* = new Loader();
+        private function loadHouseItem(param1, param2) : void
+        {
+            clearStage();
+            sLinkHouse = param2;
+            ldr = new Loader();
+            ldr.load(new URLRequest("http://aqworldscdn.aq.com/game/gamefiles/" + param1),pLoaderC);
+            ldr.contentLoaderInfo.addEventListener(Event.COMPLETE,onloadHouseItemComplete,false,0,true);
+            return;
+        }
+        
+        private function onloadHouseItemComplete(param1:Event) : void
+        {
+            var _loc_3:* = (ldr.contentLoaderInfo.applicationDomain.getDefinition(sLinkHouse) as Class);
+            var _loc_4:* = new _loc_3;
+            _loc_4.x = 150;
+            _loc_4.y = 200;
+            mcStage.addChild(_loc_4);
+            addGlow(_loc_4);
+        }
+
         private function loadWeapon(param1, param2) : void
         {
             clearStage();

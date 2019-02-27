@@ -10,6 +10,7 @@ package net.spider.handlers{
     import net.spider.modules.*;
     import net.spider.handlers.ClientEvent;
 	import net.spider.handlers.SFSEvent;
+	import net.spider.handlers.flags;
 	
 	public class boosts extends MovieClip {
 		
@@ -18,24 +19,24 @@ package net.spider.handlers{
 
 		public function boosts() {
 			this.visible = false;
-			this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
-			this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
+			//this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
+			//this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
             boosts.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
         public function onToggle(e:Event):void{
-            this.visible = options.boost;
+            //this.visible = options.boost;
             if(options.boost){
-				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-				activeBoosts = new Object();
+				//main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+				//activeBoosts = new Object();
 				boostTimer = new Timer(0);
 				boostTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				boostTimer.start();
 			}else{
 				boostTimer.reset();
 				boostTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-				activeBoosts = null;
+				//main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+				//activeBoosts = null;
 			}
         }
 
@@ -93,12 +94,29 @@ package net.spider.handlers{
                 }
         }
 
+		private var runOnce:Boolean = false;
         public function onTimer(e:TimerEvent):void{
 			if(!main.Game.sfc.isConnected)
 				return;
 			if(!main.Game.world.myAvatar)
 				return;
-			if(!main.Game.world.myAvatar.objData.eqp)
+			if(!main.Game.world.myAvatar.items)
+				return;
+			if(!flags.isInventory() && runOnce)
+				runOnce = false;
+			if(flags.isInventory() && !runOnce){
+				for each(var pItem:* in main.Game.world.myAvatar.items){
+					if(!pItem.oldDesc)
+						pItem.oldDesc = pItem.sDesc;
+					var nuDesc:String = "";
+					if(pItem.sMeta)
+						nuDesc = "sMeta: " + pItem.sMeta + "\n";
+					pItem.sDesc = nuDesc + "Stacks: " + pItem.iQty + "/" + pItem.iStk + "\n" + pItem.oldDesc;
+					nuDesc = null;
+				}
+				runOnce = true;
+			}
+			/**if(!main.Game.world.myAvatar.objData.eqp)
 				return;
 			if(activeBoosts.length < 1)
 				return;
@@ -115,8 +133,8 @@ package net.spider.handlers{
 					if(isActive(metaItems.split(":")[0], metaItems.split(":")[1]))
 						this.activesTxt.appendText("[" + metaItems.split(":")[0] + "]: x" + metaItems.split(":")[1] + "\n");
 				}
-			}
-			resizeMe();
+			}**/
+			//resizeMe();
 		}
 
 		public function isActive(active:String, value:String):Boolean{

@@ -121,6 +121,17 @@ package net.spider.handlers{
 			}
         }
 
+        public function isBlacklisted(item:String):Boolean{
+            for each(var blacklisted:* in options.blackListed){
+                if(item.indexOf(" x") != -1)
+                    item = item.substring(0, item.lastIndexOf(" x"));
+                if(item == blacklisted.label){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         var itemCount:Object;
         public function onExtensionResponseHandler(e:*):void{
             var dItem:*;
@@ -135,6 +146,8 @@ package net.spider.handlers{
                         case "dropItem":
                             for (dID in resObj.items)
                             {
+                                if(isBlacklisted(resObj.items[dID].sName.toUpperCase()))
+                                    continue;
                                 if(itemCount[dID] == null){
                                     itemCount[dID] = int(resObj.items[dID].iQty);
                                     if(main.Game.world.invTree[dID] == null){
@@ -722,7 +735,7 @@ package net.spider.handlers{
         public function onItemDelClick(e:MouseEvent):void{
             var item:Object;
             item = MovieClip(e.currentTarget.parent).item;
-            for(var val:* in invTree){
+            for(var val:* in invTree){ //add this to onItemAddClick!!!
                 if(invTree[val].ItemID == item.ItemID){
                     itemCount[invTree[val].dID] = null;
                     invTree.splice(val, 1);
@@ -890,7 +903,7 @@ package net.spider.handlers{
                         itemC = (lmc.iList.iproto.constructor as Class);
                         item = lmc.iList.addChild(new (itemC)());
                         item.ti.autoSize = "left";
-                        if(list[i].bUpg){
+                        if(list[i].bUpg == 1){
                             if(list[i].iStk > 1)
                                 item.ti.htmlText = "<font color='#FCC749'>" + String(list[i].sName) + " x" + String(itemCount[list[i].dID]) + "</font>";
                             else
