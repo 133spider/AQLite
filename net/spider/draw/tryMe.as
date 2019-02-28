@@ -15,7 +15,11 @@ package net.spider.draw{
         public function tryMe(){
             this.visible = false;
             this.btnTry.visible = false;
+            this.txtShop.visible = false;
+            this.txtShop.mouseEnabled = false;
             this.btnTryMerge.visible = false;
+            this.txtMerge.visible = false;
+            this.txtMerge.mouseEnabled = false;
             this.btnTry.addEventListener(MouseEvent.CLICK, onBtnTry);
             this.btnTryMerge.addEventListener(MouseEvent.CLICK, onBtnTry);
             shopTimer = new Timer(0);
@@ -32,19 +36,27 @@ package net.spider.draw{
                 this.visible = (isPreviewable());
                 if((main.Game.ui.mcPopup.currentLabel == "Shop") && main.Game.ui.mcPopup.getChildByName("mcShop").previewPanel.visible){
                     this.btnTry.visible = true;
+                    this.txtShop.visible = true;
                     this.btnTryMerge.visible = false;
+                    this.txtMerge.visible = false;
                 }else if(main.Game.ui.mcPopup.currentLabel == "MergeShop"){
                     this.btnTryMerge.visible = true;
+                    this.txtShop.visible = false;
                     this.btnTry.visible = false;
+                    this.txtMerge.visible = true;
                 }else{
                     this.visible = false;
                     this.btnTry.visible = false;
+                    this.txtShop.visible = false;
                     this.btnTryMerge.visible = false;
+                    this.txtMerge.visible = false;
                 }
             }else{
                 this.visible = false;
                 this.btnTry.visible = false;
+                this.txtShop.visible = false;
                 this.btnTryMerge.visible = false;
+                this.txtMerge.visible = false;
             }
         }
 
