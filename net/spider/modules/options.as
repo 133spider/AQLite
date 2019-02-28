@@ -600,10 +600,14 @@ package net.spider.modules{
 
         public function isBlacklisted(item:String):Boolean{
             for each(var blacklisted:* in blackListed){
-                if(item.indexOf(" x") != -1)
-                    item = item.substring(0, item.lastIndexOf(" x"));
-                if(item == blacklisted.label){
-                    return true;
+                if(item.indexOf(" x") != -1){
+                    if(item.substring(0, item.lastIndexOf(" x")) == blacklisted.label){
+                        return true;
+                    }
+                }else{
+                    if(item == blacklisted.label){
+                        return true;
+                    }
                 }
             }
             return false;
