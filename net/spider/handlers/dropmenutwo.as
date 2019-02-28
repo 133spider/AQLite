@@ -121,8 +121,8 @@ package net.spider.handlers{
 
         public function isBlacklisted(item:String):Boolean{
             for each(var blacklisted:* in options.blackListed){
-                if(item.indexOf(" x") != -1)
-                    item = item.substring(0, item.lastIndexOf(" x"));
+                if(item.indexOf(" X") != -1)
+                    item = item.substring(0, item.lastIndexOf(" X"));
                 if(item == blacklisted.label){
                     return true;
                 }
