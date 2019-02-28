@@ -145,8 +145,14 @@ package net.spider.handlers{
                         case "dropItem":
                             for (dID in resObj.items)
                             {
-                                if(isBlacklisted(resObj.items[dID].sName.toUpperCase()))
-                                    continue;
+                                if(main.Game.world.invTree[dID]){
+                                    dItem = main.Game.copyObj(main.Game.world.invTree[dID]);
+                                    if(isBlacklisted(dItem.sName.toUpperCase()))
+                                        continue;
+                                }else{
+                                    if(isBlacklisted(resObj.items[dID].sName.toUpperCase()))
+                                        continue;
+                                }
                                 if(itemCount[dID] == null){
                                     itemCount[dID] = int(resObj.items[dID].iQty);
                                     if(main.Game.world.invTree[dID] == null){
