@@ -624,9 +624,7 @@ package net.spider.modules{
 			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
 				try{
 					var mcDrop:* = (main.Game.ui.dropStack.getChildAt(i) as MovieClip);
-					var nutext:String = mcDrop.cnt.strName.text;
-                    nutext = nutext.substring(0, nutext.lastIndexOf(" x"));
-                    if(isBlacklisted(nutext.toUpperCase())){
+                    if(isBlacklisted(mcDrop.cnt.strName.text.toUpperCase())){
                         mcDrop.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
                     }
 				}catch(exception){
