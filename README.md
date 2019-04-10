@@ -1,8 +1,8 @@
 ![](https://i.imgur.com/IJcM5a4.jpg)
 
-![](https://i.imgur.com/GTIgw2Z.png)  |  ![](https://i.imgur.com/SmaLM3j.png)
+![](https://i.imgur.com/oh3kS87.png)  |  ![](https://i.imgur.com/nsjKNcj.png)
 
-![](https://i.imgur.com/Ra6eAFr.png)  |  ![](https://i.imgur.com/Wej0u8Y.png)
+![](https://i.imgur.com/uK6Qjk3.png)  |  ![](https://i.imgur.com/awmsiFz.png)
 
 
 ## Information
@@ -14,7 +14,7 @@ AQLite is a client made for AQWorlds that provides all sorts of Quality of Life 
 * Click the text that says "CLICK ME FOR LAUNCHER DOWNLOAD OPTIONS"
 * Choose and Download the .zip file according to your operating system
 * Extract the file and run the program
-* If you get ElectronJS, make sure to Force Update your client! (The latest version is Version 8.0!)
+* If you get ElectronJS, make sure to Force Update your client! (The latest version is Version 9.0!)
 
 ## Stuck at 0%
 Client stuck at 0?
@@ -26,7 +26,6 @@ Example of a directory containing accent marks: C:\Users\Andr**é**\Desktop\AQLi
 To fix this issue, put AQLite in your C:\ Drive, or any other directories that do not contain accent marks!
 
 ## Warning
-
 AQLite is in Beta; be cautious of potential bugs and glitches!
 
 ## Donation

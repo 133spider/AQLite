@@ -27,6 +27,7 @@ package net.spider.draw{
             shopTimer.start();
         }
 
+        public var once:Boolean = false;
         public function onTimer(e:TimerEvent):void{
             if(!main.Game)
                 return;
@@ -58,6 +59,32 @@ package net.spider.draw{
                 this.btnTryMerge.visible = false;
                 this.txtMerge.visible = false;
             }
+            if(main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor") && !once){
+                trace("HELLO WORLD");
+                main.Game.ui.mcPopup.mcCustomizeArmor.cpAccessory.addEventListener("ROLL_OVER",onItemRollOver,false,0,true);
+                main.Game.ui.mcPopup.mcCustomizeArmor.cpAccessory.addEventListener("ROLL_OUT",onItemRollOut,false,0,true);
+                once = true;
+            }else if(once && !main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor")){
+                once = false;
+            }
+        }
+
+        public function onItemRollOver(param1:Event) : void
+        {
+            var _loc2_:* = new Object();
+            var avt:* =  main.Game.world.myAvatar;
+            _loc2_.intColorSkin = avt.objData.intColorSkin;
+            _loc2_.intColorHair = avt.objData.intColorHair;
+            _loc2_.intColorEye = avt.objData.intColorEye;
+            _loc2_.intColorBase = avt.objData.intColorBase;
+            _loc2_.intColorTrim = avt.objData.intColorTrim;
+            _loc2_.intColorAccessory = param1.target.selectedColor;
+            avt.pMC.updateColor(_loc2_);
+        }
+        
+        public function onItemRollOut(param1:Event) : void
+        {
+            main.Game.world.myAvatar.pMC.updateColor();
         }
 
         function isPreviewable():Boolean{

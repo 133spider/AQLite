@@ -10,8 +10,10 @@ package net.spider.modules{
     import net.spider.main;
     import net.spider.handlers.*;
     import net.spider.modules.*;
+    import net.spider.draw.iconDrops;
     import flash.media.SoundTransform;
     import fl.data.DataProvider;
+    import com.adobe.utils.StringUtil;
 	
 	public class options extends MovieClip{
 
@@ -28,9 +30,12 @@ package net.spider.modules{
         public static var qPrev:Boolean;
         public static var detailquest:Boolean;
         public static var qLog:Boolean;
+        public static var qAccept:Boolean;
+        public static var qPin:Boolean;
 
         public static var disableSkillAnim:Boolean;
         public static var skill:Boolean;
+        public static var cSkillAnim:Boolean;
         public static var passive:Boolean;
         public static var boost:Boolean;
         public static var untargetMon:Boolean;
@@ -39,6 +44,7 @@ package net.spider.modules{
         public static var hideP:Boolean;
         public static var disWepAnim:Boolean;
         public static var disMonAnim:Boolean;
+        public static var bitmapP:Boolean;
 
         public static var chatFilter:Boolean;
         public static var disableFX:Boolean;
@@ -46,6 +52,7 @@ package net.spider.modules{
         public function options():void{
             this.visible = false;
             options.events.addEventListener(ClientEvent.onEnable, readSettings);
+            options.events.addEventListener(ClientEvent.onUpdate, onUpdateCheck);
 
             this.gotoAndStop("general");
             btnGeneral.gotoAndStop(2);
@@ -189,6 +196,21 @@ package net.spider.modules{
             if(main.sharedObject.data.listBlack)
                 blackListed = main.sharedObject.data.listBlack;
 
+            bitmapP = main.sharedObject.data.bitmapP;
+            if(bitmapP)
+                dispatch(bitmap);
+
+            qAccept = main.sharedObject.data.qAccept;
+            if(qAccept)
+                dispatch(qaccept);
+            
+            cSkillAnim = main.sharedObject.data.cSkillAnim;
+            if(cSkillAnim)
+                dispatch(cskillanim);
+
+            qPin = main.sharedObject.data.qPin;
+            if(qPin)
+                dispatch(qpin);
             setup("btnGeneral");
         }
 
@@ -233,6 +255,8 @@ package net.spider.modules{
                     this.txtQPrev.text = (qPrev ? "ON" : "OFF");
                     this.txtDetailQuest.text = (detailquest ? "ON" : "OFF");
                     this.txtQLog.text = (qLog ? "ON" : "OFF");
+                    this.txtQAccept.text = (qAccept ? "ON" : "OFF");
+                    this.txtQPin.text = (qPin ? "ON" : "OFF");
                     if(this.btnLeftDraggable.hasEventListener(MouseEvent.CLICK))
                         return;
                     this.btnLeftDraggable.addEventListener(MouseEvent.CLICK, onDraggable, false, 0, true);
@@ -249,11 +273,16 @@ package net.spider.modules{
                     this.btnRightDetailQuest.addEventListener(MouseEvent.CLICK, onDetailQuest, false, 0, true);
                     this.btnLeftQLog.addEventListener(MouseEvent.CLICK, onQLog, false, 0, true);
                     this.btnRightQLog.addEventListener(MouseEvent.CLICK, onQLog, false, 0, true);
+                    this.btnLeftQAccept.addEventListener(MouseEvent.CLICK, onQAccept, false, 0, true);
+                    this.btnRightQAccept.addEventListener(MouseEvent.CLICK, onQAccept, false, 0, true);
+                    this.btnLeftQPin.addEventListener(MouseEvent.CLICK, onQPin, false, 0, true);
+                    this.btnRightQPin.addEventListener(MouseEvent.CLICK, onQPin, false, 0, true);
                     break;
                 case "btnCombat":
                     this.chkSelfOnly.checkmark.visible = filterChecks["chkSelfOnly"];
                     this.txtSkillAnim.text = (disableSkillAnim ? "ON" : "OFF");
                     this.txtSkill.text = (skill ? "ON" : "OFF");
+                    this.txtCSkillAnim.text = (cSkillAnim ? "ON" : "OFF");
                     this.txtSkillP.text = (passive ? "ON" : "OFF");
                     this.txtMType.text = (mType ? "ON" : "OFF");
                     this.txtEsc.text = (untargetMon ? "ON" : "OFF");
@@ -263,6 +292,8 @@ package net.spider.modules{
                     this.btnLeftSkillAnim.addEventListener(MouseEvent.CLICK, onSkillAnim, false, 0, true);
                     this.btnRightSkillAnim.addEventListener(MouseEvent.CLICK, onSkillAnim, false, 0, true);
                     this.chkSelfOnly.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
+                    this.btnLeftCSkillAnim.addEventListener(MouseEvent.CLICK, onCSkillAnim, false, 0, true);
+                    this.btnRightCSkillAnim.addEventListener(MouseEvent.CLICK, onCSkillAnim, false, 0, true);
                     this.btnLeftSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
                     this.btnRightSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
                     this.btnLeftSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
@@ -283,6 +314,7 @@ package net.spider.modules{
                     this.txtDisMonAnim.text = (disMonAnim ? "ON" : "OFF");
                     this.txtCDrops.text = (cDrops ? "ON" : "OFF");
                     this.txtSBPCDrops.text = (sbpcDrops ? "ON" : "OFF");
+                    this.txtBitmap.text = (bitmapP ? "ON" : "OFF");
                     if(this.btnLeftHideP.hasEventListener(MouseEvent.CLICK))
                         return;
                     this.btnLeftHideP.addEventListener(MouseEvent.CLICK, onHideP, false, 0, true);
@@ -298,6 +330,8 @@ package net.spider.modules{
                     this.btnLeftSBPCDrops.addEventListener(MouseEvent.CLICK, onSBPCDrops, false, 0, true);
                     this.btnRightSBPCDrops.addEventListener(MouseEvent.CLICK, onSBPCDrops, false, 0, true);
                     this.chkInvertDrop.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
+                    this.btnLeftBitmap.addEventListener(MouseEvent.CLICK, onBitmap, false, 0, true);
+                    this.btnRightBitmap.addEventListener(MouseEvent.CLICK, onBitmap, false, 0, true);
                     break;
                 case "btnMisc":
                     this.chkRed.checkmark.visible = filterChecks["chkRed"];
@@ -314,7 +348,7 @@ package net.spider.modules{
                     this.chkBlue.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
                     this.btnColor.addEventListener(MouseEvent.CLICK, onBtColor, false, 0, true);
                     this.btnClear.addEventListener(MouseEvent.CLICK, onBtClear, false, 0, true);
-                    this.btnShowCDrop.addEventListener(MouseEvent.CLICK, onBtShowCDrop, false, 0, true);
+                    this.btnFPS.addEventListener(MouseEvent.CLICK, onBtFPS, false, 0, true);
                     this.btnLeftDisableFX.addEventListener(MouseEvent.CLICK, onBtDisableFX, false, 0, true);
                     this.btnRightDisableFX.addEventListener(MouseEvent.CLICK, onBtDisableFX, false, 0, true);
                     this.btnAddBlacklist.addEventListener(MouseEvent.CLICK, onBtnAddBlacklist, false, 0, true);
@@ -323,6 +357,18 @@ package net.spider.modules{
                     break;
                 default: break;
             }
+        }
+
+        public function onUpdateCheck(e:ClientEvent):void{
+            if(!main.isUpdated){
+                this.txtVersion.text = "Version 9 - BETA (OUTDATED)";
+                this.txtVersion.textColor = 0xFF0000;
+                this.txtVersion.addEventListener(MouseEvent.CLICK, onGotoRelease);
+            }
+        }
+
+        public function onGotoRelease(e:MouseEvent):void{
+            navigateToURL(new URLRequest("https://github.com/133spider/AQLite/releases/latest"), "_blank");
         }
 
         public static var blackListed:Array = new Array();
@@ -365,11 +411,8 @@ package net.spider.modules{
             }else{
                 main.Game.mixer.stf = new SoundTransform(1);
             }
-        }
-
-        private function onBtShowCDrop(evt:MouseEvent):void{
-            if(cDrops)
-                dropmenu.events.dispatchEvent(new ClientEvent(ClientEvent.onShow));
+            main.sharedObject.data.disableFX = disableFX;
+			main.sharedObject.flush();
         }
 
         private function onBtColor(evt:MouseEvent):void{
@@ -391,6 +434,10 @@ package net.spider.modules{
                     continue;
                 }
             }
+        }
+
+        private function onBtFPS(evt:MouseEvent):void{
+			main.Game.ui.mcFPS.visible = !main.Game.ui.mcFPS.visible;
         }
 
         private var _stageBitmap:BitmapData;
@@ -447,6 +494,14 @@ package net.spider.modules{
 			main.sharedObject.flush();
         }
 
+        public function onCSkillAnim(evt:MouseEvent):void{
+            cSkillAnim = !cSkillAnim;
+            dispatch(cskillanim);
+            this.txtCSkillAnim.text = cSkillAnim ? "ON" : "OFF";
+            main.sharedObject.data.cSkillAnim = cSkillAnim;
+			main.sharedObject.flush();
+        }
+
         public function onSkill(evt:MouseEvent):void{
             skill = !skill;
             dispatch(skills);
@@ -497,6 +552,11 @@ package net.spider.modules{
 			    main.sharedObject.flush();
                 dispatch(dropmenutwo);
             }
+            if(cDrops){
+                main.Game.ui.getChildByName("iconDrops").visible = true;
+            }else{
+                main.Game.ui.getChildByName("iconDrops").visible = false;
+            }
             dispatch(dropmenu);
             this.txtCDrops.text = cDrops ? "ON" : "OFF";
             main.sharedObject.data.cDrops = cDrops;
@@ -511,6 +571,11 @@ package net.spider.modules{
                 main.sharedObject.data.cDrops = cDrops;
 			    main.sharedObject.flush();
                 dispatch(dropmenu);
+            }
+             if(sbpcDrops){
+                main.Game.ui.getChildByName("iconDrops").visible = true;
+            }else{
+                main.Game.ui.getChildByName("iconDrops").visible = false;
             }
             dispatch(dropmenutwo);
             this.txtSBPCDrops.text = sbpcDrops ? "ON" : "OFF";
@@ -558,6 +623,14 @@ package net.spider.modules{
 			main.sharedObject.flush();
         }
 
+        private function onBitmap(evt:MouseEvent):void{
+            bitmapP = !bitmapP;
+            dispatch(bitmap);
+            this.txtBitmap.text = (bitmapP ? "ON" : "OFF");
+            main.sharedObject.data.bitmapP = bitmapP;
+			main.sharedObject.flush();
+        }
+
         public function onMType(e:MouseEvent):void{
             mType = !mType;
             dispatch(monstype);
@@ -598,11 +671,27 @@ package net.spider.modules{
 			main.sharedObject.flush();
         }
 
+        public function onQAccept(e:MouseEvent):void{
+            qAccept = !qAccept;
+            dispatch(qaccept);
+            this.txtQAccept.text = qAccept ? "ON" : "OFF";
+            main.sharedObject.data.qAccept = qAccept;
+			main.sharedObject.flush();
+        }
+
+         public function onQPin(e:MouseEvent):void{
+            qPin = !qPin;
+            dispatch(qpin);
+            this.txtQPin.text = qPin ? "ON" : "OFF";
+            main.sharedObject.data.qPin = qPin;
+			main.sharedObject.flush();
+        }
+
         public function isBlacklisted(item:String):Boolean{
             for each(var blacklisted:* in blackListed){
                 if(item.indexOf(" X") != -1)
                     item = item.substring(0, item.lastIndexOf(" X"));
-                if(item == blacklisted.label){
+                if(StringUtil.trim(item) == StringUtil.trim(blacklisted.label)){
                     return true;
                 }
             }

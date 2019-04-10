@@ -12,6 +12,7 @@ package net.spider.handlers{
     import net.spider.modules.options;
     import net.spider.handlers.*;
     import net.spider.draw.dEntry;
+    import com.adobe.utils.StringUtil;
 
     public class dropmenu extends MovieClip {
 
@@ -76,7 +77,12 @@ package net.spider.handlers{
         }
 
         public function onShow(e:Event):void{
-            fOpen();
+            var mc:MovieClip = (this as MovieClip);
+            if(mc.visible){
+                fClose();
+            }else{
+                fOpen();
+            }
         }
 
         private static var dropTimer:Timer;
@@ -125,7 +131,7 @@ package net.spider.handlers{
             for each(var blacklisted:* in options.blackListed){
                 if(item.indexOf(" X") != -1)
                     item = item.substring(0, item.lastIndexOf(" X"));
-                if(item == blacklisted.label){
+                if(StringUtil.trim(item) == StringUtil.trim(blacklisted.label)){
                     return true;
                 }
             }

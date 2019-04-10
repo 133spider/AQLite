@@ -14,6 +14,7 @@ package net.spider.handlers{
     import net.spider.draw.dEntry;
     import net.spider.handlers.DrawEvent;
     import flash.utils.getQualifiedClassName;
+    import com.adobe.utils.StringUtil;
 
     public class dropmenutwo extends MovieClip {
         public static var events:EventDispatcher = new EventDispatcher();
@@ -28,7 +29,12 @@ package net.spider.handlers{
 			this.menuBar.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
             dropmenutwo.events.addEventListener(ClientEvent.onToggle, onToggle);
             dropmenutwo.events.addEventListener(DrawEvent.onBtNo, onBtNo);
+            dropmenutwo.events.addEventListener(ClientEvent.onShow, onShow);
             dropmenutwo.events.addEventListener(ClientEvent.onUpdate, onUpdate);
+        }
+
+        public function onShow(e:ClientEvent):void{
+            this.visible = !this.visible;
         }
 
         private function onHold(e:MouseEvent):void{
@@ -37,6 +43,8 @@ package net.spider.handlers{
 		
 		private function onMouseRelease(e:MouseEvent):void{
 			this.stopDrag();
+            main.sharedObject.data.dmtPos = {x: this.x, y: this.y};
+			main.sharedObject.flush();
 		}
 
         public function onUpdate(e:ClientEvent){
@@ -76,6 +84,11 @@ package net.spider.handlers{
         private static var dropTimer:Timer;
         public function onToggle(e:Event):void{
             if(options.sbpcDrops){
+                var pos:* = main.sharedObject.data.dmtPos;
+                if(pos){
+                    this.x = pos.x;
+                    this.y = pos.y;
+                }
                 this.visible = true;
                 main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
                 dropTimer = new Timer(0);
@@ -123,7 +136,7 @@ package net.spider.handlers{
             for each(var blacklisted:* in options.blackListed){
                 if(item.indexOf(" X") != -1)
                     item = item.substring(0, item.lastIndexOf(" X"));
-                if(item == blacklisted.label){
+                if(StringUtil.trim(item) == StringUtil.trim(blacklisted.label)){
                     return true;
                 }
             }

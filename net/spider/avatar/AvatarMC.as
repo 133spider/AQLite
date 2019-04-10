@@ -47,7 +47,7 @@ package net.spider.avatar{
             var evt:* = evt;
             this.strGender = this.pAV.objData.strGender;
             try {
-                AssetClass = (getDefinitionByName(("net.spider.avatar." + (this.strSkinLinkage + this.strGender) + "Head")) as Class);
+                AssetClass = (this.ldr.contentLoaderInfo.applicationDomain.getDefinition(((this.strSkinLinkage + this.strGender) + "Head")) as Class);
                 this.mcChar.head.removeChildAt(0);
                 this.mcChar.head.addChildAt(new (AssetClass)(), 0);
             } catch(err:Error) {

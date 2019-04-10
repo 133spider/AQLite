@@ -32,6 +32,7 @@ package net.spider.modules{
 			}
 		}
 
+		static var incr:int = 0;
         public static function onExtensionResponseHandler(e:*):void{
             var dID:*;
             var protocol:* = e.params.type;
