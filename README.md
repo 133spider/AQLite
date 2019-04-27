@@ -30,6 +30,7 @@ To fix this issue, put AQLite in your C:\ Drive, or any other directories that d
 1. Go here: https://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html
 2. Edit Location > Add Location
 3. Put the location of the AQLite folder
+
 **APPLE/MAC USERS**: "Browse for files" & "Browse for folder" do NOT work on MAC Computers. You have to manually enter the AQLite folder directory.
 4. Confirm & Run AQLite
 
