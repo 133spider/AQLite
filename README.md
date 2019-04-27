@@ -17,13 +17,20 @@ AQLite is a client made for AQWorlds that provides all sorts of Quality of Life 
 * If you get ElectronJS, make sure to Force Update your client! (The latest version is Version 9.1!)
 
 ## Stuck at 0%
-Client stuck at 0?
+**Client stuck at 0?**
 
 Make sure that the directory that AQLite is in does not contain any accents!
 
 Example of a directory containing accent marks: C:\Users\Andr**é**\Desktop\AQLite
 
 To fix this issue, put AQLite in your C:\ Drive, or any other directories that do not contain accent marks!
+
+**Accents not an issue?**
+
+1. Go here: https://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html
+2. Edit Location > Add Location
+3. Put the location of the AQLite folder
+4. Confirm & Run AQLite
 
 ## Warning
 AQLite is in Beta; be cautious of potential bugs and glitches!
