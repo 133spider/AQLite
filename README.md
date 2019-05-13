@@ -27,6 +27,8 @@ To fix this issue, put AQLite in your C:\ Drive, or any other directories that d
 
 **Accents not an issue?**
 
+**UPDATE your Adobe Flash Player!**
+
 1. Go here: https://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html
 2. Edit Location > Add Location
 3. Put the location of the AQLite folder
