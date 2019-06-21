@@ -53,6 +53,7 @@ package net.spider.modules{
 										continue;
 								rItem.strType.text += " (" + s["iRate"] + "%)";
 								rItem.strType.width = 100;
+								rItem.strRate.visible = false;
 								break inner;
 							}
 						}

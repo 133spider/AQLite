@@ -37,6 +37,7 @@ package net.spider.modules{
         public static var skill:Boolean;
         public static var cSkillAnim:Boolean;
         public static var passive:Boolean;
+        public static var lockm:Boolean;
         public static var boost:Boolean;
         public static var untargetMon:Boolean;
         public static var selfTarget:Boolean;
@@ -44,6 +45,7 @@ package net.spider.modules{
         public static var hideP:Boolean;
         public static var disWepAnim:Boolean;
         public static var disMonAnim:Boolean;
+        public static var disMapAnim:Boolean;
         public static var bitmapP:Boolean;
 
         public static var chatFilter:Boolean;
@@ -157,7 +159,8 @@ package net.spider.modules{
                 dispatch(targetskills);
             }
 
-            passive = main.sharedObject.data.passive;
+            //passive = main.sharedObject.data.passive;
+            passive = true;
             if(passive)
                 dispatch(passives);
 
@@ -211,6 +214,14 @@ package net.spider.modules{
             qPin = main.sharedObject.data.qPin;
             if(qPin)
                 dispatch(qpin);
+
+            disMapAnim = main.sharedObject.data.disMapAnim;
+            if(disMapAnim)
+                dispatch(dismapanim);
+
+            lockm = main.sharedObject.data.lockM;
+            if(lockm)
+                dispatch(lockmons);
             setup("btnGeneral");
         }
 
@@ -283,7 +294,8 @@ package net.spider.modules{
                     this.txtSkillAnim.text = (disableSkillAnim ? "ON" : "OFF");
                     this.txtSkill.text = (skill ? "ON" : "OFF");
                     this.txtCSkillAnim.text = (cSkillAnim ? "ON" : "OFF");
-                    this.txtSkillP.text = (passive ? "ON" : "OFF");
+                    this.txtDisMonAnim.text = (disMonAnim ? "ON" : "OFF");
+                    this.txtLockM.text = (lockm ? "ON" : "OFF");
                     this.txtMType.text = (mType ? "ON" : "OFF");
                     this.txtEsc.text = (untargetMon ? "ON" : "OFF");
                     this.txtEscSelf.text = (selfTarget ? "ON" : "OFF");
@@ -294,10 +306,12 @@ package net.spider.modules{
                     this.chkSelfOnly.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
                     this.btnLeftCSkillAnim.addEventListener(MouseEvent.CLICK, onCSkillAnim, false, 0, true);
                     this.btnRightCSkillAnim.addEventListener(MouseEvent.CLICK, onCSkillAnim, false, 0, true);
+                    this.btnLeftDisMonAnim.addEventListener(MouseEvent.CLICK, onDisMonAnim, false, 0, true);
+                    this.btnRightDisMonAnim.addEventListener(MouseEvent.CLICK, onDisMonAnim, false, 0, true);
                     this.btnLeftSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
                     this.btnRightSkill.addEventListener(MouseEvent.CLICK, onSkill, false, 0, true);
-                    this.btnLeftSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
-                    this.btnRightSkillP.addEventListener(MouseEvent.CLICK, onSkillP, false, 0, true);
+                    this.btnLeftLockM.addEventListener(MouseEvent.CLICK, onLockM, false, 0, true);
+                    this.btnRightLockM.addEventListener(MouseEvent.CLICK, onLockM, false, 0, true);
                     this.btnLeftMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
                     this.btnRightMType.addEventListener(MouseEvent.CLICK, onMType, false, 0, true);
                     this.btnLeftEsc.addEventListener(MouseEvent.CLICK, onEsc, false, 0, true);
@@ -311,9 +325,9 @@ package net.spider.modules{
                     this.chkInvertDrop.checkmark.visible = filterChecks["chkInvertDrop"];
                     this.txtHideP.text = (hideP ? "ON" : "OFF");
                     this.txtDisWepAnim.text = (disWepAnim ? "ON" : "OFF");
-                    this.txtDisMonAnim.text = (disMonAnim ? "ON" : "OFF");
                     this.txtCDrops.text = (cDrops ? "ON" : "OFF");
                     this.txtSBPCDrops.text = (sbpcDrops ? "ON" : "OFF");
+                    this.txtDisMapAnim.text = (disMapAnim ? "ON" : "OFF");
                     this.txtBitmap.text = (bitmapP ? "ON" : "OFF");
                     if(this.btnLeftHideP.hasEventListener(MouseEvent.CLICK))
                         return;
@@ -323,13 +337,13 @@ package net.spider.modules{
                     this.btnLeftDisWepAnim.addEventListener(MouseEvent.CLICK, onDisWepAnim, false, 0, true);
                     this.btnRightDisWepAnim.addEventListener(MouseEvent.CLICK, onDisWepAnim, false, 0, true);
                     this.chkDisWepAnim.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
-                    this.btnLeftDisMonAnim.addEventListener(MouseEvent.CLICK, onDisMonAnim, false, 0, true);
-                    this.btnRightDisMonAnim.addEventListener(MouseEvent.CLICK, onDisMonAnim, false, 0, true);
                     this.btnLeftCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
                     this.btnRightCDrops.addEventListener(MouseEvent.CLICK, onCDrops, false, 0, true);
                     this.btnLeftSBPCDrops.addEventListener(MouseEvent.CLICK, onSBPCDrops, false, 0, true);
                     this.btnRightSBPCDrops.addEventListener(MouseEvent.CLICK, onSBPCDrops, false, 0, true);
                     this.chkInvertDrop.addEventListener(MouseEvent.CLICK, onCheckPressed, false, 0, true);
+                    this.btnLeftDisMapAnim.addEventListener(MouseEvent.CLICK, onDisMapAnim, false, 0, true);
+                    this.btnRightDisMapAnim.addEventListener(MouseEvent.CLICK, onDisMapAnim, false, 0, true);
                     this.btnLeftBitmap.addEventListener(MouseEvent.CLICK, onBitmap, false, 0, true);
                     this.btnRightBitmap.addEventListener(MouseEvent.CLICK, onBitmap, false, 0, true);
                     break;
@@ -511,11 +525,11 @@ package net.spider.modules{
 			main.sharedObject.flush();
         }
 
-        public function onSkillP(evt:MouseEvent):void{
-            passive = !passive;
-            dispatch(passives);
-            this.txtSkillP.text = passive ? "ON" : "OFF";
-            main.sharedObject.data.passive = passive;
+        public function onLockM(evt:MouseEvent):void{
+            lockm = !lockm;
+            dispatch(lockmons);
+            this.txtLockM.text = lockm ? "ON" : "OFF";
+            main.sharedObject.data.lockM = lockm;
 			main.sharedObject.flush();
         }
 
@@ -620,6 +634,14 @@ package net.spider.modules{
             dispatch(dismonanim);
             this.txtDisMonAnim.text = disMonAnim ? "ON" : "OFF";
             main.sharedObject.data.disMonAnim = disMonAnim;
+			main.sharedObject.flush();
+        }
+
+        public function onDisMapAnim(evt:MouseEvent):void{
+            disMapAnim = !disMapAnim;
+            dispatch(dismapanim);
+            this.txtDisMapAnim.text = disMapAnim ? "ON" : "OFF";
+            main.sharedObject.data.disMapAnim = disMapAnim;
 			main.sharedObject.flush();
         }
 

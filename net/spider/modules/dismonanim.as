@@ -33,8 +33,10 @@ package net.spider.modules{
 					if(!main.Game.world.monsters[monsterMC].pMC)
 						continue;
 					if(main.Game.world.monsters[monsterMC].dataLeaf.intState > 0){
-						main.Game.world.monsters[monsterMC].pMC.gotoAndPlay(0);
-						movieClipPlayAll((main.Game.world.monsters[monsterMC].pMC as MovieClip));
+						try{
+							main.Game.world.monsters[monsterMC].pMC.gotoAndPlay(0);
+							movieClipPlayAll((main.Game.world.monsters[monsterMC].pMC as MovieClip));
+						}catch(exception){}
 					}
 				}
 			}
@@ -50,8 +52,10 @@ package net.spider.modules{
 				if(!main.Game.world.monsters[monsterMC].pMC)
 					continue;
 				if(main.Game.world.monsters[monsterMC].dataLeaf.intState > 0){
-					main.Game.world.monsters[monsterMC].pMC.getChildAt(1).gotoAndStop("Idle");
-					movieClipStopAll((main.Game.world.monsters[monsterMC].pMC.getChildAt(1) as MovieClip));
+					try{
+						main.Game.world.monsters[monsterMC].pMC.getChildAt(1).gotoAndStop("Idle");
+						movieClipStopAll((main.Game.world.monsters[monsterMC].pMC.getChildAt(1) as MovieClip));
+					}catch(exception){}
 				}
 			}
 		}
@@ -61,8 +65,10 @@ package net.spider.modules{
                 if (container.getChildAt(i) is MovieClip) {
 					if(getQualifiedClassName(container.getChildAt(i) as MovieClip).indexOf("Display") > -1)
 						continue;
-                    (container.getChildAt(i) as MovieClip).gotoAndStop(0);
-                    movieClipStopAll(container.getChildAt(i) as MovieClip);
+					try{
+						(container.getChildAt(i) as MovieClip).gotoAndStop(0);
+						movieClipStopAll(container.getChildAt(i) as MovieClip);
+					}catch(exception){}
                 }
         }
 
@@ -71,8 +77,10 @@ package net.spider.modules{
                 if (container.getChildAt(i) is MovieClip) {
 					if(getQualifiedClassName(container.getChildAt(i) as MovieClip).indexOf("Display") > -1)
 						continue;
-                    (container.getChildAt(i) as MovieClip).gotoAndPlay(0);
-                    movieClipPlayAll(container.getChildAt(i) as MovieClip);
+					try{
+						(container.getChildAt(i) as MovieClip).gotoAndPlay(0);
+						movieClipPlayAll(container.getChildAt(i) as MovieClip);
+					}catch(exception){}
                 }
         }
 	}

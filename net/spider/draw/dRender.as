@@ -114,10 +114,10 @@ package net.spider.draw
         public function loadItem(e:*) : void
         {
             this.visible = true;
-            this.btnTryMe.visible = false;
             var param1:* = e.data;
             if (curItem != param1)
             {
+                this.btnTryMe.visible = false;
                 this.pMC.visible = false;
                 curItem = param1;
                 switch(curItem.sES)

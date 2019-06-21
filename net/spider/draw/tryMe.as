@@ -9,6 +9,7 @@ package net.spider.draw{
     import net.spider.modules.options;
     import net.spider.handlers.flags;
     import net.spider.handlers.ClientEvent;
+    import net.spider.draw.colorSets;
 
     public class tryMe extends MovieClip {
         private var shopTimer:Timer;
@@ -28,6 +29,7 @@ package net.spider.draw{
         }
 
         public var once:Boolean = false;
+        public var once2:Boolean = false;
         public function onTimer(e:TimerEvent):void{
             if(!main.Game)
                 return;
@@ -63,9 +65,36 @@ package net.spider.draw{
                 trace("HELLO WORLD");
                 main.Game.ui.mcPopup.mcCustomizeArmor.cpAccessory.addEventListener("ROLL_OVER",onItemRollOver,false,0,true);
                 main.Game.ui.mcPopup.mcCustomizeArmor.cpAccessory.addEventListener("ROLL_OUT",onItemRollOut,false,0,true);
+
+                if(!main.Game.ui.getChildByName("colorSets")){
+					var _menu:colorSets = new colorSets();
+                    _menu.mode = "mcCustomizeArmor";
+					_menu.name = "colorSets";
+                    _menu.y += main.Game.ui.mcPopup.mcCustomizeArmor.height + 12;
+                    _menu.onUpdate();
+					main.Game.ui.mcPopup.mcCustomizeArmor.addChild(_menu);
+				}
+
                 once = true;
             }else if(once && !main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor")){
                 once = false;
+            }
+
+            if(main.Game.ui.mcPopup.getChildByName("mcCustomize") && !once2){
+                trace("HELLO WORLD2");
+
+                if(!main.Game.ui.getChildByName("colorSets")){
+					var _menu2:colorSets = new colorSets();
+                    _menu2.mode = "mcCustomize";
+					_menu2.name = "colorSets";
+                    _menu2.y += main.Game.ui.mcPopup.mcCustomize.height + 12;
+                    _menu2.onUpdate();
+					main.Game.ui.mcPopup.mcCustomize.addChild(_menu2);
+				}
+
+                once2 = true;
+            }else if(once2 && !main.Game.ui.mcPopup.getChildByName("mcCustomize")){
+                once2 = false;
             }
         }
 

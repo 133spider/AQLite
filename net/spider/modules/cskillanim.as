@@ -19,7 +19,6 @@ package net.spider.modules{
 		public static function onCreate():void{
 			stage = main._stage;
 			cskillanim.events.addEventListener(ClientEvent.onToggle, onToggle);
-			main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 		}
 
 		public static function onToggle(e:Event):void{
@@ -30,11 +29,13 @@ package net.spider.modules{
 					}
 				}
 				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar);
+				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}else{
 				for(var j:* = 2; j < 6; j++){
 					main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
 				}
 				stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
+				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}
 		}
 

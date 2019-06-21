@@ -67,7 +67,7 @@ package net.spider.modules{
 										var ac:mcCoin = new mcCoin();
 										ac.width = 20;
 										ac.height = 20;
-										ac.x = itemUI.width - 20; //w: 80
+										ac.x = itemUI.bg.width - 20; //w: 80
 										itemUI.addChild(ac);
 									}
 									if(k.bUpg){

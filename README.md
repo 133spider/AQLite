@@ -1,20 +1,22 @@
 ![](https://i.imgur.com/IJcM5a4.jpg)
 
-![](https://i.imgur.com/oh3kS87.png)  |  ![](https://i.imgur.com/nsjKNcj.png)
+![](https://i.imgur.com/igFWQuS.png)  |  ![](https://i.imgur.com/BF5coaH.png)
 
-![](https://i.imgur.com/uK6Qjk3.png)  |  ![](https://i.imgur.com/awmsiFz.png)
+![](https://i.imgur.com/qmBT1zB.png)  |  ![](https://i.imgur.com/fbHtfFe.png)
 
 
 ## Information
 
 AQLite is a client made for AQWorlds that provides all sorts of Quality of Life tools that have been longed for. With the approach of the new versions of AQWorlds (AQW2 and AQW:Mobile), I am releasing AQLite to help players wait for the forever-waited changes to the game. AQLite is open-sourced to assure that there is no account-stealing, or any funny business contained in the client!
 
+
+
 ## Installation
 * Goto this link https://github.com/133spider/AQLite/releases/
 * Click the text that says "CLICK ME FOR LAUNCHER DOWNLOAD OPTIONS"
 * Choose and Download the .zip file according to your operating system
 * Extract the file and run the program
-* If you get ElectronJS, make sure to Force Update your client! (The latest version is Version 9.1!)
+* If you get ElectronJS, make sure to Force Update your client! (The latest version is Version 10.0!)
 
 ## Stuck at 0%
 **Client stuck at 0?**

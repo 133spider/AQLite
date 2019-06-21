@@ -6,6 +6,7 @@ package net.spider.modules{
 	import flash.system.*;
 	import flash.ui.*;
 	import flash.utils.*;
+	import fl.controls.*;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
 	
@@ -35,16 +36,20 @@ package net.spider.modules{
 					if(main.Game.world.avatars[playerMC].isMyAvatar)
 						continue;
 					if(main.Game.world.avatars[playerMC].dataLeaf.intState > 0){
-						main.Game.world.avatars[playerMC].pMC.mcChar.gotoAndPlay(0);
-						movieClipPlayAll((main.Game.world.avatars[playerMC].pMC.mcChar as MovieClip));
-						main.Game.world.avatars[playerMC].pMC.mcChar.cacheAsBitmap = false;
+						try{
+							main.Game.world.avatars[playerMC].pMC.mcChar.gotoAndPlay(0);
+							movieClipPlayAll((main.Game.world.avatars[playerMC].pMC.mcChar as MovieClip));
+							main.Game.world.avatars[playerMC].pMC.mcChar.cacheAsBitmap = false;
+						}catch(exception){}
 					}
 				}
 			}
 		}
 
         public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.avatars)
+			if(!main.Game.sfc.isConnected)
+				return;
+			if(!main.Game.world.avatars)
 				return;
 			for(var playerMC:* in main.Game.world.avatars){
 				if((!main.Game.world.avatars[playerMC].dataLeaf) 
@@ -55,9 +60,11 @@ package net.spider.modules{
 				if(main.Game.world.avatars[playerMC].isMyAvatar)
 					continue;
 				if(main.Game.world.avatars[playerMC].dataLeaf.intState > 0){
-					main.Game.world.avatars[playerMC].pMC.mcChar.gotoAndStop("Idle");
-					movieClipStopAll((main.Game.world.avatars[playerMC].pMC.mcChar as MovieClip));
-					main.Game.world.avatars[playerMC].pMC.mcChar.cacheAsBitmap = true;
+					try{
+						main.Game.world.avatars[playerMC].pMC.mcChar.gotoAndStop("Idle");
+						movieClipStopAll((main.Game.world.avatars[playerMC].pMC.mcChar as MovieClip));
+						main.Game.world.avatars[playerMC].pMC.mcChar.cacheAsBitmap = true;
+					}catch(exception){}
 				}
 			}
 		}
@@ -69,8 +76,10 @@ package net.spider.modules{
 						continue;
 					if(getQualifiedClassName(container.getChildAt(i) as MovieClip).indexOf("Display") > -1)
 						continue;
-                    (container.getChildAt(i) as MovieClip).gotoAndStop(0);
-                    movieClipStopAll(container.getChildAt(i) as MovieClip);
+					try{
+						(container.getChildAt(i) as MovieClip).gotoAndStop(0);
+						movieClipStopAll(container.getChildAt(i) as MovieClip);
+					}catch(exception){}
                 }
         }
 
@@ -81,8 +90,10 @@ package net.spider.modules{
 						continue;
 					if(getQualifiedClassName(container.getChildAt(i) as MovieClip).indexOf("Display") > -1)
 						continue;
-                    (container.getChildAt(i) as MovieClip).gotoAndPlay(0);
-                    movieClipPlayAll(container.getChildAt(i) as MovieClip);
+					try{
+						(container.getChildAt(i) as MovieClip).gotoAndPlay(0);
+						movieClipPlayAll(container.getChildAt(i) as MovieClip);
+					}catch(exception){}
                 }
         }
 	}
