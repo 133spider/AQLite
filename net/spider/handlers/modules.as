@@ -183,6 +183,10 @@
 					&& main.Game.world.map.getChildAt(ctr).visible){
 					main.Game.world.map.getChildAt(ctr).visible = false;
 				}
+				if((getQualifiedClassName(main.Game.world.map.getChildAt(ctr)).indexOf("mcFloor") > -1) &&
+					main.Game.world.map.getChildAt(ctr).visible){
+					main.Game.world.map.getChildAt(ctr).visible = false;
+				}
 				ctr++;
 			}
 		}
