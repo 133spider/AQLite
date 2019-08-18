@@ -10,6 +10,7 @@ package net.spider.modules{
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
 	import net.spider.handlers.SFSEvent;
+	import net.spider.handlers.optionHandler;
 	
 	public class drops extends MovieClip{
 
@@ -18,17 +19,18 @@ package net.spider.modules{
 
 		public static function onCreate():void{
 			drops.events.addEventListener(ClientEvent.onToggle, onToggle);
-			main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.draggable){
+			if(optionHandler.draggable){
 				dropTimer = new Timer(100);
 				dropTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				dropTimer.start();
+				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}else{
 				dropTimer.reset();
 				dropTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}
 		}
 
@@ -43,9 +45,12 @@ package net.spider.modules{
                     switch (cmd)
                     {
                         case "dropItem":
+							if(main.Game.ui.dropStack.numChildren <= 2)
+								return;
 							var itemA:MovieClip;
 							var itemB:MovieClip;
 							var i:*;
+
 							i = (main.Game.ui.dropStack.numChildren - 2);
 							while (i > -1)
 							{
@@ -55,7 +60,7 @@ package net.spider.modules{
 								itemB.fX = (main.Game.ui.dropStack.getChildAt(0) as MovieClip).fX;
 								itemB.x = (main.Game.ui.dropStack.getChildAt(0) as MovieClip).x;
 								i--;
-							};
+							}
                         	break;
                     }
                 }

@@ -9,6 +9,7 @@ package net.spider.modules{
 	import flash.text.TextFormat;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
+	import net.spider.handlers.optionHandler;
 	
 	public class chatfilter extends MovieClip{
 
@@ -20,7 +21,7 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.chatFilter){
+			if(optionHandler.chatFilter){
 				cTimer = new Timer(0);
 				cTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				cTimer.start();
@@ -49,8 +50,8 @@ package net.spider.modules{
 					continue;
 				txt = clog.getChildAt(i).getChildAt(0).ti.htmlText;
 				switch(true){
-					case (options.filterChecks["chkRed"] && txt.indexOf('COLOR="#FF0000"') > -1):
-					case (options.filterChecks["chkBlue"] && txt.indexOf('COLOR="#00FFFF"') > -1):
+					case (optionHandler.filterChecks["chkRed"] && txt.indexOf('COLOR="#FF0000"') > -1):
+					case (optionHandler.filterChecks["chkBlue"] && txt.indexOf('COLOR="#00FFFF"') > -1):
 							if(txt.indexOf("Server shutdown") > -1)
 									continue;
 							clog.getChildAt(i).getChildAt(0).visible = false;

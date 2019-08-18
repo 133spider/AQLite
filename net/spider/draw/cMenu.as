@@ -5,7 +5,7 @@ package net.spider.draw{
     import flash.net.*;
     import flash.geom.*;
     import net.spider.main;
-    import net.spider.modules.options;
+    import net.spider.handlers.optionHandler;
 
     public class cMenu extends MovieClip {
 
@@ -81,11 +81,15 @@ package net.spider.draw{
             };
             _local3 = 0;
             while (_local3 < fData.cl.length) {
-                if (_local5 == rootClass.sfc.myUserName){
-                };
                 if ((((fData.cl[_local3] == "Ignore")) && (rootClass.chatF.isIgnored(_local5)))){
                     fData.cl[_local3] = "Unignore";
-                };
+                }
+                if ((fData.cl[_local3] == "Hide Player") && !rootClass.world.getAvatarByUserName(_local5).pMC.mcChar.visible){
+                    fData.cl[_local3] = "Show Player";
+                }
+                if ((fData.cl[_local3] == "Hide Weapon") && !rootClass.world.getAvatarByUserName(_local5).pMC.mcChar.weapon.visible){
+                    fData.cl[_local3] = "Show Weapon";
+                }
                 _local8 = mc.cnt.addChild(new cProto());
                 _local8.name = ("i" + _local3);
                 _local8.y = (mc.cnt.iproto.y + (_local3 * 14));
@@ -206,6 +210,7 @@ package net.spider.draw{
             var _local5:String;
             var _local6:int;
             var _local2:* = MovieClip(_arg1.currentTarget);
+            var playerMC:*;
             iSel = int(_local2.name.substr(1));
             iCT = mc.cnt.mHi.transform.colorTransform;
             iCT.color = 16763955;
@@ -221,48 +226,43 @@ package net.spider.draw{
                 case "is staff?":
                     rootClass.world.isModerator(_local4);
                     break;
-                case "hide weapon":
-                     for(var playerMC2:* in rootClass.world.avatars){
-                        if(!rootClass.world.avatars[playerMC2].objData)
-                           continue;
-                        if(!(rootClass.world.avatars[playerMC2].objData.strUsername == _local4))
-                           continue;
-                        if(!rootClass.world.avatars[playerMC2].isMyAvatar && rootClass.world.avatars[playerMC2].pMC){
-                           rootClass.world.avatars[playerMC2].pMC.mcChar.weapon.visible = false;
-                           rootClass.world.avatars[playerMC2].pMC.mcChar.weaponOff.visible = false;
-                           break;
-                        }
+                case "show weapon":
+                    playerMC = rootClass.world.getAvatarByUserName(_local4);
+                    playerMC.pMC.mcChar.weapon.visible = true;
+                    if(playerMC.pMC.pAV.getItemByEquipSlot("Weapon").sType == "Dagger"){
+                        playerMC.pMC.mcChar.weaponOff.visible = true;
                     }
                     break;
+                case "show player":
+                    playerMC = rootClass.world.getAvatarByUserName(_local4);
+                    playerMC.pMC.mcChar.visible = true;
+                    playerMC.pMC.pname.visible = true;
+                    playerMC.pMC.shadow.visible = true;
+                    break;
+                case "hide weapon":
+                    playerMC = rootClass.world.getAvatarByUserName(_local4);
+                    playerMC.pMC.mcChar.weapon.visible = false;
+                    playerMC.pMC.mcChar.weaponOff.visible = false;
+                    break;
                 case "hide player":
-                    for(var playerMC:* in rootClass.world.avatars){
-                        if(!rootClass.world.avatars[playerMC].objData)
-                           continue;
-                        if(!(rootClass.world.avatars[playerMC].objData.strUsername == _local4))
-                           continue;
-                        if(!rootClass.world.avatars[playerMC].isMyAvatar && rootClass.world.avatars[playerMC].pMC){
-                           rootClass.world.avatars[playerMC].pMC.mcChar.visible = false;
-                           if(!options.filterChecks["chkName"])
-                              rootClass.world.avatars[playerMC].pMC.pname.visible = false;
-						         rootClass.world.avatars[playerMC].pMC.shadow.visible = false;
-                           break;
-                        }
+                    playerMC = rootClass.world.getAvatarByUserName(_local4);
+                    playerMC.pMC.mcChar.visible = false;
+                    if(!optionHandler.filterChecks["chkName"])
+                        playerMC.pMC.pname.visible = false;
+                    if(optionHandler.filterChecks["chkShadow"]){
+                        playerMC.pMC.shadow.addEventListener(MouseEvent.CLICK, onClickHandler, false, 0, true);
+                        playerMC.pMC.shadow.mouseEnabled = true;
+                        playerMC.pMC.shadow.buttonMode = true;
+                    }else{
+                        playerMC.pMC.shadow.visible = false;
                     }
                     break;
                 case "disable wep anim":
-                    for(var playerMC3:* in rootClass.world.avatars){
-                        if(!rootClass.world.avatars[playerMC3].objData)
-                           continue;
-                        if(!(rootClass.world.avatars[playerMC3].objData.strUsername == _local4))
-                           continue;
-                        if(!rootClass.world.avatars[playerMC3].isMyAvatar && rootClass.world.avatars[playerMC3].pMC){
-                            rootClass.world.avatars[playerMC3].pMC.mcChar.weapon.mcWeapon.gotoAndStop(0);
-                            (rootClass.world.avatars[playerMC3].pMC.mcChar.weaponOff.getChildAt(0) as MovieClip).gotoAndStop(0);
-                            movieClipStopAll(rootClass.world.avatars[playerMC3].pMC.mcChar.weapon.mcWeapon);
-                            movieClipStopAll((rootClass.world.avatars[playerMC3].pMC.mcChar.weaponOff.getChildAt(0) as MovieClip));
-                           break;
-                        }
-                    }
+                    playerMC = rootClass.world.getAvatarByUserName(_local4);
+                    playerMC.pMC.mcChar.weapon.mcWeapon.gotoAndStop(0);
+                    (playerMC.pMC.mcChar.weaponOff.getChildAt(0) as MovieClip).gotoAndStop(0);
+                    movieClipStopAll(playerMC.pMC.mcChar.weapon.mcWeapon);
+                    movieClipStopAll((playerMC.pMC.mcChar.weaponOff.getChildAt(0) as MovieClip));
                     break;
                 case "reputation":
                     rootClass.mixer.playSound("Click");
@@ -327,6 +327,31 @@ package net.spider.draw{
                     rootClass.world.requestPVPQueue("none");
                     break;
             };
+        }
+        private function onClickHandler(e:MouseEvent):void{
+            var tAvt:*;
+            tAvt = e.currentTarget.parent.pAV;
+            if (e.shiftKey)
+            {
+                rootClass.world.onWalkClick();
+            }
+            else
+            {
+                if (!e.ctrlKey)
+                {
+                    if (((((((!((tAvt == rootClass.world.myAvatar))) && (rootClass.world.bPvP))) && (!((tAvt.dataLeaf.pvpTeam == rootClass.world.myAvatar.dataLeaf.pvpTeam))))) && ((tAvt == rootClass.world.myAvatar.target))))
+                    {
+                        rootClass.world.approachTarget();
+                    }
+                    else
+                    {
+                        if (tAvt != rootClass.world.myAvatar.target)
+                        {
+                            rootClass.world.setTarget(tAvt);
+                        }
+                    }
+                }
+            }
         }
         function movieClipStopAll(container:MovieClip):void {
             for (var i:uint = 0; i < container.numChildren; i++)

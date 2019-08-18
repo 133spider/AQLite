@@ -12,15 +12,15 @@ package net.spider.draw{
     public class iconDrops extends MovieClip {
         private var iconTimer:Timer;
         public function iconDrops(){
-            this.visible = false;
-            this.mouseEnabled = true;
+            this.buttonMode = true;
             this.addEventListener(MouseEvent.CLICK, onBtDrop);
         }
 
         public function onBtDrop(e:MouseEvent):void{
-            if(options.cDrops)
+            e.stopPropagation();
+            if(optionHandler.cDrops)
                 dropmenu.events.dispatchEvent(new ClientEvent(ClientEvent.onShow));
-            if(options.sbpcDrops)
+            if(optionHandler.sbpcDrops)
                 dropmenutwo.events.dispatchEvent(new ClientEvent(ClientEvent.onShow));
         }
     }

@@ -8,6 +8,7 @@ package net.spider.modules{
 	import flash.utils.*;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
+	import net.spider.handlers.optionHandler;
 	
 	public class skillanim extends MovieClip{
 
@@ -19,7 +20,7 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.disableSkillAnim){
+			if(optionHandler.disableSkillAnim){
 				animTimer = new Timer(0);
 				animTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				animTimer.start();
@@ -36,11 +37,11 @@ package net.spider.modules{
 				return;
 			if(!main.Game.world.myAvatar.pMC.spFX)
 				return;
-			if(main.Game.world.avatars.length < 2 && !options.filterChecks["chkSelfOnly"]){
+			if(main.Game.world.avatars.length < 2 && !optionHandler.filterChecks["chkSelfOnly"]){
 				main.Game.world.myAvatar.pMC.spFX.strl = "";
 			}else{
 				for(var playerMC:* in main.Game.world.avatars){
-					if(options.filterChecks["chkSelfOnly"])
+					if(optionHandler.filterChecks["chkSelfOnly"])
 						if(main.Game.world.avatars[playerMC].isMyAvatar)
 							continue;
 					if(main.Game.world.avatars[playerMC].pMC)

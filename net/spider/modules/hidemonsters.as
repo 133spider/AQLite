@@ -10,51 +10,60 @@ package net.spider.modules{
 	import net.spider.handlers.ClientEvent;
 	import net.spider.handlers.optionHandler;
 	
-	public class hideplayers extends MovieClip{
+	public class hidemonsters extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
         private static var hideTimer:Timer;
 
 		public static function onCreate():void{
-			hideplayers.events.addEventListener(ClientEvent.onToggle, onToggle);
+			hidemonsters.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.hideP){
+			if(optionHandler.hideM){
 				hideTimer = new Timer(0);
 				hideTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				hideTimer.start();
 			}else{
 				hideTimer.reset();
 				hideTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-				for(var playerMC:* in main.Game.world.avatars)
-					if(!main.Game.world.avatars[playerMC].isMyAvatar && main.Game.world.avatars[playerMC].pMC)
-						if(!main.Game.world.avatars[playerMC].pMC.mcChar.visible){
-							main.Game.world.avatars[playerMC].pMC.mcChar.visible = true;
-							main.Game.world.avatars[playerMC].pMC.pname.visible = true;
-							main.Game.world.avatars[playerMC].pMC.shadow.visible = true;
-						}
+                if(!main.Game.world.strFrame)
+				    return;
+                var mons:Array = main.Game.world.getMonstersByCell(main.Game.world.strFrame);
+                for each(var _m in mons){
+                    if(!_m)
+                        continue;
+                    if(!_m.pMC)
+					    continue;
+                    if(!_m.pMC.getChildAt(1))
+                        continue;
+                    if(!_m.pMC.getChildAt(1).visible)
+                        _m.pMC.getChildAt(1).visible = true;
+                }
 			}
 		}
 
         public static function onTimer(e:TimerEvent):void{
 			if(!main.Game.sfc.isConnected || !main.Game.world.myAvatar)
 				return;
-			for(var playerMC:* in main.Game.world.avatars)
-				if(!main.Game.world.avatars[playerMC].isMyAvatar && main.Game.world.avatars[playerMC].pMC)
-					if(main.Game.world.avatars[playerMC].pMC.mcChar.visible){
-						main.Game.world.avatars[playerMC].pMC.mcChar.visible = false;
-						if(!optionHandler.filterChecks["chkName"])
-							main.Game.world.avatars[playerMC].pMC.pname.visible = false;
-						if(optionHandler.filterChecks["chkShadow"]){
-							trace("shadowed");
-							main.Game.world.avatars[playerMC].pMC.shadow.addEventListener(MouseEvent.CLICK, onClickHandler, false, 0, true);
-							main.Game.world.avatars[playerMC].pMC.shadow.mouseEnabled = true;
-							main.Game.world.avatars[playerMC].pMC.shadow.buttonMode = true;
-						}else{
-							main.Game.world.avatars[playerMC].pMC.shadow.visible = false;
-						}
-					}
+			if(!main.Game.world.strFrame)
+				return;
+            var mons:Array = main.Game.world.getMonstersByCell(main.Game.world.strFrame);
+			for each(var _m in mons){
+				if(!_m)
+					continue;
+				if(!_m.pMC)
+					continue;
+                if(!_m.pMC.getChildAt(1))
+					continue;
+                if(_m.pMC.getChildAt(1).visible){
+                    trace("shadowed");
+                    _m.pMC.getChildAt(1).visible = false;
+                    _m.pMC.shadow.addEventListener(MouseEvent.CLICK, onClickHandler, false, 0, true);
+                    _m.pMC.shadow.mouseEnabled = true;
+                    _m.pMC.shadow.buttonMode = true;
+                }
+			}
 		}
 
 		private static function onClickHandler(e:MouseEvent):void{

@@ -9,6 +9,7 @@ package net.spider.modules{
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
 	import net.spider.handlers.SFSEvent;
+	import net.spider.handlers.optionHandler;
 	
 	public class cskillanim extends MovieClip{
 
@@ -19,10 +20,11 @@ package net.spider.modules{
 		public static function onCreate():void{
 			stage = main._stage;
 			cskillanim.events.addEventListener(ClientEvent.onToggle, onToggle);
+			animTimer = new Timer(0);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.cSkillAnim){
+			if(optionHandler.cSkillAnim){
 				if(main.Game.ui){
 					for(var i:* = 2; i < 6; i++){
 						main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
@@ -30,13 +32,23 @@ package net.spider.modules{
 				}
 				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar);
 				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+				animTimer.addEventListener(TimerEvent.TIMER, onAnimTimer);
+				animTimer.start();
 			}else{
 				for(var j:* = 2; j < 6; j++){
 					main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
 				}
 				stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+				animTimer.reset();
+				animTimer.removeEventListener(TimerEvent.TIMER, onAnimTimer);
 			}
+		}
+
+		public static function onAnimTimer(e:TimerEvent):void{
+			if(!main.Game.sfc.isConnected)
+				return;
+			main.Game.world.myAvatar.pMC.spFX.strl = "";
 		}
 
 		public static function handleSkills(param1:String):void{
@@ -46,7 +58,7 @@ package net.spider.modules{
 					//main.Game.world.myAvatar.pMC.spFX.fx = "w";
 					switch(main.Game.world.myAvatar.objData.strClassName){
 						case "Dragonlord":
-							main.Game.world.myAvatar.pMC.spFX.strl = "dragonstrike";
+							main.Game.world.myAvatar.pMC.spFX.strl2 = "dragonstrike";
 							main.Game.world.myAvatar.pMC.spFX.fx = "w";
 							main.Game.world.myAvatar.pMC.spFX.tgt = "h";
 							break;
@@ -62,7 +74,7 @@ package net.spider.modules{
 					//main.Game.world.myAvatar.pMC.spFX.fx = "p";
 					switch(main.Game.world.myAvatar.objData.strClassName){
 						case "Dragonlord":
-							main.Game.world.myAvatar.pMC.spFX.strl = "firedragon";
+							main.Game.world.myAvatar.pMC.spFX.strl2 = "firedragon";
 							main.Game.world.myAvatar.pMC.spFX.fx = "w";
 							main.Game.world.myAvatar.pMC.spFX.tgt = "h";
 							break;
@@ -78,7 +90,7 @@ package net.spider.modules{
 					//main.Game.world.myAvatar.pMC.spFX.fx = "d";
 					switch(main.Game.world.myAvatar.objData.strClassName){
 						case "Dragonlord":
-							main.Game.world.myAvatar.pMC.spFX.strl = "healthdragon";
+							main.Game.world.myAvatar.pMC.spFX.strl2 = "healthdragon";
 							main.Game.world.myAvatar.pMC.spFX.fx = "w";
 							main.Game.world.myAvatar.pMC.spFX.tgt = "s";
 							break;
@@ -94,7 +106,7 @@ package net.spider.modules{
 					//main.Game.world.myAvatar.pMC.spFX.fx = "w";
 					switch(main.Game.world.myAvatar.objData.strClassName){
 						case "Dragonlord":
-							main.Game.world.myAvatar.pMC.spFX.strl = "darknessdragon";
+							main.Game.world.myAvatar.pMC.spFX.strl2 = "darknessdragon";
 							main.Game.world.myAvatar.pMC.spFX.fx = "w";
 							main.Game.world.myAvatar.pMC.spFX.tgt = "s";
 							break;
@@ -110,11 +122,15 @@ package net.spider.modules{
 		}
 
 		public static function actIconClick(e:*):void{
+			if(main.Game.world.myAvatar.objData.strClassName == "Void Highlord")
+				return;
 			handleSkills(e.target.name);
 		}
 
 		public static function key_actBar(param1:KeyboardEvent) : *
 		{
+			if(main.Game.world.myAvatar.objData.strClassName == "Void Highlord")
+				return;
 			if(stage.focus == null || stage.focus != null && !("text" in stage.focus))
 			{
 				if(param1.charCode > 49 && param1.charCode < 55)
@@ -155,6 +171,34 @@ package net.spider.modules{
 								main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 							}
 							break;
+						case "ct":
+							if(resObj.anims != null && main.Game.world.myAvatar.objData.strClassName == "Void Highlord")
+							{
+								for each(var o:* in resObj.anims)
+								{
+									switch(o.strl){
+										case "sp_voidhaa":
+											main.Game.world.myAvatar.pMC.spFX.strl2 = "vhaa";
+											break;
+										case "sp_voidha1":
+											main.Game.world.myAvatar.pMC.spFX.strl2 = "vha1";
+											break;
+										case "sp_voidha2":
+											main.Game.world.myAvatar.pMC.spFX.strl2 = "vha2";
+											break;
+										case "sp_voidha3":
+											main.Game.world.myAvatar.pMC.spFX.strl2 = "vha3";
+											break;
+										case "sp_voidha4":
+											main.Game.world.myAvatar.pMC.spFX.strl2 = "vha4";
+											break;
+										default: return;
+									}
+									castSpellFX(main.Game.world.myAvatar.pMC.pAV, main.Game.world.myAvatar.pMC.spFX, null, main.Game.world.myAvatar.pMC.spellDur);
+									break;
+								}
+							}
+							break;
                     }
                 }
         }
@@ -167,13 +211,13 @@ package net.spider.modules{
 			var _loc7_:* = undefined;
 			var _loc8_:Array = null;
 			var _loc9_:int = 0;
-			if(param2.strl != null && param2.strl != "" && param2.avts != null)
+			if(param2.strl2 != null && param2.strl2 != "" && param2.avts != null)
 			{
 				_loc8_ = [];
 				_loc9_ = 0;
 				if(param2.fx == "c")
 				{
-				if(param2.strl == "lit1")
+				if(param2.strl2 == "lit1")
 				{
 					_loc8_.push(param1.pMC.mcChar);
 					_loc9_ = 0;
@@ -188,7 +232,7 @@ package net.spider.modules{
 					}
 					if(_loc8_.length > 1)
 					{
-						_loc6_ = getDefinitionByName("net.spider.anim." + param2.strl) as Class; //sp_C1
+						_loc6_ = getDefinitionByName("net.spider.anim." + param2.strl2) as Class; //sp_C1
 						if(_loc6_ != null)
 						{
 							_loc7_ = new _loc6_();
@@ -196,7 +240,7 @@ package net.spider.modules{
 							_loc7_.mouseChildren = false;
 							_loc7_.visible = true;
 							_loc7_.world = rootClass.world;
-							_loc7_.strl = param2.strl;
+							_loc7_.strl2 = param2.strl2;
 							rootClass.drawChainsLinear(_loc8_,33,MovieClip(main.Game.world.CHARS.addChild(_loc7_)));
 						}
 					}
@@ -217,7 +261,7 @@ package net.spider.modules{
 					_loc7_.mouseChildren = false;
 					_loc7_.visible = true;
 					_loc7_.world = rootClass.world;
-					_loc7_.strl = param2.strl;
+					_loc7_.strl2 = param2.strl2;
 					rootClass.drawFunnel(_loc8_,MovieClip(main.Game.world.CHARS.addChild(_loc7_)));
 				}
 				}
@@ -228,7 +272,7 @@ package net.spider.modules{
 				{
 					_loc5_ = param2.avts[_loc9_];
 					//_loc6_ = pLoaderD.getDefinition(param2.strl) as Class;
-					_loc6_ = getDefinitionByName("net.spider.anim." + param2.strl) as Class;
+					_loc6_ = getDefinitionByName("net.spider.anim." + param2.strl2) as Class;
 					if(_loc6_ != null)
 					{
 						_loc7_ = new _loc6_();
@@ -242,7 +286,7 @@ package net.spider.modules{
 						_loc7_.mouseChildren = false;
 						_loc7_.visible = true;
 						_loc7_.world = rootClass.world;
-						_loc7_.strl = param2.strl;
+						_loc7_.strl2 = param2.strl2;
 						if(param2.tgt == 's'){
 							_loc7_.tMC = param1.pMC;
 						}else{
@@ -291,7 +335,7 @@ package net.spider.modules{
 					else
 					{
 						trace();
-						trace("*>*>*> Could not load class " + param2.strl);
+						trace("*>*>*> Could not load class " + param2.strl2);
 						trace();
 					}
 					_loc9_++;

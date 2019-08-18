@@ -9,6 +9,7 @@ package net.spider.modules{
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
 	import net.spider.draw.cMenu;
+	import net.spider.handlers.optionHandler;
 	
 	public class qpin extends MovieClip{
 
@@ -34,7 +35,7 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.qPin){
+			if(optionHandler.qPin){
 				pinTimer.addEventListener(TimerEvent.TIMER, onShowPin);
 				pinTimer.start()
 				if(main.Game.ui){

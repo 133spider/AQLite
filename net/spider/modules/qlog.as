@@ -9,6 +9,7 @@ package net.spider.modules{
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
 	import net.spider.draw.cMenu;
+	import net.spider.handlers.optionHandler;
 	
 	public class qlog extends MovieClip{
 
@@ -22,7 +23,7 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.qLog){
+			if(optionHandler.qLog){
 				//main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister);
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
 				//main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, main.Game.ui.mcInterface.mcMenu.onMouseClick);

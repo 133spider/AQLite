@@ -8,6 +8,7 @@ package net.spider.modules{
 	import flash.utils.*;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
+	import net.spider.handlers.optionHandler;
 	
 	public class dismonanim extends MovieClip{
 
@@ -19,7 +20,7 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.disMonAnim){
+			if(optionHandler.disMonAnim){
 				animTimer = new Timer(0);
 				animTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				animTimer.start();

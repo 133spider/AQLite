@@ -13,6 +13,7 @@ package net.spider.handlers{
     import net.spider.handlers.*;
     import net.spider.draw.dEntry;
     import com.adobe.utils.StringUtil;
+    import net.spider.handlers.optionHandler;
 
     public class dropmenu extends MovieClip {
 
@@ -87,7 +88,7 @@ package net.spider.handlers{
 
         private static var dropTimer:Timer;
         public function onToggle(e:Event):void{
-            if(options.cDrops){
+            if(optionHandler.cDrops){
                 main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
                 dropTimer = new Timer(0);
 				dropTimer.addEventListener(TimerEvent.TIMER, onDropTimer);
@@ -128,7 +129,7 @@ package net.spider.handlers{
         }
 
         public function isBlacklisted(item:String):Boolean{
-            for each(var blacklisted:* in options.blackListed){
+            for each(var blacklisted:* in optionHandler.blackListed){
                 if(item.indexOf(" X") != -1)
                     item = item.substring(0, item.lastIndexOf(" X"));
                 if(StringUtil.trim(item) == StringUtil.trim(blacklisted.label)){
@@ -344,6 +345,7 @@ package net.spider.handlers{
             mc.hit.removeEventListener(MouseEvent.MOUSE_DOWN, onMenuBGClick);
             mc.hit.removeEventListener(Event.ENTER_FRAME, onMenuBGEnterFrame);
             mc.btnClose.removeEventListener(MouseEvent.CLICK, btnCloseClick);
+            mc.preview.bTry.removeEventListener(MouseEvent.CLICK, onItemTryClick);
             mc.preview.bAdd.removeEventListener(MouseEvent.CLICK, onItemAddClick);
             mc.preview.bDel.removeEventListener(MouseEvent.CLICK, onItemDelClick);
             destroyIList(mc.iListA);
@@ -515,6 +517,23 @@ package net.spider.handlers{
             addGlow(itemClip);
             item.ItemID = obj.ItemID;
             MovieClip(this).preview.item = obj;
+            switch(obj.sES)
+            {
+                case "Weapon":
+                case "he":
+                case "ba":
+                case "pe":
+                case "ar":
+                case "co":
+                    if(obj.bUpg == 1){
+                        if(main.Game.world.myAvatar.isUpgraded()){
+                            MovieClip(this).preview.bTry.visible = true;
+                        }
+                    }else{
+                        MovieClip(this).preview.bTry.visible = true;
+                    }
+                break;
+            }
             MovieClip(this).preview.bAdd.visible = true;
             MovieClip(this).preview.bDel.visible = true;
             MovieClip(this).preview.tPreview.visible = true;
@@ -550,6 +569,23 @@ package net.spider.handlers{
             addGlow(itemClip);
             item.ItemID = obj.ItemID;
             MovieClip(this).preview.item = obj;
+            switch(obj.sES)
+            {
+                case "Weapon":
+                case "he":
+                case "ba":
+                case "pe":
+                case "ar":
+                case "co":
+                    if(obj.bUpg == 1){
+                        if(main.Game.world.myAvatar.isUpgraded()){
+                            MovieClip(this).preview.bTry.visible = true;
+                        }
+                    }else{
+                        MovieClip(this).preview.bTry.visible = true;
+                    }
+                break;
+            }
             MovieClip(this).preview.bAdd.visible = true;
             MovieClip(this).preview.bDel.visible = true;
             MovieClip(this).preview.tPreview.visible = true;
@@ -584,6 +620,23 @@ package net.spider.handlers{
             MovieClip(this).pMC.loadArmor(sFile, sLink);
             MovieClip(this).pMC.visible = true;
             MovieClip(this).preview.item = obj;
+            switch(obj.sES)
+            {
+                case "Weapon":
+                case "he":
+                case "ba":
+                case "pe":
+                case "ar":
+                case "co":
+                    if(obj.bUpg == 1){
+                        if(main.Game.world.myAvatar.isUpgraded()){
+                            MovieClip(this).preview.bTry.visible = true;
+                        }
+                    }else{
+                        MovieClip(this).preview.bTry.visible = true;
+                    }
+                break;
+            }
             MovieClip(this).preview.bAdd.visible = true;
             MovieClip(this).preview.bDel.visible = true;
             MovieClip(this).preview.tPreview.visible = true;
@@ -618,6 +671,23 @@ package net.spider.handlers{
             addGlow(itemClip);
             item.ItemID = obj.ItemID;
             MovieClip(this).preview.item = obj;
+            switch(obj.sES)
+            {
+                case "Weapon":
+                case "he":
+                case "ba":
+                case "pe":
+                case "ar":
+                case "co":
+                    if(obj.bUpg == 1){
+                        if(main.Game.world.myAvatar.isUpgraded()){
+                            MovieClip(this).preview.bTry.visible = true;
+                        }
+                    }else{
+                        MovieClip(this).preview.bTry.visible = true;
+                    }
+                break;
+            }
             MovieClip(this).preview.bAdd.visible = true;
             MovieClip(this).preview.bDel.visible = true;
             MovieClip(this).preview.tPreview.visible = true;
@@ -717,10 +787,73 @@ package net.spider.handlers{
             mc.bg.addEventListener(Event.ENTER_FRAME, onMenuBGEnterFrame, false, 0, true);
             mc.hit.addEventListener(MouseEvent.MOUSE_DOWN, onMenuBGClick, false, 0, true);
             mc.hit.addEventListener(Event.ENTER_FRAME, onMenuBGEnterFrame, false, 0, true);
+            mc.preview.bTry.addEventListener(MouseEvent.CLICK, onItemTryClick, false, 0, true);
             mc.preview.bAdd.addEventListener(MouseEvent.CLICK, onItemAddClick, false, 0, true);
             mc.preview.bDel.addEventListener(MouseEvent.CLICK, onItemDelClick, false, 0, true);
             mc.pMC.visible = false;
             showMenu();
+        }
+
+        var petDisable:Timer = new Timer(0);
+        function onPetDisable(e:TimerEvent):void{
+            if(!main.Game.world.myAvatar.petMC.mcChar)
+                return;
+            main.Game.world.myAvatar.petMC.mcChar.mouseEnabled = false;
+            main.Game.world.myAvatar.petMC.mcChar.mouseChildren = false;
+            main.Game.world.myAvatar.petMC.mcChar.enabled = false;
+            petDisable.reset();
+            petDisable.removeEventListener(TimerEvent.TIMER, onPetDisable);
+        }
+
+        public function onItemTryClick(e:MouseEvent):void{
+            var item:Object;
+            item = MovieClip(e.currentTarget.parent).item;
+
+            switch(item.sES)
+            {
+                case "Weapon":
+                case "he":
+                case "ba":
+                case "pe":
+                case "ar":
+                case "co":
+                    var sES:String = item.sES;
+                    if(sES == "ar")
+                        sES = "co";
+                    if(sES == "pe"){
+                        if(main.Game.world.myAvatar.objData.eqp["pe"]){
+                            main.Game.world.myAvatar.unloadPet();
+                        }
+                    }
+                    if(!main.Game.world.myAvatar.objData.eqp[sES]){
+                        main.Game.world.myAvatar.objData.eqp[sES] = {};
+                        main.Game.world.myAvatar.objData.eqp[sES].wasCreated = true;
+                    }
+                    if(!main.Game.world.myAvatar.objData.eqp[sES].isPreview){
+                        main.Game.world.myAvatar.objData.eqp[sES].isPreview = true;
+                        if("sType" in item){
+                            main.Game.world.myAvatar.objData.eqp[sES].oldType = main.Game.world.myAvatar.objData.eqp[sES].sType;
+                            main.Game.world.myAvatar.objData.eqp[sES].sType = item.sType;
+                        }
+                        main.Game.world.myAvatar.objData.eqp[sES].oldFile = main.Game.world.myAvatar.objData.eqp[sES].sFile;
+                        main.Game.world.myAvatar.objData.eqp[sES].oldLink = main.Game.world.myAvatar.objData.eqp[sES].sLink;
+                        main.Game.world.myAvatar.objData.eqp[sES].sFile = (item.sFile == "undefined" ? "" : item.sFile);
+                        main.Game.world.myAvatar.objData.eqp[sES].sLink = item.sLink;
+                    }else{
+                        if("sType" in item){
+                            main.Game.world.myAvatar.objData.eqp[sES].sType = item.sType;
+                        }
+                        main.Game.world.myAvatar.objData.eqp[sES].sFile = (item.sFile == "undefined" ? "" : item.sFile);
+                        main.Game.world.myAvatar.objData.eqp[sES].sLink = item.sLink;
+                    }
+                    main.Game.world.myAvatar.loadMovieAtES(sES, item.sFile, item.sLink);
+                    if((sES == "pe") && (item.sName.indexOf("Bank Pet") != -1)){
+                        petDisable.addEventListener(TimerEvent.TIMER, onPetDisable, false, 0, true);
+                        petDisable.start();
+                    }
+                    main.events.dispatchEvent(new ClientEvent(ClientEvent.onCostumePending));
+                    break;
+            }
         }
 
         public function onItemAddClick(e:MouseEvent):void{
@@ -866,6 +999,7 @@ package net.spider.handlers{
             mc.preview.mcCoin.visible = false;
             mc.pMC.visible = false;
             mc.preview.t2.visible = false;
+            mc.preview.bTry.visible = false;
             mc.preview.bAdd.visible = false;
             mc.preview.bDel.visible = false;
             mc.preview.tPreview.visible = false;

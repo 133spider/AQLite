@@ -8,6 +8,7 @@ package net.spider.modules{
 	import flash.utils.*;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
+	import net.spider.handlers.optionHandler;
 	
 	public class lockmons extends MovieClip{
 
@@ -19,13 +20,22 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.lockm){
+			if(optionHandler.lockm){
 				monsTimer = new Timer(0);
 				monsTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				monsTimer.start();
 			}else{
 				monsTimer.reset();
 				monsTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+				var mons:Array = main.Game.world.getMonstersByCell(main.Game.world.strFrame);
+				for each(var _m in mons){
+					if(!_m)
+						continue;
+					if(!_m.pMC)
+						continue;
+					if(_m.pMC.noMove)
+						_m.pMC.noMove = false;
+				}
 			}
 		}
 
@@ -36,6 +46,10 @@ package net.spider.modules{
 				return;
 			var mons:Array = main.Game.world.getMonstersByCell(main.Game.world.strFrame);
 			for each(var _m in mons){
+				if(!_m)
+					continue;
+				if(!_m.pMC)
+					continue;
 				if(!_m.pMC.noMove)
 					_m.pMC.noMove = true;
 			}

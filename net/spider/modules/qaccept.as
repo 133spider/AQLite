@@ -10,6 +10,7 @@ package net.spider.modules{
 	import net.spider.handlers.ClientEvent;
 	import net.spider.handlers.SFSEvent;
 	import net.spider.draw.cMenu;
+	import net.spider.handlers.optionHandler;
 	
 	public class qaccept extends MovieClip{
 
@@ -19,7 +20,7 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.qAccept){
+			if(optionHandler.qAccept){
 				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}else{
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);

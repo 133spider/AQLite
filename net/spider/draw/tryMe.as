@@ -28,8 +28,6 @@ package net.spider.draw{
             shopTimer.start();
         }
 
-        public var once:Boolean = false;
-        public var once2:Boolean = false;
         public function onTimer(e:TimerEvent):void{
             if(!main.Game)
                 return;
@@ -61,59 +59,6 @@ package net.spider.draw{
                 this.btnTryMerge.visible = false;
                 this.txtMerge.visible = false;
             }
-            if(main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor") && !once){
-                trace("HELLO WORLD");
-                main.Game.ui.mcPopup.mcCustomizeArmor.cpAccessory.addEventListener("ROLL_OVER",onItemRollOver,false,0,true);
-                main.Game.ui.mcPopup.mcCustomizeArmor.cpAccessory.addEventListener("ROLL_OUT",onItemRollOut,false,0,true);
-
-                if(!main.Game.ui.getChildByName("colorSets")){
-					var _menu:colorSets = new colorSets();
-                    _menu.mode = "mcCustomizeArmor";
-					_menu.name = "colorSets";
-                    _menu.y += main.Game.ui.mcPopup.mcCustomizeArmor.height + 12;
-                    _menu.onUpdate();
-					main.Game.ui.mcPopup.mcCustomizeArmor.addChild(_menu);
-				}
-
-                once = true;
-            }else if(once && !main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor")){
-                once = false;
-            }
-
-            if(main.Game.ui.mcPopup.getChildByName("mcCustomize") && !once2){
-                trace("HELLO WORLD2");
-
-                if(!main.Game.ui.getChildByName("colorSets")){
-					var _menu2:colorSets = new colorSets();
-                    _menu2.mode = "mcCustomize";
-					_menu2.name = "colorSets";
-                    _menu2.y += main.Game.ui.mcPopup.mcCustomize.height + 12;
-                    _menu2.onUpdate();
-					main.Game.ui.mcPopup.mcCustomize.addChild(_menu2);
-				}
-
-                once2 = true;
-            }else if(once2 && !main.Game.ui.mcPopup.getChildByName("mcCustomize")){
-                once2 = false;
-            }
-        }
-
-        public function onItemRollOver(param1:Event) : void
-        {
-            var _loc2_:* = new Object();
-            var avt:* =  main.Game.world.myAvatar;
-            _loc2_.intColorSkin = avt.objData.intColorSkin;
-            _loc2_.intColorHair = avt.objData.intColorHair;
-            _loc2_.intColorEye = avt.objData.intColorEye;
-            _loc2_.intColorBase = avt.objData.intColorBase;
-            _loc2_.intColorTrim = avt.objData.intColorTrim;
-            _loc2_.intColorAccessory = param1.target.selectedColor;
-            avt.pMC.updateColor(_loc2_);
-        }
-        
-        public function onItemRollOut(param1:Event) : void
-        {
-            main.Game.world.myAvatar.pMC.updateColor();
         }
 
         function isPreviewable():Boolean{

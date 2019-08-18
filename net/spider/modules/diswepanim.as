@@ -8,6 +8,7 @@ package net.spider.modules{
 	import flash.utils.*;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
+	import net.spider.handlers.optionHandler;
 	
 	public class diswepanim extends MovieClip{
 
@@ -19,7 +20,7 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.disWepAnim){
+			if(optionHandler.disWepAnim){
 				animTimer = new Timer(0);
 				animTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				animTimer.start();
@@ -47,7 +48,7 @@ package net.spider.modules{
 			for(var playerMC:* in main.Game.world.avatars){
 				if(!main.Game.world.avatars[playerMC].objData)
 					continue;
-				if(options.filterChecks["chkDisWepAnim"])
+				if(optionHandler.filterChecks["chkDisWepAnim"])
 					if(main.Game.world.avatars[playerMC].isMyAvatar)
 						continue;
 				if(main.Game.world.avatars[playerMC].pMC.mcChar.weapon.mcWeapon){

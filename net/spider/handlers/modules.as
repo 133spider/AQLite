@@ -15,6 +15,7 @@
 
 		private static var maintainTimer:Timer;
 		public static function create():void{
+			optionHandler.onCreate();
 			drops.onCreate();
 			skillanim.onCreate();
 			hideplayers.onCreate();
@@ -35,8 +36,12 @@
 			qpin.onCreate();
 			dismapanim.onCreate();
 			lockmons.onCreate();
+			smoothbg.onCreate();
+			colorsets.onCreate();
+			boosts.onCreate();
+			hidemonsters.onCreate();
 
-			options.events.dispatchEvent(new ClientEvent(ClientEvent.onEnable));
+			optionHandler.events.dispatchEvent(new ClientEvent(ClientEvent.onEnable));
 			main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			maintainTimer = new Timer(0);
 			maintainTimer.addEventListener(TimerEvent.TIMER, onMaintain);
@@ -109,6 +114,7 @@
 		}
 		
 		private static var houseEvent:Boolean;
+		private static var performOnceFlag:Boolean = false;
 		public static function onMaintain(e:TimerEvent):void{
 			if(!main.Game)
 				return;
@@ -126,14 +132,18 @@
 			if(main.Game.ui.mcPopup.currentLabel == "Book"){
 				if(main.Game.ui.mcPopup.mcBook){
 					var book:MovieClip = MovieClip(main.Game.ui.mcPopup.mcBook.getChildAt(0).content);
-					if(book.btnRight){
-						if(!book.btnRight.hasEventListener(MouseEvent.MOUSE_WHEEL)){
-							main._stage.addEventListener(MouseEvent.MOUSE_WHEEL,onWheel,false,0,true);
+					if(book){
+						if(book.btnRight){
+							if(!book.btnRight.hasEventListener(MouseEvent.MOUSE_WHEEL)){
+								main._stage.addEventListener(MouseEvent.MOUSE_WHEEL,onWheel,false,0,true);
+							}
 						}
-					}
-					if(book.btnQuests && !book.btnQuests.hasEventListener(MouseEvent.DOUBLE_CLICK)){
-						book.btnQuests.addEventListener(MouseEvent.CLICK, onBtArchive, false, 0, true);
-						book.btnQuests.addEventListener(MouseEvent.DOUBLE_CLICK, _func_flag, false, 0, true);
+						if(book.btnQuests && !book.btnQuests.hasEventListener(MouseEvent.DOUBLE_CLICK)){
+							if(optionHandler.bTheArchive){
+								book.btnQuests.addEventListener(MouseEvent.CLICK, onBtArchive, false, 0, true);
+							}
+							book.btnQuests.addEventListener(MouseEvent.DOUBLE_CLICK, _func_flag, false, 0, true);
+						}
 					}
 				}
 			}
@@ -147,7 +157,7 @@
 				}
 			}
 
-			if(main.Game.ui.mcPopup.currentLabel == "Shop")
+			if(main.Game.ui.mcPopup.currentLabel == "Shop" || main.Game.ui.mcPopup.currentLabel == "MergeShop")
 			{
 				if(!MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).hasEventListener(MouseEvent.MOUSE_WHEEL)){
 					MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
@@ -168,28 +178,32 @@
 				}
 			}
 
-			if(!main.Game.world)
-				return;
-			if(!main.Game.world.map)
-				return;
-			var ctr:Number = 0;
-			while(ctr < main.Game.world.map.numChildren){
-				if(main.Game.world.map.getChildAt(ctr) is MovieClip && main.Game.world.map.getChildAt(ctr).width >= 960
-					&& !main.Game.world.map.getChildAt(ctr).visible
-					&& (getQualifiedClassName(main.Game.world.map.getChildAt(ctr)).indexOf("mcShadow") == -1)){
-					main.Game.world.map.getChildAt(ctr).visible = true;
-				}
-				if(getQualifiedClassName(main.Game.world.map.getChildAt(ctr)).indexOf("Bitmap") > -1
-					&& main.Game.world.map.getChildAt(ctr).visible){
-					main.Game.world.map.getChildAt(ctr).visible = false;
-				}
-				if((getQualifiedClassName(main.Game.world.map.getChildAt(ctr)).indexOf("mcFloor") > -1) &&
-					main.Game.world.map.getChildAt(ctr).visible){
-					main.Game.world.map.getChildAt(ctr).visible = false;
-				}
-				ctr++;
-			}
+			if(main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor") && !performOnceFlag){
+                main.Game.ui.mcPopup.mcCustomizeArmor.cpAccessory.addEventListener("ROLL_OVER",onItemRollOver,false,0,true);
+                main.Game.ui.mcPopup.mcCustomizeArmor.cpAccessory.addEventListener("ROLL_OUT",onItemRollOut,false,0,true);
+			    performOnceFlag = true;
+            }else if(performOnceFlag && !main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor")){
+                performOnceFlag = false;
+            }
 		}
+
+		public static function onItemRollOver(param1:Event) : void
+        {
+            var _loc2_:* = new Object();
+            var avt:* =  main.Game.world.myAvatar;
+            _loc2_.intColorSkin = avt.objData.intColorSkin;
+            _loc2_.intColorHair = avt.objData.intColorHair;
+            _loc2_.intColorEye = avt.objData.intColorEye;
+            _loc2_.intColorBase = avt.objData.intColorBase;
+            _loc2_.intColorTrim = avt.objData.intColorTrim;
+            _loc2_.intColorAccessory = param1.target.selectedColor;
+            avt.pMC.updateColor(_loc2_);
+        }
+        
+        public static function onItemRollOut(param1:Event) : void
+        {
+            main.Game.world.myAvatar.pMC.updateColor();
+        }
 
 		public static function onExtensionResponseHandler(e:*):void{
             var dID:*;
@@ -220,9 +234,11 @@
 							}
 							break;
 						case "bookInfo":
-							main.Game.world.bookData.HMBadge.sortOn("strName");
-							main.Game.world.bookData.OBadge.sortOn("strName");
-							main.Game.world.bookData.AchBadge.sortOn("strName");
+							if(optionHandler.alphaBOL){
+								main.Game.world.bookData.HMBadge.sortOn("strName");
+								main.Game.world.bookData.OBadge.sortOn("strName");
+								main.Game.world.bookData.AchBadge.sortOn("strName");
+							}
 							break;
                     }
                 }

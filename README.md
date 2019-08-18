@@ -1,8 +1,8 @@
-![](https://i.imgur.com/IJcM5a4.jpg)
+![](https://i.imgur.com/NCNQGTx.png)
 
-![](https://i.imgur.com/j2F2UAC.png)  |  ![](https://i.imgur.com/ix53QnA.png)
+![](https://i.imgur.com/Zs1AWgC.png)  |  ![](https://i.imgur.com/gJ3RcVS.png)
 
-![](https://i.imgur.com/64KvzFt.png)  |  ![](https://i.imgur.com/6ZllqGM.png)
+![](https://i.imgur.com/M8S4tj1.png)  |  ![](https://i.imgur.com/YPtvDRA.png)
 
 
 ## Information
@@ -16,7 +16,7 @@ AQLite is a client made for AQWorlds that provides all sorts of Quality of Life 
 * Click the text that says "CLICK ME FOR LAUNCHER DOWNLOAD OPTIONS"
 * Choose and Download the .zip file according to your operating system
 * Extract the file and run the program
-* If you get ElectronJS, make sure to Force Update your client! (The latest version is Version 10.1!)
+* If you get ElectronJS, make sure to Force Update your client! (The latest version is Version 11!)
 
 ## Stuck at 0%
 **Client stuck at 0?**

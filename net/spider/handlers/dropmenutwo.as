@@ -15,6 +15,7 @@ package net.spider.handlers{
     import net.spider.handlers.DrawEvent;
     import flash.utils.getQualifiedClassName;
     import com.adobe.utils.StringUtil;
+    import net.spider.handlers.optionHandler;
 
     public class dropmenutwo extends MovieClip {
         public static var events:EventDispatcher = new EventDispatcher();
@@ -83,7 +84,7 @@ package net.spider.handlers{
 
         private static var dropTimer:Timer;
         public function onToggle(e:Event):void{
-            if(options.sbpcDrops){
+            if(optionHandler.sbpcDrops){
                 var pos:* = main.sharedObject.data.dmtPos;
                 if(pos){
                     this.x = pos.x;
@@ -133,7 +134,7 @@ package net.spider.handlers{
         }
 
         public function isBlacklisted(item:String):Boolean{
-            for each(var blacklisted:* in options.blackListed){
+            for each(var blacklisted:* in optionHandler.blackListed){
                 if(item.indexOf(" X") != -1)
                     item = item.substring(0, item.lastIndexOf(" X"));
                 if(StringUtil.trim(item) == StringUtil.trim(blacklisted.label)){
@@ -206,7 +207,7 @@ package net.spider.handlers{
             var ctr:int = 0;
             for each(var item:* in invTree){
                 var dropItemGet:* = new dEntry(item, itemCount[item.dID]);
-                if(options.filterChecks["chkInvertDrop"]){
+                if(optionHandler.filterChecks["chkInvertDrop"]){
                     dropItemGet.x = 2;
                     dropItemGet.y = (161)+(21.5*ctr);
                 }else{
@@ -219,7 +220,7 @@ package net.spider.handlers{
                 ctr++;
             }
             this.txtQty.text = " x " + qtyCtr;
-            if(options.filterChecks["chkInvertDrop"]){
+            if(optionHandler.filterChecks["chkInvertDrop"]){
                 this.menu.menuBG.y = ((158)); 
                 this.menu.menuBG.height = 21.5*(ctr) + 6;
             }else{

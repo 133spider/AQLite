@@ -8,14 +8,26 @@ package net.spider.draw{
     import flash.utils.*;
     import fl.data.DataProvider;
     import net.spider.main;
+    import fl.controls.TextInput;
+    import fl.managers.StyleManager;
 
     public class colorSets extends MovieClip {
 
         public var mode:String;
 
         public function colorSets(){ 
-            this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
-			this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
+            this.txtRed.text = "255";
+            this.txtGreen.text = "255";
+            this.txtBlue.text = "255";
+            this.txtHex.text = "#ffffff";
+
+            this.txtColor1.text = "#ffffff";
+            this.txtColor2.text = "#ffffff";
+            this.txtColor3.text = "#ffffff";
+            this.txtName.text = "My Color Set 1";
+
+            this.bg.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
+			this.bg.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
 
             this.cbSets.addEventListener(MouseEvent.CLICK, onCbSets, false, 0, true);
             this.cbSets.addEventListener(Event.CHANGE, onCbSets, false, 0, true);

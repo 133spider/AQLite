@@ -75,9 +75,9 @@ package net.spider.modules{
 
             this.btnClose.addEventListener(MouseEvent.CLICK, onClose, false, 0, true);
 
-            optTimer = new Timer(0);
+            /**optTimer = new Timer(0);
 			optTimer.addEventListener(TimerEvent.TIMER, onTimer);
-            optTimer.start();
+            optTimer.start();**/
         }
 
         public function readSettings(e:ClientEvent):void{
@@ -375,7 +375,7 @@ package net.spider.modules{
 
         public function onUpdateCheck(e:ClientEvent):void{
             if(!main.isUpdated){
-                this.txtVersion.text = "Version 9 - BETA (OUTDATED)";
+                this.txtVersion.appendText(" (OUTDATED)");
                 this.txtVersion.textColor = 0xFF0000;
                 this.txtVersion.addEventListener(MouseEvent.CLICK, onGotoRelease);
             }
@@ -567,9 +567,9 @@ package net.spider.modules{
                 dispatch(dropmenutwo);
             }
             if(cDrops){
-                main.Game.ui.getChildByName("iconDrops").visible = true;
+                main.Game.ui.mcPortrait.getChildByName("iconDrops").visible = true;
             }else{
-                main.Game.ui.getChildByName("iconDrops").visible = false;
+                main.Game.ui.mcPortrait.getChildByName("iconDrops").visible = false;
             }
             dispatch(dropmenu);
             this.txtCDrops.text = cDrops ? "ON" : "OFF";

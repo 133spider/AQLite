@@ -11,7 +11,8 @@ package net.spider.modules{
 	import net.spider.handlers.DrawEvent;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
-	
+	import net.spider.handlers.optionHandler;
+
 	public class qrates extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
@@ -22,7 +23,7 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.qRates){
+			if(optionHandler.qRates){
 				qTimer = new Timer(0);
 				qTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				qTimer.start();

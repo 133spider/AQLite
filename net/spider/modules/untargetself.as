@@ -8,6 +8,7 @@ package net.spider.modules{
 	import flash.utils.*;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
+	import net.spider.handlers.optionHandler;
 	
 	public class untargetself extends MovieClip{
 
@@ -19,7 +20,7 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.selfTarget){
+			if(optionHandler.selfTarget){
 				untargetTimer = new Timer(0);
 				untargetTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				untargetTimer.start();

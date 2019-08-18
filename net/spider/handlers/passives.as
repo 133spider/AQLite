@@ -10,6 +10,7 @@ package net.spider.handlers{
     import net.spider.main;
     import net.spider.modules.*;
     import net.spider.handlers.ClientEvent;
+	import net.spider.handlers.optionHandler;
 	
 	public class passives extends MovieClip {
 		
@@ -18,14 +19,12 @@ package net.spider.handlers{
 
 		public function passives() {
 			this.visible = false;
-			this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
-			this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
             passives.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
         public function onToggle(e:Event):void{
 			lastClass = "";
-            if(options.passive){
+            if(optionHandler.passive){
 				passivesTimer = new Timer(0);
 				passivesTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				passivesTimer.start();
@@ -127,33 +126,6 @@ package net.spider.handlers{
 			rnkDisplay.htmlText = (("<font face='Arial' size='11' color='" + textCol) + "'><b>") + "Rank 10</b></font>";
 			mcPanel.addChild(rnkDisplay)
 			lastClass = main.Game.world.myAvatar.objData.strClassName;
-		}
-
-		var size:*;
-		public function resizeMe():void{
-			size = this.passivesTxt.textWidth + 8;
-			if(size > 150){
-				this.head.width = size;
-				this.titleBar.width = size - 27;
-				this.passivesTxt.width = size;
-				this.back.width = size;
-			}else{
-				this.head.width = 150;
-				this.titleBar.width = 150 - 27;
-				this.passivesTxt.width = 150;
-				this.back.width = 150;
-			}
-			size = this.passivesTxt.textHeight + 5;
-			this.passivesTxt.height = size;
-			this.back.height = size;
-		}
-		
-		private function onHold(e:MouseEvent):void{
-			this.startDrag();
-		}
-		
-		private function onMouseRelease(e:MouseEvent):void{
-			this.stopDrag();
 		}
 	}
 	

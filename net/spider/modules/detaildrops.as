@@ -10,6 +10,7 @@ package net.spider.modules{
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
 	import net.spider.handlers.SFSEvent;
+	import net.spider.handlers.optionHandler;
 
 	
 	public class detaildrops extends MovieClip{
@@ -19,19 +20,20 @@ package net.spider.modules{
 
 		public static function onCreate():void{
 			detaildrops.events.addEventListener(ClientEvent.onToggle, onToggle);
-			main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(options.detaildrop){
+			if(optionHandler.detaildrop){
 				dropTimer = new Timer(100);
 				dropTimer.addEventListener(TimerEvent.TIMER, onTimer);
 				dropTimer.start();
 				itemArchive = new Array();
+				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}else{
 				dropTimer.reset();
 				dropTimer.removeEventListener(TimerEvent.TIMER, onTimer);
 				itemArchive = null;
+				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}
 		}
 
