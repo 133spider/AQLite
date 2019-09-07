@@ -86,17 +86,13 @@ package net.spider.handlers{
             }
         }
 
-        private static var dropTimer:Timer;
         public function onToggle(e:Event):void{
             if(optionHandler.cDrops){
                 main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-                dropTimer = new Timer(0);
-				dropTimer.addEventListener(TimerEvent.TIMER, onDropTimer);
-				dropTimer.start();
+                main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame);
             }else{
                 main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-                dropTimer.reset();
-				dropTimer.removeEventListener(TimerEvent.TIMER, onDropTimer);
+                main._stage.removeEventListener(Event.ENTER_FRAME, onDropFrame);
                 if(main.Game.ui.dropStack.numChildren < 1)
                     return;
                 for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
@@ -110,7 +106,7 @@ package net.spider.handlers{
             }
         }
 
-        public function onDropTimer(e:TimerEvent):void{
+        public function onDropFrame(e:Event):void{
             if(!main.Game.sfc.isConnected){
                 itemCount = {};
                 invTree = new Array();
@@ -779,6 +775,7 @@ package net.spider.handlers{
             world = (rootClass.world as MovieClip);
             CHARS = (rootClass.world.CHARS as MovieClip);
             mc = (this as MovieClip);
+            mc.preview.bTry.buttonMode = true;
             mc.preview.bAdd.buttonMode = true;
             mc.preview.bDel.buttonMode = true;
             mc.preview.t2.mouseEnabled = false;

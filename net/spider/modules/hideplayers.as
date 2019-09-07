@@ -13,20 +13,13 @@ package net.spider.modules{
 	public class hideplayers extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var hideTimer:Timer;
 
 		public static function onCreate():void{
 			hideplayers.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.hideP){
-				hideTimer = new Timer(0);
-				hideTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				hideTimer.start();
-			}else{
-				hideTimer.reset();
-				hideTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+			if(!optionHandler.hideP){
 				for(var playerMC:* in main.Game.world.avatars)
 					if(!main.Game.world.avatars[playerMC].isMyAvatar && main.Game.world.avatars[playerMC].pMC)
 						if(!main.Game.world.avatars[playerMC].pMC.mcChar.visible){
@@ -37,8 +30,8 @@ package net.spider.modules{
 			}
 		}
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.myAvatar)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.hideP || !main.Game.sfc.isConnected || !main.Game.world.myAvatar)
 				return;
 			for(var playerMC:* in main.Game.world.avatars)
 				if(!main.Game.world.avatars[playerMC].isMyAvatar && main.Game.world.avatars[playerMC].pMC)

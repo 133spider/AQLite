@@ -14,28 +14,20 @@ package net.spider.modules{
 	public class colorsets extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var colorTimer:Timer;
 
 		public static function onCreate():void{
 			colorsets.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.bColorSets){
-				colorTimer = new Timer(0);
-				colorTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				colorTimer.start();
-			}else{
-				colorTimer.reset();
-				colorTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-			}
+			//optionHandler.bColorSets
 		}
 
         private static var performOnceFlag:Boolean;
         private static var performOnceFlag2:Boolean;
 		private static var _menu:colorSets;
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.bColorSets || !main.Game.sfc.isConnected)
 				return;
 			if(main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor") && !performOnceFlag){
                 if(!main.Game.ui.getChildByName("colorSets")){

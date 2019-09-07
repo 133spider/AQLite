@@ -12,7 +12,6 @@ package net.spider.draw{
     import net.spider.draw.colorSets;
 
     public class tryMe extends MovieClip {
-        private var shopTimer:Timer;
         public function tryMe(){
             this.visible = false;
             this.btnTry.visible = false;
@@ -23,12 +22,10 @@ package net.spider.draw{
             this.txtMerge.mouseEnabled = false;
             this.btnTry.addEventListener(MouseEvent.CLICK, onBtnTry);
             this.btnTryMerge.addEventListener(MouseEvent.CLICK, onBtnTry);
-            shopTimer = new Timer(0);
-			shopTimer.addEventListener(TimerEvent.TIMER, onTimer);
-            shopTimer.start();
+            this.addEventListener(Event.ENTER_FRAME, onFrame);
         }
 
-        public function onTimer(e:TimerEvent):void{
+        public function onFrame(e:Event):void{
             if(!main.Game)
                 return;
             if(!main.Game.ui)

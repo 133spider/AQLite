@@ -16,26 +16,18 @@ package net.spider.modules{
 	public class qrates extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var qTimer:Timer;
 
 		public static function onCreate():void{
 			qrates.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.qRates){
-				qTimer = new Timer(0);
-				qTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				qTimer.start();
-			}else{
-				qTimer.reset();
-				qTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-			}
+			//optionHandler.qRates
 		}
 
 		public static var doneOnce:Boolean = false;
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.qRates || !main.Game.sfc.isConnected)
 				return;
 			if (main.Game.ui.ModalStack.numChildren)
 			{

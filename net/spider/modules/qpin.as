@@ -14,12 +14,10 @@ package net.spider.modules{
 	public class qpin extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var pinTimer:Timer;
 		public static function onCreate():void{
 			pinnedQuests = "";
 			qpin.events.addEventListener(ClientEvent.onToggle, onToggle);
 			main.rootDisplay.getChildByName("mcQuestPin").btPin.addEventListener(MouseEvent.CLICK, onPin);
-			pinTimer = new Timer(0);
 		}
 
 		public static function setVisiblity(e:Boolean):void{
@@ -36,15 +34,11 @@ package net.spider.modules{
 
 		public static function onToggle(e:Event):void{
 			if(optionHandler.qPin){
-				pinTimer.addEventListener(TimerEvent.TIMER, onShowPin);
-				pinTimer.start()
 				if(main.Game.ui){
 					main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, onPinQuests);
 					main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick);
 				}
 			}else{
-				pinTimer.reset();
-				pinTimer.removeEventListener(TimerEvent.TIMER, onShowPin);
 				main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, onPinQuests);
 				main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick);
 			}
@@ -57,8 +51,8 @@ package net.spider.modules{
 		}
 
 		private static var frame:*;
-		public static function onShowPin(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
+		public static function onFrameUpdate():void{
+			if(!optionHandler.qPin || !main.Game.sfc.isConnected)
 				return;
 			if (main.Game.ui.ModalStack.numChildren)
 			{

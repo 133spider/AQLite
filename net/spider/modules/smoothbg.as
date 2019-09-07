@@ -13,25 +13,17 @@ package net.spider.modules{
 	public class smoothbg extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var smoothTimer:Timer;
 
 		public static function onCreate():void{
 			smoothbg.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.smoothBG){
-				smoothTimer = new Timer(0);
-				smoothTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				smoothTimer.start();
-			}else{
-				smoothTimer.reset();
-				smoothTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-			}
+			//optionHandler.smoothBG
 		}
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.world)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.smoothBG || !main.Game.world)
 				return;
 			if(!main.Game.world.map)
 				return;

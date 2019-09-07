@@ -16,7 +16,7 @@ AQLite is a client made for AQWorlds that provides all sorts of Quality of Life 
 * Click the text that says "CLICK ME FOR LAUNCHER DOWNLOAD OPTIONS"
 * Choose and Download the .zip file according to your operating system
 * Extract the file and run the program
-* If you get ElectronJS, make sure to Force Update your client! (The latest version is Version 11!)
+* If you get ElectronJS, make sure to Force Update your client! (The latest version is Version 11.1!)
 
 ## Stuck at 0%
 **Client stuck at 0?**

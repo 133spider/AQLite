@@ -16,26 +16,18 @@ package net.spider.modules{
 	public class detailquests extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var qTimer:Timer;
 
 		public static function onCreate():void{
 			detailquests.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.detailquest){
-				qTimer = new Timer(0);
-				qTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				qTimer.start();
-			}else{
-				qTimer.reset();
-				qTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-			}
+			//optionHandler.detailquest
 		}
 
 		public static var frame:*;
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.detailquest || !main.Game.sfc.isConnected)
 				return;
 			if (main.Game.ui.ModalStack.numChildren)
 			{

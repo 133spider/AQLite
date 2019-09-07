@@ -50,6 +50,7 @@ package net.spider.handlers{
         public static var bColorSets:Boolean;
         public static var alphaBOL:Boolean;
         public static var bTheArchive:Boolean;
+        public static var cleanRep:Boolean;
 
         public static var filterChecks:Object = new Object();
         public static var blackListed:Array = new Array();
@@ -220,6 +221,7 @@ package net.spider.handlers{
 
             alphaBOL = main.sharedObject.data.alphaBOL;
             bTheArchive = main.sharedObject.data.theArchive;
+            cleanRep = main.sharedObject.data.cleanRep;
         }
 
         public static var colorPickerMC:colorPicker;
@@ -488,6 +490,11 @@ package net.spider.handlers{
                 case "The Archive":
                     bTheArchive = !bTheArchive;
                     main.sharedObject.data.theArchive = bTheArchive;
+                    main.sharedObject.flush();
+                    break;
+                case "Clean Reputation List":
+                    cleanRep = !cleanRep;
+                    main.sharedObject.data.cleanRep = cleanRep;
                     main.sharedObject.flush();
                     break;
                 default: break;

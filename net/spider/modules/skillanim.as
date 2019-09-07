@@ -13,29 +13,17 @@ package net.spider.modules{
 	public class skillanim extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var animTimer:Timer;
 
 		public static function onCreate():void{
 			skillanim.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.disableSkillAnim){
-				animTimer = new Timer(0);
-				animTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				animTimer.start();
-			}else{
-				animTimer.reset();
-				animTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-			}
+			//optionHandler.disableSkillAnim
 		}
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
-				return;
-			if(!main.Game.world.myAvatar)
-				return;
-			if(!main.Game.world.myAvatar.pMC.spFX)
+        public static function onTimerUpdate():void{
+			if(!optionHandler.disableSkillAnim || !main.Game.sfc.isConnected || !main.Game.world.myAvatar || !main.Game.world.myAvatar.pMC.spFX)
 				return;
 			if(main.Game.world.avatars.length < 2 && !optionHandler.filterChecks["chkSelfOnly"]){
 				main.Game.world.myAvatar.pMC.spFX.strl = "";

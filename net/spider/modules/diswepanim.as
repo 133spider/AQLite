@@ -13,20 +13,13 @@ package net.spider.modules{
 	public class diswepanim extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var animTimer:Timer;
 
 		public static function onCreate():void{
 			diswepanim.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.disWepAnim){
-				animTimer = new Timer(0);
-				animTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				animTimer.start();
-			}else{
-				animTimer.reset();
-				animTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+			if(!optionHandler.disWepAnim){
 				for(var playerMC:* in main.Game.world.avatars){
 					if(!main.Game.world.avatars[playerMC].objData)
 						continue;
@@ -42,8 +35,8 @@ package net.spider.modules{
 			}
 		}
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.myAvatar)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.disWepAnim || !main.Game.sfc.isConnected || !main.Game.world.myAvatar)
 				return;
 			for(var playerMC:* in main.Game.world.avatars){
 				if(!main.Game.world.avatars[playerMC].objData)

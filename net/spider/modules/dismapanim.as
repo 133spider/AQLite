@@ -14,20 +14,13 @@ package net.spider.modules{
 	public class dismapanim extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var animTimer:Timer;
 
 		public static function onCreate():void{
 			dismapanim.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.disMapAnim){
-				animTimer = new Timer(0);
-				animTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				animTimer.start();
-			}else{
-				animTimer.reset();
-				animTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+			if(!optionHandler.disMapAnim){
 				propPlay(main.Game.world.CHARS);
 				var ctr:Number = 0;
 				while(ctr < main.Game.world.map.numChildren){
@@ -62,8 +55,8 @@ package net.spider.modules{
                 }
         }
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.disMapAnim || !main.Game.sfc.isConnected)
 				return;
 			if(!main.Game.world.map)
 				return;

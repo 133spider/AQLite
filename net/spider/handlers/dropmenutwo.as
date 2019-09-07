@@ -82,7 +82,6 @@ package net.spider.handlers{
             }
         }
 
-        private static var dropTimer:Timer;
         public function onToggle(e:Event):void{
             if(optionHandler.sbpcDrops){
                 var pos:* = main.sharedObject.data.dmtPos;
@@ -92,14 +91,11 @@ package net.spider.handlers{
                 }
                 this.visible = true;
                 main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-                dropTimer = new Timer(0);
-				dropTimer.addEventListener(TimerEvent.TIMER, onDropTimer);
-				dropTimer.start();
+                main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame);
             }else{
                 this.visible = false;
                 main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-                dropTimer.reset();
-				dropTimer.removeEventListener(TimerEvent.TIMER, onDropTimer);
+                main._stage.removeEventListener(Event.ENTER_FRAME, onDropFrame);
                 if(main.Game.ui.dropStack.numChildren < 1)
                     return;
                 for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
@@ -114,7 +110,7 @@ package net.spider.handlers{
             }
         }
 
-        public function onDropTimer(e:TimerEvent):void{
+        public function onDropFrame(e:Event):void{
             if(!main.Game.sfc.isConnected){
                 itemCount = {};
                 invTree = new Array();

@@ -14,37 +14,125 @@
 	public class modules extends MovieClip{
 
 		private static var maintainTimer:Timer;
+		private static var moduleList:Array;
 		public static function create():void{
+
 			optionHandler.onCreate();
-			drops.onCreate();
-			skillanim.onCreate();
-			hideplayers.onCreate();
-			monstype.onCreate();
-			qrates.onCreate();
-			qprev.onCreate();
-			qlog.onCreate();
-			untarget.onCreate();
-			chatfilter.onCreate();
-			untargetself.onCreate();
-			diswepanim.onCreate();
-			detaildrops.onCreate();
-			detailquests.onCreate();
-			dismonanim.onCreate();
-			bitmap.onCreate();
-			cskillanim.onCreate();
-			qaccept.onCreate();
-			qpin.onCreate();
-			dismapanim.onCreate();
-			lockmons.onCreate();
-			smoothbg.onCreate();
-			colorsets.onCreate();
-			boosts.onCreate();
-			hidemonsters.onCreate();
+
+			moduleList = [
+				{
+					moduleClass: passives,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: drops,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: skillanim,
+					moduleType: "Timer"
+				},
+				{
+					moduleClass: hideplayers,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: monstype,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: qrates,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: qprev,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: qlog,
+					moduleType: ""
+				},
+				{
+					moduleClass: untarget,
+					moduleType: "Timer"
+				},
+				{
+					moduleClass: chatfilter,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: untargetself,
+					moduleType: "Timer"
+				},
+				{
+					moduleClass: diswepanim,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: detaildrops,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: detailquests,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: dismonanim,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: bitmap,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: cskillanim,
+					moduleType: "Timer"
+				},
+				{
+					moduleClass: qaccept,
+					moduleType: ""
+				},
+				{
+					moduleClass: qpin,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: dismapanim,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: lockmons,
+					moduleType: "Timer"
+				},
+				{
+					moduleClass: smoothbg,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: colorsets,
+					moduleType: "Frame"
+				},
+				{
+					moduleClass: boosts,
+					moduleType: "Timer"
+				},
+				{
+					moduleClass: hidemonsters,
+					moduleType: "Frame"
+				},
+			]
+
+			for each(var _module:* in moduleList){
+				_module.moduleClass.onCreate();
+			}
 
 			optionHandler.events.dispatchEvent(new ClientEvent(ClientEvent.onEnable));
 			main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+
+			main._stage.addEventListener(Event.ENTER_FRAME, onMaintainFrame);
+
 			maintainTimer = new Timer(0);
-			maintainTimer.addEventListener(TimerEvent.TIMER, onMaintain);
+			maintainTimer.addEventListener(TimerEvent.TIMER, onMaintainTimer);
 			maintainTimer.start();
 		}
 
@@ -62,13 +150,27 @@
 			var inv:MovieClip;
 			if(main.Game.ui.mcPopup.currentLabel == "Shop"){
 				inv = MovieClip(e.currentTarget.multiPanel.frames[5].mc.scr);
+			}else if(main.Game.ui.mcPopup.currentLabel == "MergeShop"){
+				inv = MovieClip(e.currentTarget.mergePanel.frames[8].mc.scr);
 			}else{
 				inv = MovieClip(e.currentTarget.multiPanel.frames[4].mc.scr);
 			}
 
 			if(e.delta > 0){
+				var oldY:Number = e.currentTarget.mergePanel.frames[8].mc.scr.h.y;
 				for (var i:Number = 0; i < e.delta; i++) {
 					inv.a1.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+				}
+				if(oldY == e.currentTarget.mergePanel.frames[8].mc.scr.h.y){ //fix for bank up key not working in weapons / helm tab && merge shop up key
+					e.currentTarget.mergePanel.frames[8].mc.scr.h.y -= (e.delta * 1.1);
+					if(e.currentTarget.mergePanel.frames[8].mc.scr.h.y + e.currentTarget.mergePanel.frames[8].mc.scr.h.height > e.currentTarget.mergePanel.frames[8].mc.scr.b.height)
+					{
+						e.currentTarget.mergePanel.frames[8].mc.scr.h.y = int(e.currentTarget.mergePanel.frames[8].mc.scr.b.height - e.currentTarget.mergePanel.frames[8].mc.scr.h.height);
+					}
+					if(e.currentTarget.mergePanel.frames[8].mc.scr.h.y < 0)
+					{
+						e.currentTarget.mergePanel.frames[8].mc.scr.h.y = 0;
+					}
 				}
 			}else{
 				for (var j:Number = 0; j < (e.delta*-1); j++) {
@@ -112,21 +214,16 @@
 		public static function _func_flag(e:MouseEvent):void{
 			trace("Garbage temporary function flag for btnQuests");
 		}
-		
-		private static var houseEvent:Boolean;
+
 		private static var performOnceFlag:Boolean = false;
-		public static function onMaintain(e:TimerEvent):void{
-			if(!main.Game)
-				return;
-			if(!main.Game.ui)
+		public static function onMaintainFrame(e:Event):void{
+			if(!main.Game || !main.Game.ui)
 				return;
 
-			if(!houseEvent && main.Game.ui.mcInterface.mcMenu.btnHouse){
-				main.Game.ui.mcInterface.mcMenu.btnHouse.addEventListener(MouseEvent.CLICK, onHouseClick);
-				houseEvent = true;
-			}else if(houseEvent && main.Game.currentLabel == "Login"){
-				main.Game.ui.mcInterface.mcMenu.btnHouse.removeEventListener(MouseEvent.CLICK, onHouseClick);
-				houseEvent = false;
+			for each(var _module:* in moduleList){
+				if(_module.moduleType == "Frame"){
+					_module.moduleClass.onFrameUpdate();
+				}
 			}
 
 			if(main.Game.ui.mcPopup.currentLabel == "Book"){
@@ -185,6 +282,40 @@
             }else if(performOnceFlag && !main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor")){
                 performOnceFlag = false;
             }
+		}
+		
+		private static var houseEvent:Boolean;
+		public static function onMaintainTimer(e:TimerEvent):void{
+			if(!main.Game || !main.Game.ui)
+				return;
+			
+			for each(var _module:* in moduleList){
+				if(_module.moduleType == "Timer"){
+					_module.moduleClass.onTimerUpdate();
+				}
+			}
+
+			if(!houseEvent && main.Game.ui.mcInterface.mcMenu.btnHouse){
+				main.Game.ui.mcInterface.mcMenu.btnHouse.addEventListener(MouseEvent.CLICK, onHouseClick);
+				houseEvent = true;
+			}else if(houseEvent && main.Game.currentLabel == "Login"){
+				main.Game.ui.mcInterface.mcMenu.btnHouse.removeEventListener(MouseEvent.CLICK, onHouseClick);
+				houseEvent = false;
+			}
+
+			if(optionHandler.cleanRep && !main.Game.world.myAvatar.factions.hasOwnProperty("cleaned")){
+				for each(var faction:* in main.Game.world.myAvatar.factions){
+					if(faction.iRank == "10"){
+						faction.iSpillRep = 0;
+					}
+					if(faction.sName == "Blacksmithing" && faction.iRank == "4"){
+						faction.iSpellRep = 0;
+						faction.iRepToRank = 0;
+						faction.iRank = "10";
+					}
+				}
+				main.Game.world.myAvatar.factions.cleaned = true;
+			}
 		}
 
 		public static function onItemRollOver(param1:Event) : void

@@ -20,22 +20,13 @@ package net.spider.modules{
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.mType){
-				monsTimer = new Timer(0);
-				monsTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				monsTimer.start();
-			}else{
-				monsTimer.reset();
-				monsTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-			}
+			//optionHandler.mType
 		}
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
-				return;
-			if(main.Game.world.myAvatar == null)
-				return;
-			if(main.Game.world.myAvatar.target == null)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.mType || !main.Game.sfc.isConnected
+				|| (main.Game.world.myAvatar == null) 
+				|| (main.Game.world.myAvatar.target == null))
 				return;
 			if(main.Game.world.myAvatar.target.npcType == "monster")
 				if(main.Game.ui.mcPortraitTarget.strClass.text != main.Game.world.myAvatar.target.objData.sRace)

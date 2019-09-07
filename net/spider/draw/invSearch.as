@@ -10,16 +10,13 @@ package net.spider.draw{
     import net.spider.handlers.flags;
 
     public class invSearch extends MovieClip {
-        private var invTimer:Timer;
         public function invSearch(){
             this.visible = false;
             this.btnSearch.addEventListener(MouseEvent.CLICK, onInvSearch);
-            invTimer = new Timer(0);
-			invTimer.addEventListener(TimerEvent.TIMER, onTimer);
-            invTimer.start();
+            this.addEventListener(Event.ENTER_FRAME, onFrame);
         }
 
-        public function onTimer(e:TimerEvent):void{
+        public function onFrame(e:Event):void{
             if(!main.Game)
                 return;
             if(!main.Game.ui)

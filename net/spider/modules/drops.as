@@ -15,7 +15,6 @@ package net.spider.modules{
 	public class drops extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var dropTimer:Timer;
 
 		public static function onCreate():void{
 			drops.events.addEventListener(ClientEvent.onToggle, onToggle);
@@ -23,13 +22,8 @@ package net.spider.modules{
 
 		public static function onToggle(e:Event):void{
 			if(optionHandler.draggable){
-				dropTimer = new Timer(100);
-				dropTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				dropTimer.start();
 				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}else{
-				dropTimer.reset();
-				dropTimer.removeEventListener(TimerEvent.TIMER, onTimer);
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}
 		}
@@ -66,10 +60,8 @@ package net.spider.modules{
                 }
         }
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
-				return
-			if(main.Game.ui.dropStack.numChildren < 1)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.draggable || !main.Game.sfc.isConnected || (main.Game.ui.dropStack.numChildren < 1))
 				return;
 			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
 				try{

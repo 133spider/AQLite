@@ -13,20 +13,13 @@ package net.spider.modules{
 	public class lockmons extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var monsTimer:Timer;
 
 		public static function onCreate():void{
 			lockmons.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.lockm){
-				monsTimer = new Timer(0);
-				monsTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				monsTimer.start();
-			}else{
-				monsTimer.reset();
-				monsTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+			if(!optionHandler.lockm){
 				var mons:Array = main.Game.world.getMonstersByCell(main.Game.world.strFrame);
 				for each(var _m in mons){
 					if(!_m)
@@ -39,7 +32,7 @@ package net.spider.modules{
 			}
 		}
 
-        public static function onTimer(e:TimerEvent):void{
+        public static function onTimerUpdate():void{
 			if(!main.Game.sfc.isConnected)
 				return;
 			if(!main.Game.world.strFrame)

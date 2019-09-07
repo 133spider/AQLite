@@ -13,20 +13,13 @@ package net.spider.modules{
 	public class hidemonsters extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var hideTimer:Timer;
 
 		public static function onCreate():void{
 			hidemonsters.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.hideM){
-				hideTimer = new Timer(0);
-				hideTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				hideTimer.start();
-			}else{
-				hideTimer.reset();
-				hideTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+			if(!optionHandler.hideM){
                 if(!main.Game.world.strFrame)
 				    return;
                 var mons:Array = main.Game.world.getMonstersByCell(main.Game.world.strFrame);
@@ -43,8 +36,8 @@ package net.spider.modules{
 			}
 		}
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.myAvatar)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.hideM || !main.Game.sfc.isConnected || !main.Game.world.myAvatar)
 				return;
 			if(!main.Game.world.strFrame)
 				return;

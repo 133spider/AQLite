@@ -24,13 +24,13 @@ package net.spider.modules{
 
 		public static function onToggle(e:Event):void{
 			if(optionHandler.qLog){
-				//main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister);
+				if(main.Game.sfc.isConnected && main.Game.ui){
+					main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister);
+				}
 				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
-				//main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, main.Game.ui.mcInterface.mcMenu.onMouseClick);
 			}else{
-				//main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, onRegister);
+				main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, onRegister);
 				stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKey);
-				//main.Game.ui.mcInterface.mcMenu.btnQuest.getChildByName(menu.btnOpen).addEventListener(MouseEvent.CLICK, main.Game.ui.mcInterface.mcMenu.onMouseClick);
 			}
 		}
 

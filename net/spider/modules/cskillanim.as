@@ -14,13 +14,11 @@ package net.spider.modules{
 	public class cskillanim extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var animTimer:Timer;
 
 		private static var stage;
 		public static function onCreate():void{
 			stage = main._stage;
 			cskillanim.events.addEventListener(ClientEvent.onToggle, onToggle);
-			animTimer = new Timer(0);
 		}
 
 		public static function onToggle(e:Event):void{
@@ -32,21 +30,17 @@ package net.spider.modules{
 				}
 				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar);
 				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-				animTimer.addEventListener(TimerEvent.TIMER, onAnimTimer);
-				animTimer.start();
 			}else{
 				for(var j:* = 2; j < 6; j++){
 					main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
 				}
 				stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-				animTimer.reset();
-				animTimer.removeEventListener(TimerEvent.TIMER, onAnimTimer);
 			}
 		}
 
-		public static function onAnimTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
+		public static function onTimerUpdate():void{
+			if(!optionHandler.cSkillAnim || !main.Game.sfc.isConnected)
 				return;
 			main.Game.world.myAvatar.pMC.spFX.strl = "";
 		}
@@ -123,6 +117,8 @@ package net.spider.modules{
 
 		public static function actIconClick(e:*):void{
 			if(main.Game.world.myAvatar.objData.strClassName == "Void Highlord")
+				return;
+			if(main.Game.world.myAvatar.objData.strClassName != "Dragonlord")
 				return;
 			handleSkills(e.target.name);
 		}

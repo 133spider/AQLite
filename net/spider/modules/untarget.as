@@ -13,25 +13,17 @@ package net.spider.modules{
 	public class untarget extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var untargetTimer:Timer;
 
 		public static function onCreate():void{
 			untarget.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.untargetMon){
-				untargetTimer = new Timer(0);
-				untargetTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				untargetTimer.start();
-			}else{
-				untargetTimer.reset();
-				untargetTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-			}
+			//optionHandler.untargetMon
 		}
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.myAvatar)
+        public static function onTimerUpdate():void{
+			if(!optionHandler.untargetMon || !main.Game.sfc.isConnected || !main.Game.world.myAvatar)
 				return;
 			if(main.Game.world.myAvatar.target)
 				if(main.Game.world.myAvatar.target.dataLeaf.intState == 0)

@@ -17,26 +17,17 @@ package net.spider.handlers{
         public static var events:EventDispatcher = new EventDispatcher();
         private static var passivesTimer:Timer;
 
-		public function passives() {
-			this.visible = false;
+		public static function onCreate() {
             passives.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
-        public function onToggle(e:Event):void{
-			lastClass = "";
-            if(optionHandler.passive){
-				passivesTimer = new Timer(0);
-				passivesTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				passivesTimer.start();
-			}else{
-				passivesTimer.reset();
-				passivesTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-			}
+        public static function onToggle(e:Event):void{
+			lastClass = ""; //optionHandler.passive
         }
 
-		var lastClass:String;
-        public function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.actions.passive)
+		static var lastClass:String;
+        public static function onFrameUpdate():void{
+			if(!optionHandler.passive || !main.Game.sfc.isConnected || !main.Game.world.actions.passive)
 				return;
 
 			if(main.Game.ui.mcPopup.currentLabel == "Charpanel" && lastClass == main.Game.world.myAvatar.objData.strClassName)

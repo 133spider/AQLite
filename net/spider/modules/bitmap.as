@@ -15,20 +15,13 @@ package net.spider.modules{
 	public class bitmap extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var animTimer:Timer;
 
 		public static function onCreate():void{
 			bitmap.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.bitmapP){
-				animTimer = new Timer(0);
-				animTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				animTimer.start();
-			}else{
-				animTimer.reset();
-				animTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+			if(!optionHandler.bitmapP){
 				for(var playerMC:* in main.Game.world.avatars){
 					if((!main.Game.world.avatars[playerMC].dataLeaf) 
 						&& (main.Game.world.avatars[playerMC].dataLeaf.strFrame != main.Game.world.strFrame))
@@ -44,19 +37,14 @@ package net.spider.modules{
 							main.Game.world.avatars[playerMC].pMC.removeChild(main.Game.world.avatars[playerMC].pMC.getChildByName("avtCache"));
 							main.Game.world.avatars[playerMC].pMC.mcChar.visible = true;
 							main.Game.world.avatars[playerMC].pMC.mouseEnabled = true;
-							//main.Game.world.avatars[playerMC].pMC.mcChar.gotoAndPlay(0);
-							//movieClipPlayAll((main.Game.world.avatars[playerMC].pMC.mcChar as MovieClip));
-							//main.Game.world.avatars[playerMC].pMC.mcChar.cacheAsBitmap = false;
 						}catch(exception){}
 					}
 				}
 			}
 		}
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
-				return;
-			if(!main.Game.world.avatars)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.bitmapP || !main.Game.sfc.isConnected || !main.Game.world.avatars)
 				return;
 			for(var playerMC:* in main.Game.world.avatars){
 				if((!main.Game.world.avatars[playerMC].dataLeaf) 
@@ -75,8 +63,6 @@ package net.spider.modules{
 						main.Game.world.avatars[playerMC].pMC.mcChar.gotoAndStop("Idle");
 						trace("Rasterizing - " + main.Game.world.avatars[playerMC].pMC.pname.ti.text);
 						rasterize(main.Game.world.avatars[playerMC].pMC.mcChar);
-						//movieClipStopAll((main.Game.world.avatars[playerMC].pMC.mcChar as MovieClip));
-						//main.Game.world.avatars[playerMC].pMC.mcChar.cacheAsBitmap = true;
 					}catch(exception){}
 				}
 			}

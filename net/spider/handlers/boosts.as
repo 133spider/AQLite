@@ -16,26 +16,18 @@ package net.spider.handlers{
 	public class boosts extends MovieClip {
 		
         public static var events:EventDispatcher = new EventDispatcher();
-        private static var boostTimer:Timer;
 
 		public static function onCreate():void {
             boosts.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
         public static function onToggle(e:Event):void{
-            if(optionHandler.boost){
-				boostTimer = new Timer(0);
-				boostTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				boostTimer.start();
-			}else{
-				boostTimer.reset();
-				boostTimer.removeEventListener(TimerEvent.TIMER, onTimer);
-			}
+            //optionHandler.boost
         }
 
 		private static var runOnce:Boolean = false;
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
+        public static function onTimerUpdate():void{
+			if(!optionHandler.boost || !main.Game.sfc.isConnected)
 				return;
 			if(!main.Game.world.myAvatar)
 				return;

@@ -14,20 +14,13 @@ package net.spider.modules{
 	public class chatfilter extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var cTimer:Timer;
 
 		public static function onCreate():void{
 			chatfilter.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.chatFilter){
-				cTimer = new Timer(0);
-				cTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				cTimer.start();
-			}else{
-				cTimer.reset();
-				cTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+			if(!optionHandler.chatFilter){
 				clog = main.Game.ui.mcInterface.t1;
 				for(var i:uint = 0; i < clog.numChildren; i++){
 					if(!clog.getChildAt(i).getChildAt(0).ti)
@@ -40,8 +33,8 @@ package net.spider.modules{
 
 		private static var clog:*;
 		private static var txt:*;
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.chatFilter || !main.Game.sfc.isConnected)
 				return;
 			//main.Game.ui.mcInterface.t1.visible = false;
 			clog = main.Game.ui.mcInterface.t1;

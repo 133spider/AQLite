@@ -13,20 +13,13 @@ package net.spider.modules{
 	public class dismonanim extends MovieClip{
 
 		public static var events:EventDispatcher = new EventDispatcher();
-        private static var animTimer:Timer;
 
 		public static function onCreate():void{
 			dismonanim.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
 		public static function onToggle(e:Event):void{
-			if(optionHandler.disMonAnim){
-				animTimer = new Timer(0);
-				animTimer.addEventListener(TimerEvent.TIMER, onTimer);
-				animTimer.start();
-			}else{
-				animTimer.reset();
-				animTimer.removeEventListener(TimerEvent.TIMER, onTimer);
+			if(!optionHandler.disMonAnim){
 				for(var monsterMC:* in main.Game.world.monsters){
 					if((!main.Game.world.monsters[monsterMC].dataLeaf) 
 						&& (main.Game.world.monsters[monsterMC].dataLeaf.strFrame != main.Game.world.strFrame))
@@ -43,8 +36,8 @@ package net.spider.modules{
 			}
 		}
 
-        public static function onTimer(e:TimerEvent):void{
-			if(!main.Game.sfc.isConnected || !main.Game.world.monsters)
+        public static function onFrameUpdate():void{
+			if(!optionHandler.disMonAnim || !main.Game.sfc.isConnected || !main.Game.world.monsters)
 				return;
 			for(var monsterMC:* in main.Game.world.monsters){
 				if((!main.Game.world.monsters[monsterMC].dataLeaf) 

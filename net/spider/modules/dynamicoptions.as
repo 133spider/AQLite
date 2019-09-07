@@ -36,8 +36,6 @@ package net.spider.modules{
 		public var i:int;
 
 		public var optionGet:Array;
-		
-        private var optTimer:Timer;
 
 		private var toolTip:ToolTipMC;
 		private var toolTipMC:*;
@@ -61,9 +59,7 @@ package net.spider.modules{
 
 			dynamicoptions.events.addEventListener(ClientEvent.onUpdate, onUpdateCheck);
 
-            optTimer = new Timer(0);
-			optTimer.addEventListener(TimerEvent.TIMER, onTimer);
-            optTimer.start();
+            this.addEventListener(Event.ENTER_FRAME, onFrame);
 		}
 
 		public function initOptions():void{
@@ -282,6 +278,11 @@ package net.spider.modules{
 					strName: "The Archive",
 					bEnabled: main.sharedObject.data.theArchive,
 					sDesc: "A collection of forgotten/hidden/unpopular maps. If enabled, it can be found in Book of Lore -> Quests."
+				},
+				{
+					strName: "Clean Reputation List",
+					bEnabled: main.sharedObject.data.cleanRep,
+					sDesc: "Cleans the reputation list by making sure Rank 10's are displayed as 0/0\nBlacksmithing only goes up to Rank 4 and will be displayed as Rank 10\nIf you switch this to disabled, relogging in is required for changes to take effect"
 				}
 			];
 		}
@@ -302,7 +303,8 @@ package net.spider.modules{
             main.Game.ui.mcPopup.onClose();
         }
 
-        public function onTimer(e:TimerEvent):void{
+		private var runOnce:Boolean = true;
+        public function onFrame(e:Event):void{
             if(!main.Game){
                 this.visible = false;
                 return;
@@ -312,6 +314,12 @@ package net.spider.modules{
                 return;
             }
             this.visible = flags.isOptions();
+			if(this.visible && !runOnce){
+				runOnce = true;
+			}else if(!this.visible && runOnce){
+				main._stage.focus = null;
+				runOnce = false;
+			}
 
 			if(main.Game.ui.mcOFrame.currentLabel == "Idle" && main.Game.ui.mcOFrame.t1.txtTitle.text == "Friends List"){
 				main.Game.ui.mcOFrame.t1.txtTitle.text = "Friends List (" + main.Game.world.myAvatar.friends.length + "/40)";
