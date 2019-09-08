@@ -157,11 +157,7 @@
 			}
 
 			if(e.delta > 0){
-				var oldY:Number = e.currentTarget.mergePanel.frames[8].mc.scr.h.y;
-				for (var i:Number = 0; i < e.delta; i++) {
-					inv.a1.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-				}
-				if(oldY == e.currentTarget.mergePanel.frames[8].mc.scr.h.y){ //fix for bank up key not working in weapons / helm tab && merge shop up key
+				if(main.Game.ui.mcPopup.currentLabel == "MergeShop"){
 					e.currentTarget.mergePanel.frames[8].mc.scr.h.y -= (e.delta * 1.1);
 					if(e.currentTarget.mergePanel.frames[8].mc.scr.h.y + e.currentTarget.mergePanel.frames[8].mc.scr.h.height > e.currentTarget.mergePanel.frames[8].mc.scr.b.height)
 					{
@@ -171,6 +167,10 @@
 					{
 						e.currentTarget.mergePanel.frames[8].mc.scr.h.y = 0;
 					}
+					return;
+				}
+				for (var i:Number = 0; i < e.delta; i++) {
+					inv.a1.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 				}
 			}else{
 				for (var j:Number = 0; j < (e.delta*-1); j++) {
