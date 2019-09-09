@@ -33,9 +33,7 @@ package net.spider.modules{
 		}
 
         public static function onTimerUpdate():void{
-			if(!main.Game.sfc.isConnected)
-				return;
-			if(!main.Game.world.strFrame)
+			if(!optionHandler.lockm || !main.Game.sfc.isConnected || !main.Game.world.strFrame)
 				return;
 			var mons:Array = main.Game.world.getMonstersByCell(main.Game.world.strFrame);
 			for each(var _m in mons){

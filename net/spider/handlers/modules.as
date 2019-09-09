@@ -158,7 +158,7 @@
 
 			if(e.delta > 0){
 				if(main.Game.ui.mcPopup.currentLabel == "MergeShop"){
-					e.currentTarget.mergePanel.frames[8].mc.scr.h.y -= (e.delta * 1.1);
+					e.currentTarget.mergePanel.frames[8].mc.scr.h.y -= ((e.delta*3) * 1.1);
 					if(e.currentTarget.mergePanel.frames[8].mc.scr.h.y + e.currentTarget.mergePanel.frames[8].mc.scr.h.height > e.currentTarget.mergePanel.frames[8].mc.scr.b.height)
 					{
 						e.currentTarget.mergePanel.frames[8].mc.scr.h.y = int(e.currentTarget.mergePanel.frames[8].mc.scr.b.height - e.currentTarget.mergePanel.frames[8].mc.scr.h.height);

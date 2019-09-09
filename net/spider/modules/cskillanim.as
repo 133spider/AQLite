@@ -127,6 +127,8 @@ package net.spider.modules{
 		{
 			if(main.Game.world.myAvatar.objData.strClassName == "Void Highlord")
 				return;
+			if(main.Game.world.myAvatar.objData.strClassName != "Dragonlord")
+				return;
 			if(stage.focus == null || stage.focus != null && !("text" in stage.focus))
 			{
 				if(param1.charCode > 49 && param1.charCode < 55)
