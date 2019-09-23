@@ -42,7 +42,6 @@ package net.spider.modules{
 		public function dynamicoptions() {
 			toolTip = new ToolTipMC();
 			toolTipMC = this.addChild(toolTip);
-			//this.txtSearch.textField.defaultTextFormat = new TextFormat("Arial", 16, 0xFFFFFF);
             this.txtSearch.textField.background = true;
             this.txtSearch.textField.backgroundColor = 0x111111;
 
@@ -283,6 +282,11 @@ package net.spider.modules{
 					strName: "Clean Reputation List",
 					bEnabled: main.sharedObject.data.cleanRep,
 					sDesc: "Cleans the reputation list by making sure Rank 10's are displayed as 0/0\nBlacksmithing only goes up to Rank 4 and will be displayed as Rank 10\nIf you switch this to disabled, relogging in is required for changes to take effect"
+				},
+				{
+					strName: "Camera Tool",
+					extra: "btn",
+					sDesc: "WIP"
 				}
 			];
 		}

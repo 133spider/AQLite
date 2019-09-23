@@ -497,9 +497,16 @@ package net.spider.handlers{
                     main.sharedObject.data.cleanRep = cleanRep;
                     main.sharedObject.flush();
                     break;
+                case "Camera Tool":
+                    cameratoolMC = new cameratool();
+                    cameratoolMC.x = -7;
+                    main._stage.addChild(cameratoolMC);
+                    main.Game.world.visible = false;
+                    break;
                 default: break;
             }
         }
+        public static var cameratoolMC:cameratool;
 
         public static function dispatch(e:*):void{
             e.events.dispatchEvent(new ClientEvent(ClientEvent.onToggle));

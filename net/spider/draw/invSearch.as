@@ -12,7 +12,8 @@ package net.spider.draw{
     public class invSearch extends MovieClip {
         public function invSearch(){
             this.visible = false;
-            this.btnSearch.addEventListener(MouseEvent.CLICK, onInvSearch);
+            this.txtSearch.addEventListener(Event.CHANGE, onTextFormat);
+            this.txtSearch.addEventListener(KeyboardEvent.KEY_DOWN, onInvSearch);
             this.addEventListener(Event.ENTER_FRAME, onFrame);
         }
 
@@ -24,18 +25,19 @@ package net.spider.draw{
             this.visible = flags.isInventory();
         }
 
-        var toSend:Array;
-		function onInvSearch(e:MouseEvent):void{
-			if(main.Game.ui.mcPopup.getChildByName("mcInventory")){
-                toSend = new Array();
-				for each(var t:* in main.Game.world.myAvatar.items){
-					if(t.sName.toLowerCase().indexOf(this.txtSearch.text.toLowerCase()) > -1){
-						toSend.push(t);
-                    }
-				}
+        public function onFilter(inventory:*, index:int, arr:Array):Boolean {
+            return (inventory.sName.toLowerCase().indexOf(this.txtSearch.text.toLowerCase()) > -1);
+        }
+
+        public function onTextFormat(e:*):void{
+            this.txtSearch.textField.setTextFormat(new TextFormat("Arial", 16, 0xFFFFFF), this.txtSearch.textField.caretIndex-1);
+        }
+
+		function onInvSearch(e:KeyboardEvent):void{
+			if((e.charCode == 13) && main.Game.ui.mcPopup.getChildByName("mcInventory")){
                 MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory")).fOpen({
                     fData:{
-                        itemsInv:toSend,
+                        itemsInv:(this.txtSearch.text != "") ? main.Game.world.myAvatar.items.filter(onFilter) : main.Game.world.myAvatar.items,
                         objData:main.Game.world.myAvatar.objData
                     },
                     r:{
@@ -45,7 +47,7 @@ package net.spider.draw{
                         h:stage.stageHeight
                     },
                     sMode:"inventory"
-                });                 
+                });
 			}
 		}
     }
