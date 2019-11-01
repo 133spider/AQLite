@@ -21,9 +21,7 @@ package net.spider.handlers{
         public static var events:EventDispatcher = new EventDispatcher();
 
 		public function skills() {
-			this.visible = true;
-			this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
-			this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
+			this.visible = false;
             skills.events.addEventListener(ClientEvent.onToggle, onToggle);
 		}
 
@@ -33,12 +31,20 @@ package net.spider.handlers{
 				toolTip = new ToolTipMC();
 				main._stage.addChild(toolTip);
 			}
-            this.visible = optionHandler.skill;
+            //this.visible = optionHandler.skill;
             if(optionHandler.skill){
 				auras = new Object();
 				if(main.Game.ui){
 					for(var i:* = 2; i < 6; i++){
 						main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+					}
+					if(!main.Game.ui.mcPortrait.getChildByName("auraUI")){
+						var auraUI:MovieClip = main.Game.ui.mcPortrait.addChild(new MovieClip());
+						auraUI.name = "auraUI";
+						auraUI.x = 86;
+						auraUI.y = 82;
+						main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
+						main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
 					}
 				}
 				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar);
@@ -86,8 +92,10 @@ package net.spider.handlers{
 		public var icons:Object;
 		public var scalar:Number = .6;
 		public function createIconMC(auraName:String, auraStacks:Number, isEnemy:Boolean):void{
-			if(icons == null)
+			if(icons == null){
 				icons = new Object();
+				iconPriority = new Array();
+			}
 			if(!icons.hasOwnProperty(auraName)){
 				var icon:Class;
 				if(!isEnemy){
@@ -103,7 +111,7 @@ package net.spider.handlers{
 				var skillIcon:Class = main.gameDomain.getDefinition("ib2") as Class;
 				var base:MovieClip = new skillIcon();
 
-				icons[auraName] = this.addChild(base);
+				icons[auraName] = main.Game.ui.mcPortrait.getChildByName("auraUI").addChild(base);
 				icons[auraName].auraName = auraName;
 				icons[auraName].width = 42;
 				icons[auraName].height = 39;
@@ -126,6 +134,7 @@ package net.spider.handlers{
 				icons[auraName].mouseChildren = false;
 				icons[auraName].addEventListener(MouseEvent.MOUSE_OVER, onOver, false, 0, true);
 				icons[auraName].addEventListener(MouseEvent.MOUSE_OUT, onOut, false, 0, true);
+				iconPriority.push(auraName);
 			}
 			icons[auraName].auraStacks = auraStacks;
 		}
@@ -138,28 +147,19 @@ package net.spider.handlers{
             toolTip.close();
         }
 
+		var iconPriority:Array;
 		public function rearrangeIconMC():void{
-			var a:Array = new Array();
-			for each(var s:* in icons)
-			{
-				trace(s.auraName);
-				a.push(s);
-			}
-
-			a.reverse();
-
 			var nextRow:Number = 0;
 			var rowCtr:Number = 0;
-			for (var i:int = 0; i < (a.length); i++)
+			for (var i:int = 0; i < (iconPriority.length); i++)
 			{
-				if((i != 0) && (i % 8 == 0)){ //after the 8th item, next row
+				if((i != 0) && (i % 4 == 0)){ //after the 4th item, next row
 					nextRow += (28);
 					rowCtr++;
 				}
-				a[i].x = ((32)*(i-(8*rowCtr))) + 3;
-				a[i].y = nextRow;
+				icons[iconPriority[i]].x = ((32)*(i-(4*rowCtr))) + 3;
+				icons[iconPriority[i]].y = nextRow;
 			}
-			a = null;
 		}
 
 		public var auras:Object;
@@ -231,9 +231,18 @@ package net.spider.handlers{
 							lastSkill = main.Game.world.actions.active[0];
                             break;
 						case "sAct":
+							if(!main.Game.ui.mcPortrait.getChildByName("auraUI")){
+								var auraUI:MovieClip = main.Game.ui.mcPortrait.addChild(new MovieClip());
+								auraUI.name = "auraUI";
+								auraUI.x = 86;
+								auraUI.y = 82;
+								main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
+								main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
+							}
 							for(var k:* = 2; k < 6; k++){
 								main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 							}
+							lastSkill = main.Game.world.actions.active[0];
 							break;
                     }
                 }
@@ -288,6 +297,7 @@ package net.spider.handlers{
 				icon1.stacks = icon1.addChild(stackQty);
 				icon1.stacks.x = 32;
 				icon1.stacks.y = 27;
+				icon1.stacks.mouseEnabled = false;
 			}
 			else
 			{
@@ -360,23 +370,24 @@ package net.spider.handlers{
 				ct1.removeEventListener(Event.ENTER_FRAME, countDownAct);
 				icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OVER, onOver);
 				icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OUT, onOut);
-				this.stopDrag();
+				main.Game.ui.mcPortrait.getChildByName("auraUI").stopDrag();
 				toolTip.close();
 				ct2.parent.removeChild(ct2);
 				ct2.bitmapData.dispose();
 				ct1.icon2 = null;
-				this.removeChild(icons[ct1.auraName]);
+				main.Game.ui.mcPortrait.getChildByName("auraUI").removeChild(icons[ct1.auraName]);
+				iconPriority.splice(iconPriority.indexOf(ct1.auraName), 1);
 				delete icons[ct1.auraName];
 				rearrangeIconMC();
 			}
         }
 		
 		private function onHold(e:MouseEvent):void{
-			this.startDrag();
+			main.Game.ui.mcPortrait.getChildByName("auraUI").startDrag();
 		}
 		
 		private function onMouseRelease(e:MouseEvent):void{
-			this.stopDrag();
+			main.Game.ui.mcPortrait.getChildByName("auraUI").stopDrag();
 		}
 	}
 	

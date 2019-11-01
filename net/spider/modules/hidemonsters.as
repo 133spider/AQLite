@@ -59,7 +59,7 @@ package net.spider.modules{
 			}
 		}
 
-		private static function onClickHandler(e:MouseEvent):void{
+		public static function onClickHandler(e:MouseEvent):void{
             var tAvt:*;
             tAvt = e.currentTarget.parent.pAV;
             if (e.shiftKey)

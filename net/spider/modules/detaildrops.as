@@ -9,9 +9,11 @@ package net.spider.modules{
 	import flash.text.TextFormat;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
+	import net.spider.handlers.DrawEvent;
 	import net.spider.handlers.SFSEvent;
 	import net.spider.handlers.optionHandler;
-
+	import flash.filters.*;
+	import net.spider.draw.*;
 	
 	public class detaildrops extends MovieClip{
 
@@ -63,17 +65,15 @@ package net.spider.modules{
 						for each(var item:* in itemArchive){
 							if(item.sName == sName){
 								if(item.bCoins == 1){
-									var ac:mcCoin = new mcCoin();
-									ac.width = 25;
-									ac.height = 30;
-									ac.x = mcDrop.cnt.bg.width - 25; //w: 80
-									mcDrop.cnt.bg.addChild(ac);
+									var glowFilter:* = new GlowFilter(0xF6CA2A, 1, 8, 8, 2, 1, false, false);
+									mcDrop.filters = [glowFilter];
 								}
 								if(item.bUpg){
 									var txtFormat:TextFormat = mcDrop.cnt.strName.defaultTextFormat;
 									txtFormat.color = 0xFCC749;
 									mcDrop.cnt.strName.setTextFormat(txtFormat);
 								}
+								mcDrop.cnt.icon.addEventListener(MouseEvent.CLICK, onPreview(item));
 								var flag:mcCoin = new mcCoin();
 								flag.visible = false;
 								flag.name = "flag";
@@ -85,6 +85,12 @@ package net.spider.modules{
 					trace("Error handling drops: " + exception);
 				}
 			}
+		}
+		
+		public static function onPreview(itemObj:*):Function{
+			return function(e:MouseEvent):void {
+				dRender.events.dispatchEvent(new DrawEvent(DrawEvent.onBtPreview, itemObj));
+			};
 		}
 	}
 	

@@ -12,6 +12,7 @@ package net.spider.handlers{
 	import net.spider.handlers.SFSEvent;
 	import net.spider.handlers.flags;
 	import net.spider.handlers.optionHandler;
+	import com.adobe.utils.StringUtil;
 	
 	public class boosts extends MovieClip {
 		

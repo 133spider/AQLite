@@ -69,9 +69,9 @@ package net.spider.modules{
 					sDesc: "Allows you to drag the drops on your screen using your mouse"
 				},
 				{
-					strName: "Show Detailed Item Drops",
+					strName: "Detailed Item Drops",
 					bEnabled: main.sharedObject.data.detaildrop,
-					sDesc: "Identifies dropped items if they're member only, ac, or both"
+					sDesc: "Identifies dropped items if they're member only, ac, or both\nClick on the item icon to preview the item!"
 				},
 				{
 					strName: "Enhanced Item Descriptions",
@@ -79,17 +79,17 @@ package net.spider.modules{
 					sDesc: "Adds item stack amount and extra information to the item descriptions of the items in your inventory"
 				},
 				{
-					strName: "Show Quest Drop Rates",
+					strName: "Quest Drop Rates",
 					bEnabled: main.sharedObject.data.qRates,
 					sDesc: "Replaces AQW's Quest Drop Rates with AQLite's original Quest Drop Rates"
 				},
 				{
-					strName: "Show Quest Reward Previews",
+					strName: "Quest Reward Previews",
 					bEnabled: main.sharedObject.data.qPrev,
 					sDesc: "Allows you to click on quest rewards to preview their appearance. You can preview the equipment if you click on the '?' button!\nThe UI is draggable!"
 				},
 				{
-					strName: "Show Detailed Quest Rewards",
+					strName: "Detailed Quest Rewards",
 					bEnabled: main.sharedObject.data.detailquest,
 					sDesc: "Identifies quest rewards if they're member only, ac, or both"
 				},
@@ -141,7 +141,7 @@ package net.spider.modules{
 					sDesc: "This will freeze monsters on the map in place to prevent players from luring/dragging monsters all over the map"
 				},
 				{
-					strName: "Show Monster Type",
+					strName: "Monster Type",
 					bEnabled: main.sharedObject.data.mType,
 					sDesc: "Shows the monster type of your target"
 				},
@@ -158,7 +158,14 @@ package net.spider.modules{
 				{
 					strName: "Custom Drops UI",
 					bEnabled: main.sharedObject.data.cDrops,
-					sDesc: "A reimagined UI of AQW's drops"
+					sDesc: "A reimagined UI of AQW's drops",
+					extra: [
+						{
+							strName: "Drop Notifications",
+							bEnabled: main.sharedObject.data.filterChecks["chkCDropNotification"],
+							sDesc: "Every new item drop will have a drop notification accompanied with it"
+						}
+					]
 				},
 				{
 					strName: "SBP's Custom Drops UI",
@@ -225,6 +232,11 @@ package net.spider.modules{
 							strName: "Hide Blue Server Messages",
 							bEnabled: main.sharedObject.data.filterChecks["chkBlue"],
 							sDesc: "Hides blue server messages"
+						},
+						{
+							strName: "Disable Skill Warning Messages",
+							bEnabled: main.sharedObject.data.filterChecks["chkRedSkills"],
+							sDesc: "You must retoggle Chat Filter for this to work!\nDisables the skill not available warning messages"
 						}
 					]
 				},

@@ -30,7 +30,7 @@ package net.spider.modules{
 			if(!optionHandler.bColorSets || !main.Game.sfc.isConnected)
 				return;
 			if(main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor") && !performOnceFlag){
-                if(!main.Game.ui.getChildByName("colorSets")){
+                if(!main.Game.ui.mcPopup.mcCustomizeArmor.getChildByName("colorSets")){
 					_menu = new colorSets();
                     _menu.mode = "mcCustomizeArmor";
 					_menu.name = "colorSets";
@@ -45,7 +45,7 @@ package net.spider.modules{
             }
 
             if(main.Game.ui.mcPopup.getChildByName("mcCustomize") && !performOnceFlag2){
-                if(!main.Game.ui.getChildByName("colorSets")){
+                if(!main.Game.ui.mcPopup.mcCustomize.getChildByName("colorSets")){
 					_menu = new colorSets();
                     _menu.mode = "mcCustomize";
 					_menu.name = "colorSets";

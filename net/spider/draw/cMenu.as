@@ -6,6 +6,7 @@ package net.spider.draw{
     import flash.geom.*;
     import net.spider.main;
     import net.spider.handlers.optionHandler;
+    import net.spider.modules.hidemonsters;
 
     public class cMenu extends MovieClip {
 
@@ -35,6 +36,7 @@ package net.spider.draw{
             fData.pvpqueue = ["Leave Queue", "Close"];
             fData.offline = ["Delete Friend", "Close"];
             fData.ignored = ["Unignore", "Close"];
+            fData.mons = ["Freeze Monster", "Hide Monster", "Close"];
             fData.cl = [];
             fData.clc = [];
         }
@@ -89,6 +91,12 @@ package net.spider.draw{
                 }
                 if ((fData.cl[_local3] == "Hide Weapon") && !rootClass.world.getAvatarByUserName(_local5).pMC.mcChar.weapon.visible){
                     fData.cl[_local3] = "Show Weapon";
+                }
+                if ((fData.cl[_local3] == "Freeze Monster") && fData.params.target.noMove){
+                    fData.cl[_local3] = "UnFreeze Monster";
+                }
+                if ((fData.cl[_local3] == "Hide Monster") && !fData.params.target.getChildAt(1).visible){
+                    fData.cl[_local3] = "Show Monster";
                 }
                 _local8 = mc.cnt.addChild(new cProto());
                 _local8.name = ("i" + _local3);
@@ -219,6 +227,24 @@ package net.spider.draw{
             _local3 = fData.cl[iSel];
             var _local4:String = fData.params.strUsername;
             switch (_local3.toLowerCase()){
+                case "freeze monster":
+                    fData.params.target.noMove = true;
+                    break;
+                case "unfreeze monster":
+                    fData.params.target.noMove = false;
+                    break;
+                case "hide monster":
+                    fData.params.target.getChildAt(1).visible = false;
+                    fData.params.target.shadow.addEventListener(MouseEvent.CLICK, hidemonsters.onClickHandler, false, 0, true);
+                    fData.params.target.shadow.mouseEnabled = true;
+                    fData.params.target.shadow.buttonMode = true;
+                    break;
+                case "show monster":
+                    fData.params.target.getChildAt(1).visible = true;
+                    fData.params.target.shadow.removeEventListener(MouseEvent.CLICK, hidemonsters.onClickHandler);
+                    fData.params.target.shadow.mouseEnabled = false;
+                    fData.params.target.shadow.buttonMode = false;
+                    break;
                 case "char page":
                     rootClass.mixer.playSound("Click");
                     navigateToURL(new URLRequest(("http://www.aq.com/character.asp?id=" + _local4)), "_blank");
@@ -378,10 +404,10 @@ package net.spider.draw{
             }
         }
         private function mouseOn(_arg1:MouseEvent){
-            MovieClip(_arg1.currentTarget).cnt.gotoAndStop("hold");
+            this.cnt.gotoAndStop("hold");
         }
         private function mouseOut(_arg1:MouseEvent){
-            MovieClip(_arg1.currentTarget).cnt.gotoAndPlay("out");
+            this.cnt.gotoAndPlay("out");
         }
         function frame1(){
             visible = false;

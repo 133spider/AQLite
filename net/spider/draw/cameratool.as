@@ -912,6 +912,9 @@ package net.spider.draw{
                 return;
             }
             this.weaponUI.visible = !this.weaponUI.visible;    
+            if(this.weaponUI.visible){
+                this.setChildIndex(this.weaponUI, this.numChildren-1);
+            }
         }
 
         public var weaponFocus:int = 0; //0 = main, 1 = off, 2 = both

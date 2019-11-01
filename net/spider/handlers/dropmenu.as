@@ -170,6 +170,17 @@ package net.spider.handlers{
                                 }else{
                                     itemCount[dID] += int(resObj.items[dID].iQty);
                                 }
+                                if(optionHandler.filterChecks["chkCDropNotification"] && !resObj.items[dID].bTemp){
+                                    var dropClass:Class = main.Game.world.getClass("DFrameMC") as Class;
+                                    var droppedItem:* = main.Game.copyObj(resObj.items[dID]);
+                                    droppedItem.iQty = int(resObj.items[dID].iQty);
+                                    var dropUI:* = new (dropClass)(droppedItem);
+                                    main.Game.ui.dropStack.addChild(dropUI);
+                                    dropUI.init();
+                                    dropUI.fY = dropUI.y = -(dropUI.fHeight + 8);
+                                    dropUI.fX = dropUI.x = -(dropUI.fWidth / 2);
+                                    main.Game.cleanDropStack();
+                                }
                             };
                         fOpen();
                         break;

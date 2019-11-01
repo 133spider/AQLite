@@ -97,6 +97,16 @@ package net.spider.handlers{
                 main.sharedObject.flush();
             }
             filterChecks["chkInvertDrop"] = main.sharedObject.data.filterChecks["chkInvertDrop"];
+            if(main.sharedObject.data.filterChecks["chkRedSkills"] == null){
+                main.sharedObject.data.filterChecks["chkRedSkills"] = true;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkRedSkills"] = main.sharedObject.data.filterChecks["chkRedSkills"];
+            if(main.sharedObject.data.filterChecks["chkCDropNotification"] == null){
+                main.sharedObject.data.filterChecks["chkCDropNotification"] = true;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkCDropNotification"] = main.sharedObject.data.filterChecks["chkCDropNotification"];
             cDrops = main.sharedObject.data.cDrops;
             if(cDrops)
                 dispatch(dropmenu);

@@ -147,25 +147,18 @@
 		}
 
 		public static function onInvWheel(e:MouseEvent):void{
-			var inv:MovieClip;
-			if(main.Game.ui.mcPopup.currentLabel == "Shop"){
-				inv = MovieClip(e.currentTarget.multiPanel.frames[5].mc.scr);
-			}else if(main.Game.ui.mcPopup.currentLabel == "MergeShop"){
-				inv = MovieClip(e.currentTarget.mergePanel.frames[8].mc.scr);
-			}else{
-				inv = MovieClip(e.currentTarget.multiPanel.frames[4].mc.scr);
-			}
+			var inv:MovieClip = MovieClip(e.currentTarget.scr);
 
 			if(e.delta > 0){
 				if(main.Game.ui.mcPopup.currentLabel == "MergeShop"){
-					e.currentTarget.mergePanel.frames[8].mc.scr.h.y -= ((e.delta*3) * 1.1);
-					if(e.currentTarget.mergePanel.frames[8].mc.scr.h.y + e.currentTarget.mergePanel.frames[8].mc.scr.h.height > e.currentTarget.mergePanel.frames[8].mc.scr.b.height)
+					e.currentTarget.scr.h.y -= ((e.delta*3) * 1.1);
+					if(e.currentTarget.scr.h.y + e.currentTarget.scr.h.height > e.currentTarget.scr.b.height)
 					{
-						e.currentTarget.mergePanel.frames[8].mc.scr.h.y = int(e.currentTarget.mergePanel.frames[8].mc.scr.b.height - e.currentTarget.mergePanel.frames[8].mc.scr.h.height);
+						e.currentTarget.scr.h.y = int(e.currentTarget.scr.b.height - e.currentTarget.scr.h.height);
 					}
-					if(e.currentTarget.mergePanel.frames[8].mc.scr.h.y < 0)
+					if(e.currentTarget.scr.h.y < 0)
 					{
-						e.currentTarget.mergePanel.frames[8].mc.scr.h.y = 0;
+						e.currentTarget.scr.h.y = 0;
 					}
 					return;
 				}
@@ -177,6 +170,16 @@
 					inv.a2.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 				}
 			}
+		}
+
+		public static function onQuestWheel(e:MouseEvent):void{
+			var quest:MovieClip = MovieClip(e.currentTarget.scr);
+			quest.h.y  += (e.delta*-1)*3;
+
+			if(quest.h.y < 0)
+				quest.h.y = 0;
+			if(quest.h.y + quest.h.height > quest.b.height)
+				quest.h.y = int(quest.b.height - quest.h.height);
 		}
 
 		public static function onBankWheel(e:MouseEvent):void{
@@ -248,16 +251,37 @@
 			if(main.Game.ui.mcPopup.currentLabel == "Inventory")
 			{
 				if(main.Game.ui.mcPopup.getChildByName("mcInventory")){
-					if(!MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory")).hasEventListener(MouseEvent.MOUSE_WHEEL)){
-						MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory")).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
+					if(!MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory").multiPanel.frames[4].mc).hasEventListener(MouseEvent.MOUSE_WHEEL)){
+						MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory").multiPanel.frames[4].mc).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
+						MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory").splitPanel.frames[2].mc).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
 					}
 				}
 			}
 
-			if(main.Game.ui.mcPopup.currentLabel == "Shop" || main.Game.ui.mcPopup.currentLabel == "MergeShop")
+			if(main.Game.ui.mcPopup.currentLabel == "Shop")
 			{
-				if(!MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).hasEventListener(MouseEvent.MOUSE_WHEEL)){
-					MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
+				if(main.Game.ui.mcPopup.getChildByName("mcShop")){
+					if(!MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop").multiPanel.frames[5].mc).hasEventListener(MouseEvent.MOUSE_WHEEL)){
+						MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop").multiPanel.frames[5].mc).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
+						MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop").splitPanel.frames[2].mc).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
+					}
+				}
+			}
+
+			if(main.Game.ui.mcPopup.currentLabel == "MergeShop")
+			{
+				if(main.Game.ui.mcPopup.getChildByName("mcShop")){
+					if(!MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[8].mc).hasEventListener(MouseEvent.MOUSE_WHEEL)){
+						MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[8].mc).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
+					}
+				}
+			}
+
+			if (main.Game.ui.ModalStack.numChildren)
+			{
+				var frame:MovieClip = main.Game.ui.ModalStack.getChildAt(0);
+				if(!MovieClip(frame.cnt).hasEventListener(MouseEvent.MOUSE_WHEEL)){
+					MovieClip(frame.cnt).addEventListener(MouseEvent.MOUSE_WHEEL, onQuestWheel, false, 0, true);
 				}
 			}
 

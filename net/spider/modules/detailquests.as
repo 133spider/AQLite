@@ -7,7 +7,7 @@ package net.spider.modules{
 	import flash.ui.*;
 	import flash.utils.*;
 	import flash.text.TextFormat;
-	import net.spider.draw.dRender;
+	import net.spider.draw.*;
 	import net.spider.handlers.DrawEvent;
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
@@ -57,10 +57,11 @@ package net.spider.modules{
 							for each(var k:* in j){
 								if(k.ItemID == s["ItemID"]){
 									if(k.bCoins == 1){
-										var ac:mcCoin = new mcCoin();
-										ac.width = 20;
-										ac.height = 20;
-										ac.x = itemUI.bg.width - 20; //w: 80
+										var ac:fadedAC = new fadedAC();
+										ac.width = 68.55;
+										ac.height = 38.10;
+										ac.x = itemUI.bg.width - 72; //w: 80
+										ac.alpha = 0.25;
 										itemUI.addChild(ac);
 									}
 									if(k.bUpg){

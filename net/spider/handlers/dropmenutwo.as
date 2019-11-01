@@ -89,7 +89,7 @@ package net.spider.handlers{
                     this.x = pos.x;
                     this.y = pos.y;
                 }
-                this.visible = true;
+                this.visible = false;
                 main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
                 main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame);
             }else{
