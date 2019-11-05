@@ -244,7 +244,7 @@ package net.spider.handlers{
                     main.sharedObject.data.draggable = draggable;
                     main.sharedObject.flush();
                     break;
-                case "Show Detailed Item Drops":
+                case "Detailed Item Drops":
                     detaildrop = !detaildrop;
                     dispatch(detaildrops);
                     main.sharedObject.data.detaildrop = detaildrop;
@@ -256,19 +256,19 @@ package net.spider.handlers{
                     main.sharedObject.data.boost = boost;
                     main.sharedObject.flush();
                     break;
-                case "Show Quest Drop Rates":
+                case "Quest Drop Rates":
                     qRates = !qRates;
                     dispatch(qrates);
                     main.sharedObject.data.qRates = qRates;
                     main.sharedObject.flush();
                     break;
-                case "Show Quest Reward Previews":
+                case "Quest Reward Previews":
                     qPrev = !qPrev;
                     dispatch(qprev);
                     main.sharedObject.data.qPrev = qPrev;
                     main.sharedObject.flush();
                     break;
-                case "Show Detailed Quest Rewards":
+                case "Detailed Quest Rewards":
                     detailquest = !detailquest;
                     dispatch(detailquests);
                     main.sharedObject.data.detailquest = detailquest;
@@ -328,7 +328,7 @@ package net.spider.handlers{
                     main.sharedObject.data.lockM = lockm;
                     main.sharedObject.flush();
                     break;
-                case "Show Monster Type":
+                case "Monster Type":
                     mType = !mType;
                     dispatch(monstype);
                     main.sharedObject.data.mType = mType;
