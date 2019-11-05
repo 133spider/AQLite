@@ -20,7 +20,7 @@ If you'd like to donate some money to help out a College kid like me, that would
 * Goto this link https://github.com/133spider/AQLite/releases/
 * Click the text that says "CLICK ME FOR LAUNCHER DOWNLOAD OPTIONS"
 * Choose and Download the .zip file according to your operating system
-* Extract the file and run the program (The latest version is Version 12!)
+* Extract the file and run the program (The latest version is Version 12.1!)
 
 ## Stuck at 0%
 **Client stuck at 0?**
@@ -37,7 +37,7 @@ To fix this issue, put AQLite in your C:\ Drive, or any other directories that d
 
 1. Go here: https://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html
 2. Edit Location > Add Location
-3. Put the location of the AQLite folder
+3. Put the location of AQLite
 
 **APPLE/MAC USERS**: "Browse for files" & "Browse for folder" do NOT work on MAC Computers. You have to manually enter the AQLite folder directory.
 
