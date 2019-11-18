@@ -17,7 +17,7 @@ package net.spider.modules{
 		public static function onCreate():void{
 			pinnedQuests = "";
 			qpin.events.addEventListener(ClientEvent.onToggle, onToggle);
-			main.rootDisplay.getChildByName("mcQuestPin").btPin.addEventListener(MouseEvent.CLICK, onPin);
+			main.rootDisplay.getChildByName("mcQuestPin").btPin.addEventListener(MouseEvent.CLICK, onPin, false, 0, true);
 		}
 
 		public static function setVisiblity(e:Boolean):void{
@@ -35,12 +35,12 @@ package net.spider.modules{
 		public static function onToggle(e:Event):void{
 			if(optionHandler.qPin){
 				if(main.Game.ui){
-					main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, onPinQuests);
+					main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, onPinQuests, false, 0, true);
 					main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick);
 				}
 			}else{
 				main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, onPinQuests);
-				main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick);
+				main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick, false, 0, true);
 			}
 		}
 

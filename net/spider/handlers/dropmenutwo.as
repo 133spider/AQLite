@@ -90,8 +90,8 @@ package net.spider.handlers{
                     this.y = pos.y;
                 }
                 this.visible = false;
-                main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-                main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame);
+                main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
+                main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame, false, 0, true);
             }else{
                 this.visible = false;
                 main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);

@@ -156,7 +156,7 @@ package net.spider.draw{
         }
 
         private function onBtColor(evt:MouseEvent):void{
-            stage.addEventListener(MouseEvent.MOUSE_DOWN, getColor);
+            stage.addEventListener(MouseEvent.MOUSE_DOWN, getColor, false, 0, true);
         }
 
         private var _stageBitmap:BitmapData;

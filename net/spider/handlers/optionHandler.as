@@ -51,6 +51,7 @@ package net.spider.handlers{
         public static var alphaBOL:Boolean;
         public static var bTheArchive:Boolean;
         public static var cleanRep:Boolean;
+        public static var hidePNames:Boolean;
 
         public static var filterChecks:Object = new Object();
         public static var blackListed:Array = new Array();
@@ -228,6 +229,10 @@ package net.spider.handlers{
             hideM = main.sharedObject.data.hideM;
             if(hideM)
                 dispatch(hidemonsters);
+            
+            hidePNames = main.sharedObject.data.hidePNames;
+            if(hidePNames)
+                dispatch(hidepnames);
 
             alphaBOL = main.sharedObject.data.alphaBOL;
             bTheArchive = main.sharedObject.data.theArchive;
@@ -512,6 +517,12 @@ package net.spider.handlers{
                     cameratoolMC.x = -7;
                     main._stage.addChild(cameratoolMC);
                     main.Game.world.visible = false;
+                    break;
+                case "Hide Player Names":
+                    hidePNames = !hidePNames;
+                    dispatch(hidepnames);
+                    main.sharedObject.data.hidePNames = hidePNames;
+                    main.sharedObject.flush();
                     break;
                 default: break;
             }

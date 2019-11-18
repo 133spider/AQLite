@@ -39,8 +39,8 @@ package net.spider.handlers{
 						main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 					}
 				}
-				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar);
-				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
+				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
 				auras = new Object();
 			}else{
 				stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
@@ -95,8 +95,8 @@ package net.spider.handlers{
 					auraUI.name = "auraUI";
 					auraUI.x = 16;
 					auraUI.y = 85;
-					main.Game.ui.mcPortraitTarget.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
-					main.Game.ui.mcPortraitTarget.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
+					main.Game.ui.mcPortraitTarget.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
+					main.Game.ui.mcPortraitTarget.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
 				}
 			if(!icons.hasOwnProperty(auraName)){
 				var icon:Class;

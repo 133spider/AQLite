@@ -25,9 +25,9 @@ package net.spider.modules{
 		public static function onToggle(e:Event):void{
 			if(optionHandler.qLog){
 				if(main.Game.sfc.isConnected && main.Game.ui){
-					main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister);
+					main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister, false, 0, true);
 				}
-				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey, false, 0, true);
 			}else{
 				main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, onRegister);
 				stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKey);
@@ -50,7 +50,7 @@ package net.spider.modules{
 							function(e:TimerEvent):void{
 								main.Game.world.toggleQuestLog();
 								main.Game.world.showQuests(main.Game.world.getActiveQuests(), "q");
-							});
+							}, false, 0, true);
 						delay.start();
                     }
                 }
@@ -73,7 +73,7 @@ package net.spider.modules{
 				function(e:TimerEvent):void{
 					main.Game.world.toggleQuestLog();
 					main.Game.world.showQuests(main.Game.world.getActiveQuests(), "q");
-				});
+				}, false, 0, true);
 			delay.start();
 		}
 	}

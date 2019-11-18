@@ -73,7 +73,7 @@ package net.spider.modules{
 									txtFormat.color = 0xFCC749;
 									mcDrop.cnt.strName.setTextFormat(txtFormat);
 								}
-								mcDrop.cnt.icon.addEventListener(MouseEvent.CLICK, onPreview(item));
+								//mcDrop.cnt.icon.addEventListener(MouseEvent.CLICK, onPreview(item), false, 0, true); --causing crashes
 								var flag:mcCoin = new mcCoin();
 								flag.visible = false;
 								flag.name = "flag";

@@ -39,8 +39,8 @@ package net.spider.avatar{
             this.hideOptionalParts();
             this.strSkinLinkage = sLink;
             this.ldr.load(new URLRequest(((((this.serverFilePath + "classes/") + this.pAV.objData.strGender) + "/") + strFilename)), new LoaderContext(false, ApplicationDomain.currentDomain));
-            this.ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, this.onLoadSkinComplete);
-            this.ldr.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this.ioErrorHandler);
+            this.ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, this.onLoadSkinComplete, false, 0, true);
+            this.ldr.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this.ioErrorHandler, false, 0, true);
         }
         private function onLoadSkinComplete(evt:Event){
             var AssetClass:* = null;

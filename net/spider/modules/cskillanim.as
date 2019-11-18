@@ -28,8 +28,8 @@ package net.spider.modules{
 						main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 					}
 				}
-				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar);
-				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
+				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
 			}else{
 				for(var j:* = 2; j < 6; j++){
 					main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);

@@ -33,7 +33,7 @@ package net.spider.modules{
 						clog.getChildAt(i).getChildAt(0).visible = true;
 				}
 				if(optionHandler.filterChecks["chkRedSkills"] && firstRuntimePassed){
-					main._stage.addEventListener(KeyboardEvent.KEY_UP, main.Game.key_actBar);
+					main._stage.addEventListener(KeyboardEvent.KEY_UP, main.Game.key_actBar, false, 0, true);
 					for(var k:* = 1; k < 6; k++){
 						main.Game.ui.mcInterface.actBar.getChildByName("i" + k).removeEventListener(MouseEvent.CLICK, actIconClick);
 						main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, main.Game.actIconClick, false, 0, true);
@@ -42,7 +42,7 @@ package net.spider.modules{
 			}else{
 				if(optionHandler.filterChecks["chkRedSkills"] && firstRuntimePassed){
 					main._stage.removeEventListener(KeyboardEvent.KEY_UP, main.Game.key_actBar);
-					main._stage.addEventListener(KeyboardEvent.KEY_UP, new_actBar);
+					main._stage.addEventListener(KeyboardEvent.KEY_UP, new_actBar, false, 0, true);
 					for(var j:* = 1; j < 6; j++){
 						main.Game.ui.mcInterface.actBar.getChildByName("i" + j).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 						main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, main.Game.actIconClick);

@@ -175,7 +175,7 @@ package net.spider.avatar
          addFrameScript(0,this.frame1,4,this.frame5,7,this.frame8,9,this.frame10,11,this.frame12,12,this.frame13,13,this.frame14,17,this.frame18,19,this.frame20,22,this.frame23);
          this.Sounds.visible = false;
          this.ignore.visible = false;
-         this.mcChar.addEventListener(MouseEvent.CLICK,this.onClickHandler);
+         this.mcChar.addEventListener(MouseEvent.CLICK,this.onClickHandler, false, 0, true);
          this.mcChar.buttonMode = true;
          this.mcChar.pvpFlag.mouseEnabled = false;
          this.mcChar.pvpFlag.mouseChildren = false;
@@ -1379,7 +1379,7 @@ package net.spider.avatar
                   }
                }
                this.removeEventListener(Event.ENTER_FRAME,this.onEnterFrameWalk);
-               this.addEventListener(Event.ENTER_FRAME,this.onEnterFrameWalk);
+               this.addEventListener(Event.ENTER_FRAME,this.onEnterFrameWalk, false, 0, true);
             }
          }
       }

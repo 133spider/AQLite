@@ -120,6 +120,10 @@
 					moduleClass: hidemonsters,
 					moduleType: "Frame"
 				},
+				{
+					moduleClass: hidepnames,
+					moduleType: "Frame"
+				}
 			]
 
 			for each(var _module:* in moduleList){

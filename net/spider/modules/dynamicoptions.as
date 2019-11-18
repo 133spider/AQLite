@@ -299,6 +299,11 @@ package net.spider.modules{
 					strName: "Camera Tool",
 					extra: "btn",
 					sDesc: "WIP"
+				},
+				{
+					strName: "Hide Player Names",
+					bEnabled: main.sharedObject.data.hidePNames,
+					sDesc: "Hides player names\nHover over a player to reveal their name & guild"
 				}
 			];
 		}

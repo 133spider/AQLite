@@ -22,7 +22,7 @@ package net.spider.draw{
             this.weaponUI.visible = false;    
             this.dummyMC.visible = false;    
 
-            this.btnExpand.addEventListener(MouseEvent.CLICK, onBtnExpand);
+            this.btnExpand.addEventListener(MouseEvent.CLICK, onBtnExpand, false, 0, true);
             
             AvatarDisplay = new relAvatarMC();
 
@@ -42,11 +42,11 @@ package net.spider.draw{
             this.cameratoolUI.txtClassName.text = main.Game.world.myAvatar.objData.strClassName;
 
             this.background.mouseEnabled = true;
-            this.background.addEventListener(MouseEvent.CLICK, onWalk);
+            this.background.addEventListener(MouseEvent.CLICK, onWalk, false, 0, true);
 
             //cameratoolUI
-            this.cameratoolUI.colBG.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColBG);
-            this.cameratoolUI.colBG.addEventListener(Event.CLOSE, onColBG);
+            this.cameratoolUI.colBG.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColBG, false, 0, true);
+            this.cameratoolUI.colBG.addEventListener(Event.CLOSE, onColBG, false, 0, true);
 
             //emotes
             var emotes:Array = [
@@ -281,19 +281,19 @@ package net.spider.draw{
             emotes.sortOn("label");
             
             this.cameratoolUI.cbEmotes.dataProvider = new DataProvider(emotes);
-            this.cameratoolUI.btnEmote.addEventListener(MouseEvent.CLICK, onBtnEmote);
+            this.cameratoolUI.btnEmote.addEventListener(MouseEvent.CLICK, onBtnEmote, false, 0, true);
 
             //class
-            this.cameratoolUI.btnClass1.addEventListener(MouseEvent.CLICK, onBtnClass);
-            this.cameratoolUI.btnClass2.addEventListener(MouseEvent.CLICK, onBtnClass);
-            this.cameratoolUI.btnClass3.addEventListener(MouseEvent.CLICK, onBtnClass);
-            this.cameratoolUI.btnClass4.addEventListener(MouseEvent.CLICK, onBtnClass);
-            this.cameratoolUI.btnClass5.addEventListener(MouseEvent.CLICK, onBtnClass);
+            this.cameratoolUI.btnClass1.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
+            this.cameratoolUI.btnClass2.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
+            this.cameratoolUI.btnClass3.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
+            this.cameratoolUI.btnClass4.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
+            this.cameratoolUI.btnClass5.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
 
-            this.cameratoolUI.btnToggleDummy.addEventListener(MouseEvent.CLICK, onBtnToggleDummy);
+            this.cameratoolUI.btnToggleDummy.addEventListener(MouseEvent.CLICK, onBtnToggleDummy, false, 0, true);
 
-            this.dummyMC.addEventListener(MouseEvent.MOUSE_DOWN, onDummyDown);
-            this.dummyMC.addEventListener(MouseEvent.MOUSE_UP, onDummyUp);
+            this.dummyMC.addEventListener(MouseEvent.MOUSE_DOWN, onDummyDown, false, 0, true);
+            this.dummyMC.addEventListener(MouseEvent.MOUSE_UP, onDummyUp, false, 0, true);
 
             //visibility
             var visible:Array = [
@@ -329,55 +329,55 @@ package net.spider.draw{
             visible.sortOn("label");
 
             this.cameratoolUI.cbVisibility.dataProvider = new DataProvider(visible);
-            this.cameratoolUI.btnVisibility.addEventListener(MouseEvent.CLICK, onBtnVisibility);
+            this.cameratoolUI.btnVisibility.addEventListener(MouseEvent.CLICK, onBtnVisibility, false, 0, true);
 
             //scaling
-            this.cameratoolUI.numScaling.addEventListener(Event.CHANGE, onNumScaling);
+            this.cameratoolUI.numScaling.addEventListener(Event.CHANGE, onNumScaling, false, 0, true);
 
             //weapon deattachment
-            this.cameratoolUI.btnDeattach.addEventListener(MouseEvent.CLICK, onBtnDeattach);
+            this.cameratoolUI.btnDeattach.addEventListener(MouseEvent.CLICK, onBtnDeattach, false, 0, true);
 
-            this.cameratoolUI.btnShowDeattach.addEventListener(MouseEvent.CLICK, onBtnShowDeattach);
+            this.cameratoolUI.btnShowDeattach.addEventListener(MouseEvent.CLICK, onBtnShowDeattach, false, 0, true);
 
             //weapon UI
-            this.weaponUI.background.addEventListener(MouseEvent.MOUSE_DOWN, onWeaponUIDown);
-            this.weaponUI.background.addEventListener(MouseEvent.MOUSE_UP, onWeaponUIUp);
+            this.weaponUI.background.addEventListener(MouseEvent.MOUSE_DOWN, onWeaponUIDown, false, 0, true);
+            this.weaponUI.background.addEventListener(MouseEvent.MOUSE_UP, onWeaponUIUp, false, 0, true);
 
             this.weaponUI.txtFocus.mouseEnabled = false;
-            this.weaponUI.btnSetFocus.addEventListener(MouseEvent.CLICK, onBtnSetFocus);
+            this.weaponUI.btnSetFocus.addEventListener(MouseEvent.CLICK, onBtnSetFocus, false, 0, true);
             
-            this.weaponUI.sldrRotation.addEventListener(SliderEvent.CHANGE, onSldrRotation);
+            this.weaponUI.sldrRotation.addEventListener(SliderEvent.CHANGE, onSldrRotation, false, 0, true);
 
-            this.weaponUI.btnAddLayer.addEventListener(MouseEvent.CLICK, onBtnAddLayer);
-            this.weaponUI.btnDelLayer.addEventListener(MouseEvent.CLICK, onBtnDelLayer);
+            this.weaponUI.btnAddLayer.addEventListener(MouseEvent.CLICK, onBtnAddLayer, false, 0, true);
+            this.weaponUI.btnDelLayer.addEventListener(MouseEvent.CLICK, onBtnDelLayer, false, 0, true);
 
-            this.weaponUI.numWepScale.addEventListener(Event.CHANGE, onNumWepScale);
+            this.weaponUI.numWepScale.addEventListener(Event.CHANGE, onNumWepScale, false, 0, true);
 
-            this.weaponUI.btnMirror.addEventListener(MouseEvent.CLICK, onBtnMirror);
-            this.weaponUI.btnInCombat.addEventListener(MouseEvent.CLICK, onBtnInCombat);
+            this.weaponUI.btnMirror.addEventListener(MouseEvent.CLICK, onBtnMirror, false, 0, true);
+            this.weaponUI.btnInCombat.addEventListener(MouseEvent.CLICK, onBtnInCombat, false, 0, true);
 
             //player options
 
-            this.cameratoolUI.btnFreezePlayer.addEventListener(MouseEvent.CLICK, onBtnFreezePlayer);
-            this.cameratoolUI.btnStonePlayer.addEventListener(MouseEvent.CLICK, onBtnStonePlayer);
-            this.cameratoolUI.btnHitPlayer.addEventListener(MouseEvent.CLICK, onBtnHitPlayer);
-            this.cameratoolUI.btnResetPlayer.addEventListener(MouseEvent.CLICK, onBtnResetPlayer);
+            this.cameratoolUI.btnFreezePlayer.addEventListener(MouseEvent.CLICK, onBtnFreezePlayer, false, 0, true);
+            this.cameratoolUI.btnStonePlayer.addEventListener(MouseEvent.CLICK, onBtnStonePlayer, false, 0, true);
+            this.cameratoolUI.btnHitPlayer.addEventListener(MouseEvent.CLICK, onBtnHitPlayer, false, 0, true);
+            this.cameratoolUI.btnResetPlayer.addEventListener(MouseEvent.CLICK, onBtnResetPlayer, false, 0, true);
 
             //glow
-            this.cameratoolUI.colGlow.addEventListener(Event.CLOSE, onColGlow);
-            this.cameratoolUI.colGlow.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlow);
+            this.cameratoolUI.colGlow.addEventListener(Event.CLOSE, onColGlow, false, 0, true);
+            this.cameratoolUI.colGlow.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlow, false, 0, true);
 
-            this.cameratoolUI.colGlowMain.addEventListener(Event.CLOSE, onColGlowMain);
-            this.cameratoolUI.colGlowMain.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlowMain);
+            this.cameratoolUI.colGlowMain.addEventListener(Event.CLOSE, onColGlowMain, false, 0, true);
+            this.cameratoolUI.colGlowMain.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlowMain, false, 0, true);
 
-            this.cameratoolUI.colGlowOff.addEventListener(Event.CLOSE, onColGlowOff);
-            this.cameratoolUI.colGlowOff.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlowOff);
+            this.cameratoolUI.colGlowOff.addEventListener(Event.CLOSE, onColGlowOff, false, 0, true);
+            this.cameratoolUI.colGlowOff.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlowOff, false, 0, true);
 
-            this.cameratoolUI.btnGlowMain.addEventListener(MouseEvent.CLICK, onBtnGlowMain);
-            this.cameratoolUI.btnGlowOff.addEventListener(MouseEvent.CLICK, onBtnGlowOff);
-            this.cameratoolUI.btnGlowPlayer.addEventListener(MouseEvent.CLICK, onBtnGlowPlayer);
+            this.cameratoolUI.btnGlowMain.addEventListener(MouseEvent.CLICK, onBtnGlowMain, false, 0, true);
+            this.cameratoolUI.btnGlowOff.addEventListener(MouseEvent.CLICK, onBtnGlowOff, false, 0, true);
+            this.cameratoolUI.btnGlowPlayer.addEventListener(MouseEvent.CLICK, onBtnGlowPlayer, false, 0, true);
 
-            this.btnClose.addEventListener(MouseEvent.CLICK, onBtnClose);
+            this.btnClose.addEventListener(MouseEvent.CLICK, onBtnClose, false, 0, true);
         }
 
         public function copyTo(param1:MovieClip) : void{
@@ -503,7 +503,7 @@ package net.spider.draw{
                     }
                 }
                 AvatarDisplay.removeEventListener(Event.ENTER_FRAME, onEnterFrameWalk);
-                AvatarDisplay.addEventListener(Event.ENTER_FRAME, onEnterFrameWalk);
+                AvatarDisplay.addEventListener(Event.ENTER_FRAME, onEnterFrameWalk, false, 0, true);
             }
         }
 
@@ -849,8 +849,8 @@ package net.spider.draw{
             }
             
             AvatarDisplay.mcChar.addChild(deattachedMain);
-            deattachedMain.addEventListener(MouseEvent.MOUSE_DOWN, onWeaponDownDrag);
-            deattachedMain.addEventListener(MouseEvent.MOUSE_UP, onWeaponUpDrag);
+            deattachedMain.addEventListener(MouseEvent.MOUSE_DOWN, onWeaponDownDrag, false, 0, true);
+            deattachedMain.addEventListener(MouseEvent.MOUSE_UP, onWeaponUpDrag, false, 0, true);
             
             deattachedMain.scaleX = deattachedMain.scaleY = .222;
 
@@ -886,8 +886,8 @@ package net.spider.draw{
 
             deattachedOff.scaleX = deattachedOff.scaleY = .222;
 
-            deattachedOff.addEventListener(MouseEvent.MOUSE_UP, onWeaponOffUpDrag);
-            deattachedOff.addEventListener(MouseEvent.MOUSE_DOWN, onWeaponOffDownDrag);
+            deattachedOff.addEventListener(MouseEvent.MOUSE_UP, onWeaponOffUpDrag, false, 0, true);
+            deattachedOff.addEventListener(MouseEvent.MOUSE_DOWN, onWeaponOffDownDrag, false, 0, true);
         }
 
         public function onWeaponUpDrag(e:MouseEvent):void{
@@ -1092,8 +1092,8 @@ package net.spider.draw{
             if(!isFrozen){
                 isFrozen = true;
                 AvatarDisplay.mcChar.stop();
-                AvatarDisplay.mcChar.addEventListener(MouseEvent.MOUSE_DOWN, onAvatarDown);
-                AvatarDisplay.mcChar.addEventListener(MouseEvent.MOUSE_UP, onAvatarUp);
+                AvatarDisplay.mcChar.addEventListener(MouseEvent.MOUSE_DOWN, onAvatarDown, false, 0, true);
+                AvatarDisplay.mcChar.addEventListener(MouseEvent.MOUSE_UP, onAvatarUp, false, 0, true);
             }else{
                 isFrozen = false;
                 AvatarDisplay.mcChar.play();

@@ -38,8 +38,8 @@ package net.spider.draw
             this.y = 90;
             this.btnClose.addEventListener(MouseEvent.CLICK, xClick, false, 0, true);
             this.btnTryMe.addEventListener(MouseEvent.CLICK, xTryMe, false, 0, true);
-            this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
-			this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
+            this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
+			this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
             mcStage = MovieClip(this.addChild(new MovieClip()));
             return;
         }// end function
