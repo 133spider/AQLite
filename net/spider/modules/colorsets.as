@@ -13,16 +13,6 @@ package net.spider.modules{
 
 	public class colorsets extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			colorsets.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
-			//optionHandler.bColorSets
-		}
-
         private static var performOnceFlag:Boolean;
         private static var performOnceFlag2:Boolean;
 		private static var _menu:colorSets;

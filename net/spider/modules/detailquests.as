@@ -15,16 +15,6 @@ package net.spider.modules{
 	
 	public class detailquests extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			detailquests.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
-			//optionHandler.detailquest
-		}
-
 		public static var frame:*;
         public static function onFrameUpdate():void{
 			if(!optionHandler.detailquest || !main.Game.sfc.isConnected)

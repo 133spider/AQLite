@@ -12,13 +12,7 @@ package net.spider.modules{
 	
 	public class hidemonsters extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			hidemonsters.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
+		public static function onToggle():void{
 			if(!optionHandler.hideM){
                 if(!main.Game.world.strFrame)
 				    return;

@@ -27,7 +27,8 @@ package net.spider.handlers{
 		}
 
 		public var toolTip:ToolTipMC;
-        public function onToggle(e:Event):void{
+		public var eventInitialized:Boolean = false;
+        public function onToggle(e:*):void{
 			if(toolTip == null){
 				toolTip = new ToolTipMC();
 				main._stage.addChild(toolTip);
@@ -35,8 +36,11 @@ package net.spider.handlers{
             //this.visible = optionHandler.skill;
             if(optionHandler.skill){
 				if(main.Game.ui){
-					for(var i:* = 2; i < 6; i++){
-						main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+					if(!eventInitialized){
+						for(var i:* = 2; i < 6; i++){
+							main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+						}
+						eventInitialized = true;
 					}
 				}
 				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
@@ -45,8 +49,11 @@ package net.spider.handlers{
 			}else{
 				stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-				for(var j:* = 2; j < 6; j++){
-					main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
+				if(eventInitialized){
+					for(var j:* = 2; j < 6; j++){
+						main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
+					}
+					eventInitialized = false;
 				}
 				auras = null;
 				toolTip.close();
@@ -191,9 +198,13 @@ package net.spider.handlers{
 								return;
 							for each(var i:* in resObj.a){
 								if(main.Game.world.myAvatar.target)
-									if(main.Game.world.myAvatar.target.dataLeaf.MonID)
+									if(main.Game.world.myAvatar.target.dataLeaf.MonID){
 										if(i.tInf != "m:" + main.Game.world.myAvatar.target.dataLeaf.MonMapID.toString())
 											continue;
+									}else{
+										if(i.tInf != "p:" + main.Game.world.myAvatar.target.dataLeaf.entID.toString())
+											continue;
+									}
 								if(i.auras){
 									for each(var j:* in i.auras){
 										if (i.cmd.indexOf("+") > -1)
@@ -252,10 +263,13 @@ package net.spider.handlers{
 							lastSkill = main.Game.world.actions.active[0];
                             break;
 						case "sAct":
-							for(var k:* = 2; k < 6; k++){
-								main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+							if(!eventInitialized){
+								for(var k:* = 2; k < 6; k++){
+									main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+								}
+								lastSkill = main.Game.world.actions.active[0];
+								eventInitialized = true;
 							}
-							lastSkill = main.Game.world.actions.active[0];
 							break;
                     }
                 }

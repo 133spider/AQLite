@@ -13,18 +13,11 @@ package net.spider.modules{
 	
 	public class qpin extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-		public static function onCreate():void{
-			pinnedQuests = "";
-			qpin.events.addEventListener(ClientEvent.onToggle, onToggle);
-			main.rootDisplay.getChildByName("mcQuestPin").btPin.addEventListener(MouseEvent.CLICK, onPin, false, 0, true);
-		}
-
 		public static function setVisiblity(e:Boolean):void{
 			main.rootDisplay.getChildByName("mcQuestPin").visible = e;
 		}
 
-		private static var pinnedQuests:String;
+		private static var pinnedQuests:String = "";
 		public static function onPin(e:MouseEvent):void{
 			pinnedQuests = "";
 			for each(var qID:* in frame.qIDs){
@@ -32,15 +25,24 @@ package net.spider.modules{
 			}
 		}
 
-		public static function onToggle(e:Event):void{
+		public static var eventInitialized:Boolean = false;
+		public static function onToggle():void{
 			if(optionHandler.qPin){
 				if(main.Game.ui){
-					main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, onPinQuests, false, 0, true);
-					main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick);
+					if(!eventInitialized){
+						main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, onPinQuests, false, 0, true);
+						main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick);
+						eventInitialized = true;
+					}
 				}
+				main.rootDisplay.getChildByName("mcQuestPin").btPin.addEventListener(MouseEvent.CLICK, onPin, false, 0, true);
 			}else{
-				main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, onPinQuests);
-				main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick, false, 0, true);
+				if(eventInitialized){
+					main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, onPinQuests);
+					main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick, false, 0, true);
+					eventInitialized = false;
+				}
+				main.rootDisplay.getChildByName("mcQuestPin").btPin.removeEventListener(MouseEvent.CLICK, onPin);
 			}
 		}
 

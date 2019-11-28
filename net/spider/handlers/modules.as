@@ -17,124 +17,184 @@
 		private static var moduleList:Array;
 		public static function create():void{
 
-			optionHandler.onCreate();
+			//optionHandler.onCreate();
 
 			moduleList = [
 				{
 					moduleClass: passives,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: drops,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: true,
+					keyHandler: false
 				},
 				{
 					moduleClass: skillanim,
-					moduleType: "Timer"
+					moduleType: "Timer",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: hideplayers,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: monstype,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: qrates,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: qprev,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: qlog,
-					moduleType: ""
+					moduleType: "",
+					responseHandler: false,
+					keyHandler: true
 				},
 				{
 					moduleClass: untarget,
-					moduleType: "Timer"
+					moduleType: "Timer",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: chatfilter,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: true
 				},
 				{
 					moduleClass: untargetself,
-					moduleType: "Timer"
+					moduleType: "Timer",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: diswepanim,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: detaildrops,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: true,
+					keyHandler: false
 				},
 				{
 					moduleClass: detailquests,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: dismonanim,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: bitmap,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: cskillanim,
-					moduleType: "Timer"
+					moduleType: "Timer",
+					responseHandler: true,
+					keyHandler: true
 				},
 				{
 					moduleClass: qaccept,
-					moduleType: ""
+					moduleType: "",
+					responseHandler: true,
+					keyHandler: false
 				},
 				{
 					moduleClass: qpin,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: dismapanim,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: lockmons,
-					moduleType: "Timer"
+					moduleType: "Timer",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: smoothbg,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: colorsets,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: boosts,
-					moduleType: "Timer"
+					moduleType: "Timer",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: hidemonsters,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				},
 				{
 					moduleClass: hidepnames,
-					moduleType: "Frame"
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
+				},
+				{
+					moduleClass: battlepet,
+					moduleType: "",
+					responseHandler: true,
+					keyHandler: false
+				},
+				{
+					moduleClass: houseentrance,
+					moduleType: "Timer",
+					responseHandler: false,
+					keyHandler: false
 				}
 			]
+			
+			optionHandler.readSettings();
 
-			for each(var _module:* in moduleList){
-				_module.moduleClass.onCreate();
-			}
-
-			optionHandler.events.dispatchEvent(new ClientEvent(ClientEvent.onEnable));
 			main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-
 			main._stage.addEventListener(Event.ENTER_FRAME, onMaintainFrame);
-
+			main._stage.addEventListener(KeyboardEvent.KEY_UP, onMaintainKeys);
 			maintainTimer = new Timer(0);
 			maintainTimer.addEventListener(TimerEvent.TIMER, onMaintainTimer);
 			maintainTimer.start();
@@ -312,7 +372,6 @@
             }
 		}
 		
-		private static var houseEvent:Boolean;
 		public static function onMaintainTimer(e:TimerEvent):void{
 			if(!main.Game || !main.Game.ui)
 				return;
@@ -321,14 +380,6 @@
 				if(_module.moduleType == "Timer"){
 					_module.moduleClass.onTimerUpdate();
 				}
-			}
-
-			if(!houseEvent && main.Game.ui.mcInterface.mcMenu.btnHouse){
-				main.Game.ui.mcInterface.mcMenu.btnHouse.addEventListener(MouseEvent.CLICK, onHouseClick);
-				houseEvent = true;
-			}else if(houseEvent && main.Game.currentLabel == "Login"){
-				main.Game.ui.mcInterface.mcMenu.btnHouse.removeEventListener(MouseEvent.CLICK, onHouseClick);
-				houseEvent = false;
 			}
 
 			if(optionHandler.cleanRep && !main.Game.world.myAvatar.factions.hasOwnProperty("cleaned")){
@@ -344,6 +395,10 @@
 				}
 				main.Game.world.myAvatar.factions.cleaned = true;
 			}
+			if(main.Game.world.myAvatar)
+				if(main.Game.world.myAvatar.target)
+					if(main.Game.world.myAvatar.target.dataLeaf.intState == 0)
+						main.Game.world.myAvatar.pMC.clearQueue();
 		}
 
 		public static function onItemRollOver(param1:Event) : void
@@ -365,6 +420,13 @@
         }
 
 		public static function onExtensionResponseHandler(e:*):void{
+			if(!main.Game || !main.Game.ui)
+				return;
+			for each(var _module:* in moduleList){
+				if(_module.responseHandler == true){
+					_module.moduleClass.onExtensionResponseHandler(e);
+				}
+			}
             var dID:*;
             var protocol:* = e.params.type;
             if (protocol == "json")
@@ -373,25 +435,6 @@
                     var cmd:* = resObj.cmd;
                     switch (cmd)
                     {
-						case "ct":
-							if(resObj.anims == null)
-								return;
-							if(!main.Game.world.myAvatar.objData.eqp["pe"])
-								return;
-							for each(var o:* in resObj.anims)
-                           	{
-								if((o.tInf.indexOf("m:") > -1) && (o.cInf.indexOf("p:") > -1)){
-									if(main.Game.world.getAvatarByUserID(String(o.cInf.split(":")[1])).isMyAvatar){
-										if(o.animStr == main.Game.world.actions.active[0].anim){
-											if(main.Game.world.myAvatar.objData.eqp["pe"]){
-												main.Game.world.myAvatar.pMC.queueAnim("PetAttack");
-											}
-											return;
-										}
-									}
-								}
-							}
-							break;
 						case "bookInfo":
 							if(optionHandler.alphaBOL){
 								main.Game.world.bookData.HMBadge.sortOn("strName");
@@ -403,9 +446,14 @@
                 }
         }
 
-		public static function onHouseClick(e:MouseEvent):void{
-			if(main.Game.world.strMapName.toLowerCase() == "house")
-				main.Game.world.moveToCell("Enter", "Spawn");
+		public static function onMaintainKeys(e:*):void{
+			if(!main.Game || !main.Game.ui)
+				return;
+			for each(var _module:* in moduleList){
+				if(_module.keyHandler == true){
+					_module.moduleClass.onKey(e);
+				}
+			}
 		}
 	}
 	

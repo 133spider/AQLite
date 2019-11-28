@@ -13,15 +13,8 @@ package net.spider.handlers{
 	import net.spider.handlers.optionHandler;
 	
 	public class passives extends MovieClip {
-		
-        public static var events:EventDispatcher = new EventDispatcher();
-        private static var passivesTimer:Timer;
 
-		public static function onCreate() {
-            passives.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-        public static function onToggle(e:Event):void{
+        public static function onToggle():void{
 			lastClass = ""; //optionHandler.passive
         }
 

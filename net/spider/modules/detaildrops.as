@@ -17,24 +17,18 @@ package net.spider.modules{
 	
 	public class detaildrops extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			detaildrops.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
+		public static function onToggle():void{
 			if(optionHandler.detaildrop){
 				itemArchive = new Array();
-				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}else{
 				itemArchive = null;
-				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}
 		}
 
 		public static var itemArchive:Array;
         public static function onExtensionResponseHandler(e:*):void{
+			if(!optionHandler.detaildrop)
+				return;
             var dID:*;
             var protocol:* = e.params.type;
             if (protocol == "json")

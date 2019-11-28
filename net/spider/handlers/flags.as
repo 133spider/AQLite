@@ -15,7 +15,7 @@ package net.spider.handlers{
         }
 
 		public static function isInventory():Boolean{
-			return (main.Game.ui.mcPopup.currentLabel == "Inventory");
+			return !(main.Game.ui.mcPVPQueue.visible) && (main.Game.ui.mcPopup.currentLabel == "Inventory") && (main.Game.ui.mcPopup.getChildByName("mcInventory"));
 		}
 	}
 	

@@ -12,16 +12,6 @@ package net.spider.modules{
 
 	public class smoothbg extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			smoothbg.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
-			//optionHandler.smoothBG
-		}
-
         public static function onFrameUpdate():void{
 			if(!optionHandler.smoothBG || !main.Game.world)
 				return;

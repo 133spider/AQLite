@@ -15,16 +15,6 @@ package net.spider.modules{
 	
 	public class qprev extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			qprev.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
-			//optionHandler.qPrev
-		}
-
 		public static var frame:*;
         public static function onFrameUpdate():void{
 			if(!optionHandler.qPrev || !main.Game.sfc.isConnected)

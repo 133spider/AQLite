@@ -19,6 +19,7 @@ package net.spider.handlers{
 
         public static var events:EventDispatcher = new EventDispatcher();
 
+        //TO-DO: Change naming convention to bVar
         public static var cDrops:Boolean;
         public static var sbpcDrops:Boolean;
         public static var draggable:Boolean;
@@ -52,6 +53,8 @@ package net.spider.handlers{
         public static var bTheArchive:Boolean;
         public static var cleanRep:Boolean;
         public static var hidePNames:Boolean;
+        public static var bBattlePet:Boolean;
+        public static var bHouseEntrance:Boolean;
 
         public static var filterChecks:Object = new Object();
         public static var blackListed:Array = new Array();
@@ -60,7 +63,7 @@ package net.spider.handlers{
             optionHandler.events.addEventListener(ClientEvent.onEnable, readSettings);
         }
 
-        public static function readSettings(e:ClientEvent):void{
+        public static function readSettings():void{
             if(main.sharedObject.data.filterChecks == null)
                 main.sharedObject.data.filterChecks = new Object();
             if(main.sharedObject.data.filterChecks["chkRed"] == null){
@@ -110,66 +113,30 @@ package net.spider.handlers{
             filterChecks["chkCDropNotification"] = main.sharedObject.data.filterChecks["chkCDropNotification"];
             cDrops = main.sharedObject.data.cDrops;
             if(cDrops)
-                dispatch(dropmenu);
+                oldDispatch(dropmenu);
 
             sbpcDrops = main.sharedObject.data.sbpcDrops;
             if(sbpcDrops)
-                dispatch(dropmenutwo);
-
-            draggable = main.sharedObject.data.draggable;
-            if(draggable)
-                dispatch(drops);
+                oldDispatch(dropmenutwo);
 
             detaildrop = main.sharedObject.data.detaildrop;
             if(detaildrop)
                 dispatch(detaildrops);
 
-            mType = main.sharedObject.data.mType;
-            if(mType)
-                dispatch(monstype);
-
-            qRates = main.sharedObject.data.qRates;
-            if(qRates)
-                dispatch(qrates);
-
-            qPrev = main.sharedObject.data.qPrev;
-            if(qPrev)
-                dispatch(qprev);
-
-            detailquest = main.sharedObject.data.detailquest;
-            if(detailquest)
-                dispatch(detailquests);
-
             qLog = main.sharedObject.data.qLog;
             if(qLog)
                 dispatch(qlog);
 
-            disableSkillAnim = main.sharedObject.data.disableSkillAnim;
-            if(disableSkillAnim)
-                dispatch(skillanim);
-
             skill = main.sharedObject.data.skill;
             if(skill){
-                dispatch(skills);
-                dispatch(targetskills);
+                oldDispatch(skills);
+                oldDispatch(targetskills);
             }
 
             //passive = main.sharedObject.data.passive;
             passive = true;
             if(passive)
                 dispatch(passives);
-
-            boost = main.sharedObject.data.boost;
-            if(boost)
-                dispatch(boosts);
-
-            untargetMon = main.sharedObject.data.untargetMon;
-            if(untargetMon)
-                dispatch(untarget);
-
-            selfTarget = main.sharedObject.data.selfTarget;
-            if(selfTarget)
-                dispatch(untargetself);
 
             hideP = main.sharedObject.data.hideP;
             if(hideP)
@@ -197,10 +164,6 @@ package net.spider.handlers{
             bitmapP = main.sharedObject.data.bitmapP;
             if(bitmapP)
                 dispatch(bitmap);
-
-            qAccept = main.sharedObject.data.qAccept;
-            if(qAccept)
-                dispatch(qaccept);
             
             cSkillAnim = main.sharedObject.data.cSkillAnim;
             if(cSkillAnim)
@@ -217,14 +180,6 @@ package net.spider.handlers{
             lockm = main.sharedObject.data.lockM;
             if(lockm)
                 dispatch(lockmons);
-            
-            smoothBG = main.sharedObject.data.smoothBG;
-            if(smoothBG)
-                dispatch(smoothbg);
-
-            bColorSets = main.sharedObject.data.bColorSets;
-            if(bColorSets)
-                dispatch(colorsets);
 
             hideM = main.sharedObject.data.hideM;
             if(hideM)
@@ -234,6 +189,23 @@ package net.spider.handlers{
             if(hidePNames)
                 dispatch(hidepnames);
 
+            bHouseEntrance = main.sharedObject.data.bHouseEntrance;
+            if(bHouseEntrance)
+                dispatch(houseentrance);
+
+            draggable = main.sharedObject.data.draggable;
+            disableSkillAnim = main.sharedObject.data.disableSkillAnim;
+            mType = main.sharedObject.data.mType;
+            qRates = main.sharedObject.data.qRates;
+            qPrev = main.sharedObject.data.qPrev;
+            detailquest = main.sharedObject.data.detailquest;
+            boost = main.sharedObject.data.boost;
+            untargetMon = main.sharedObject.data.untargetMon;
+            selfTarget = main.sharedObject.data.selfTarget;
+            qAccept = main.sharedObject.data.qAccept;
+            smoothBG = main.sharedObject.data.smoothBG;
+            bColorSets = main.sharedObject.data.bColorSets;
+            bBattlePet = main.sharedObject.data.bBattlePet;
             alphaBOL = main.sharedObject.data.alphaBOL;
             bTheArchive = main.sharedObject.data.theArchive;
             cleanRep = main.sharedObject.data.cleanRep;
@@ -245,7 +217,6 @@ package net.spider.handlers{
             switch(id){
                 case "Draggable Drops":
                     draggable = !draggable;
-                    dispatch(drops);
                     main.sharedObject.data.draggable = draggable;
                     main.sharedObject.flush();
                     break;
@@ -257,25 +228,21 @@ package net.spider.handlers{
                     break;
                 case "Enhanced Item Descriptions":
                     boost = !boost;
-                    dispatch(boosts);
                     main.sharedObject.data.boost = boost;
                     main.sharedObject.flush();
                     break;
                 case "Quest Drop Rates":
                     qRates = !qRates;
-                    dispatch(qrates);
                     main.sharedObject.data.qRates = qRates;
                     main.sharedObject.flush();
                     break;
                 case "Quest Reward Previews":
                     qPrev = !qPrev;
-                    dispatch(qprev);
                     main.sharedObject.data.qPrev = qPrev;
                     main.sharedObject.flush();
                     break;
                 case "Detailed Quest Rewards":
                     detailquest = !detailquest;
-                    dispatch(detailquests);
                     main.sharedObject.data.detailquest = detailquest;
                     main.sharedObject.flush();
                     break;
@@ -287,7 +254,6 @@ package net.spider.handlers{
                     break;
                 case "Reaccept Quest After Turn-In":
                     qAccept = !qAccept;
-                    dispatch(qaccept);
                     main.sharedObject.data.qAccept = qAccept;
                     main.sharedObject.flush();
                     break;
@@ -299,7 +265,6 @@ package net.spider.handlers{
                     break;
                 case "Disable Skill Animations":
                     disableSkillAnim = !disableSkillAnim;
-                    dispatch(skillanim);
                     main.sharedObject.data.disableSkillAnim = disableSkillAnim;
                     main.sharedObject.flush();
                     break;
@@ -322,8 +287,8 @@ package net.spider.handlers{
                     break;
                 case "Class Actives/Auras UI":
                     skill = !skill;
-                    dispatch(skills);
-                    dispatch(targetskills);
+                    oldDispatch(skills);
+                    oldDispatch(targetskills);
                     main.sharedObject.data.skill = skill;
                     main.sharedObject.flush();
                     break;
@@ -335,19 +300,16 @@ package net.spider.handlers{
                     break;
                 case "Monster Type":
                     mType = !mType;
-                    dispatch(monstype);
                     main.sharedObject.data.mType = mType;
                     main.sharedObject.flush();
                     break;
                 case "Auto-Untarget Dead Targets":
                     untargetMon = !untargetMon;
-                    dispatch(untarget);
                     main.sharedObject.data.untargetMon = untargetMon;
                     main.sharedObject.flush();
                     break;
                 case "Auto-Untarget Self-Targetting":
                     selfTarget = !selfTarget;
-                    dispatch(untargetself);
                     main.sharedObject.data.selfTarget = selfTarget;
                     main.sharedObject.flush();
                     break;
@@ -358,7 +320,7 @@ package net.spider.handlers{
                     }else{
                         main.Game.ui.mcPortrait.getChildByName("iconDrops").visible = false;
                     }
-                    dispatch(dropmenu);
+                    oldDispatch(dropmenu);
                     main.sharedObject.data.cDrops = cDrops;
                     main.sharedObject.flush();
                     break;
@@ -369,7 +331,7 @@ package net.spider.handlers{
                     }else{
                         main.Game.ui.mcPortrait.getChildByName("iconDrops").visible = false;
                     }
-                    dispatch(dropmenutwo);
+                    oldDispatch(dropmenutwo);
                     main.sharedObject.data.sbpcDrops = sbpcDrops;
                     main.sharedObject.flush();
                     break;
@@ -412,7 +374,7 @@ package net.spider.handlers{
                     main.sharedObject.data.bitmapP = bitmapP;
                     main.sharedObject.flush();
                     break;
-                case "Toggle Chat Filter":
+                case "Chat Filter":
                     chatFilter = !chatFilter;
                     dispatch(chatfilter);
                     main.sharedObject.data.chatFilter = chatFilter;
@@ -476,13 +438,11 @@ package net.spider.handlers{
                     break;
                 case "Smooth Background":
                     smoothBG = !smoothBG;
-                    dispatch(smoothbg);
                     main.sharedObject.data.smoothBG = smoothBG;
                     main.sharedObject.flush();
                     break;
                 case "Color Sets":
                     bColorSets = !bColorSets;
-                    dispatch(colorsets);
                     main.sharedObject.data.bColorSets = bColorSets;
                     main.sharedObject.flush();
                     break;
@@ -524,12 +484,37 @@ package net.spider.handlers{
                     main.sharedObject.data.hidePNames = hidePNames;
                     main.sharedObject.flush();
                     break;
+                case "Disable Skill Warning Messages":
+                    filterChecks["chkRedSkills"] = !filterChecks["chkRedSkills"];
+                    main.sharedObject.data.filterChecks["chkRedSkills"] = filterChecks["chkRedSkills"];
+                    main.sharedObject.flush();
+                    break;
+                case "Drop Notifications":
+                    filterChecks["chkCDropNotification"] = !filterChecks["chkCDropNotification"];
+                    main.sharedObject.data.filterChecks["chkCDropNotification"] = filterChecks["chkCDropNotification"];
+                    main.sharedObject.flush();
+                    break;
+                case "Battlepets":
+                    bBattlePet = !bBattlePet;
+                    main.sharedObject.data.bBattlePet = bBattlePet;
+                    main.sharedObject.flush();
+                    break;
+                case "House Entrance Teleport":
+                    bHouseEntrance = !bHouseEntrance;
+                    dispatch(houseentrance);
+                    main.sharedObject.data.bHouseEntrance = bHouseEntrance;
+                    main.sharedObject.flush();
+                    break;
                 default: break;
             }
         }
         public static var cameratoolMC:cameratool;
 
         public static function dispatch(e:*):void{
+            e.onToggle();
+        }
+
+        public static function oldDispatch(e:*):void{
             e.events.dispatchEvent(new ClientEvent(ClientEvent.onToggle));
         }
 

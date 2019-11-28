@@ -14,20 +14,9 @@ package net.spider.modules{
 	
 	public class qaccept extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-		public static function onCreate():void{
-			qaccept.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
-			if(optionHandler.qAccept){
-				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-			}else{
-				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-			}
-		}
-
 		public static function onExtensionResponseHandler(e:*):void{
+			if(!optionHandler.qAccept)
+				return;
             var dID:*;
             var protocol:* = e.params.type;
             if (protocol == "json")

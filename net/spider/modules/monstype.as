@@ -12,17 +12,6 @@ package net.spider.modules{
 	
 	public class monstype extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-        private static var monsTimer:Timer;
-
-		public static function onCreate():void{
-			monstype.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
-			//optionHandler.mType
-		}
-
         public static function onFrameUpdate():void{
 			if(!optionHandler.mType || !main.Game.sfc.isConnected
 				|| (main.Game.world.myAvatar == null) 

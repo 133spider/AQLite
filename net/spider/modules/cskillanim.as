@@ -13,29 +13,25 @@ package net.spider.modules{
 	
 	public class cskillanim extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
 		private static var stage;
-		public static function onCreate():void{
+		public static function onToggle():void{
 			stage = main._stage;
-			cskillanim.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
 			if(optionHandler.cSkillAnim){
 				if(main.Game.ui){
-					for(var i:* = 2; i < 6; i++){
-						main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+					if(!eventInitialized){
+						for(var i:* = 2; i < 6; i++){
+							main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+						}
+						eventInitialized = true;
 					}
 				}
-				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
-				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
 			}else{
-				for(var j:* = 2; j < 6; j++){
-					main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
+				if(eventInitialized){
+					for(var j:* = 2; j < 6; j++){
+						main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
+					}
+					eventInitialized = false;
 				}
-				stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
-				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 			}
 		}
 
@@ -123,8 +119,10 @@ package net.spider.modules{
 			handleSkills(e.target.name);
 		}
 
-		public static function key_actBar(param1:KeyboardEvent) : *
+		public static function onKey(param1:KeyboardEvent) : *
 		{
+			if(!optionHandler.cSkillAnim)
+				return;
 			if(main.Game.world.myAvatar.objData.strClassName == "Void Highlord")
 				return;
 			if(main.Game.world.myAvatar.objData.strClassName != "Dragonlord")
@@ -155,7 +153,10 @@ package net.spider.modules{
 			}
 		}
 
+		public static var eventInitialized:Boolean = false;
         public static function onExtensionResponseHandler(e:*):void{
+			if(!optionHandler.cSkillAnim)
+				return;
             var dID:*;
             var protocol:* = e.params.type;
             if (protocol == "json")
@@ -165,8 +166,11 @@ package net.spider.modules{
                     switch (cmd)
                     {
 						case "sAct":
-							for(var i:* = 2; i < 6; i++){
-								main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+							if(!eventInitialized){
+								for(var i:* = 2; i < 6; i++){
+									main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+								}
+								eventInitialized = true;
 							}
 							break;
 						case "ct":

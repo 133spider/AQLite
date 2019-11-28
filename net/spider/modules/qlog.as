@@ -13,28 +13,26 @@ package net.spider.modules{
 	
 	public class qlog extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-        private static var qTimer:Timer;
-
-		private static var stage;
-		public static function onCreate():void{
-			stage = main._stage;
-			qlog.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
+		public static var eventInitialized:Boolean = false;
+		public static function onToggle():void{
 			if(optionHandler.qLog){
 				if(main.Game.sfc.isConnected && main.Game.ui){
-					main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister, false, 0, true);
+					if(!eventInitialized){
+						main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister, false, 0, true);
+						eventInitialized = true;
+					}
 				}
-				stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey, false, 0, true);
 			}else{
-				main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, onRegister);
-				stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKey);
+				if(eventInitialized){
+					main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, onRegister);
+					eventInitialized = false;
+				}
 			}
 		}
 
 		public static function onKey(e:KeyboardEvent){
+			if(!optionHandler.qLog)
+				return;
 			var chatF:* = main.Game.chatF;
 			var world:* = main.Game.world;
 			var ui:* = main.Game.ui;
@@ -42,7 +40,7 @@ package net.spider.modules{
             {
                 if (String.fromCharCode(e.charCode) == "l")
                 {
-                    if (stage.focus != ui.mcInterface.te)
+                    if (main._stage.focus != ui.mcInterface.te)
                     {
 
 						var delay:* = new Timer(100, 1);

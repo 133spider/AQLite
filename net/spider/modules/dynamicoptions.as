@@ -219,7 +219,7 @@ package net.spider.modules{
 					sDesc: "Reduces the graphics of other players and freezes them in place. Useful if you still want to see other players, but want increased performance that \"Hide Players\" gives.\n!WARNING! Having this enabled may or may not show some of other player's equipments (Missing helmets, etc). You will not be able to see their equipment changes with this enabled either. You can not click on other players with this enabled."
 				},
 				{
-					strName: "Toggle Chat Filter",
+					strName: "Chat Filter",
 					bEnabled: main.sharedObject.data.chatFilter,
 					sDesc: "Hide chat messages depending on the checkmarked settings below (Red Warning messages, Blue Server messages)\nThis will NOT hide server shutdown messages!",
 					extra: [
@@ -304,6 +304,16 @@ package net.spider.modules{
 					strName: "Hide Player Names",
 					bEnabled: main.sharedObject.data.hidePNames,
 					sDesc: "Hides player names\nHover over a player to reveal their name & guild"
+				},
+				{
+					strName: "Battlepets",
+					bEnabled: main.sharedObject.data.bBattlePet,
+					sDesc: "Allows battlepets to fight alongside you in battle without having to equip a battlepet class!"
+				},
+				{
+					strName: "House Entrance Teleport",
+					bEnabled: main.sharedObject.data.bHouseEntrance,
+					sDesc: "While already in your house, if you click on the house icon (the same one you use to go to your house), you can teleport to the entrance of your house!"
 				}
 			];
 		}

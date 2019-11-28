@@ -26,7 +26,8 @@ package net.spider.handlers{
 		}
 
 		public var toolTip:ToolTipMC;
-        public function onToggle(e:Event):void{
+		public var eventInitialized:Boolean = false;
+        public function onToggle(e:*):void{
 			if(toolTip == null){
 				toolTip = new ToolTipMC();
 				main._stage.addChild(toolTip);
@@ -35,8 +36,11 @@ package net.spider.handlers{
             if(optionHandler.skill){
 				auras = new Object();
 				if(main.Game.ui){
-					for(var i:* = 2; i < 6; i++){
-						main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+					if(!eventInitialized){
+						for(var i:* = 2; i < 6; i++){
+							main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+						}
+						eventInitialized = true;
 					}
 					if(!main.Game.ui.mcPortrait.getChildByName("auraUI")){
 						var auraUI:MovieClip = main.Game.ui.mcPortrait.addChild(new MovieClip());
@@ -52,8 +56,11 @@ package net.spider.handlers{
 			}else{
 				stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-				for(var j:* = 2; j < 6; j++){
-					main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
+				if(eventInitialized){
+					for(var j:* = 2; j < 6; j++){
+						main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
+					}
+					eventInitialized = false;
 				}
 				auras = null;
 				toolTip.close();
@@ -239,10 +246,13 @@ package net.spider.handlers{
 								main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
 								main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
 							}
-							for(var k:* = 2; k < 6; k++){
-								main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+							if(!eventInitialized){
+								for(var k:* = 2; k < 6; k++){
+									main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+								}
+								lastSkill = main.Game.world.actions.active[0];
+								eventInitialized = true;
 							}
-							lastSkill = main.Game.world.actions.active[0];
 							break;
                     }
                 }

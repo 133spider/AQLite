@@ -12,13 +12,7 @@ package net.spider.modules{
 	
 	public class diswepanim extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			diswepanim.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
+		public static function onToggle():void{
 			if(!optionHandler.disWepAnim){
 				for(var playerMC:* in main.Game.world.avatars){
 					if(!main.Game.world.avatars[playerMC].objData)

@@ -12,16 +12,6 @@ package net.spider.modules{
 	
 	public class untargetself extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			untargetself.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
-			//optionHandler.selfTarget)
-		}
-
         public static function onTimerUpdate():void{
 			if(!optionHandler.selfTarget || !main.Game.sfc.isConnected || !main.Game.world.myAvatar)
 				return;

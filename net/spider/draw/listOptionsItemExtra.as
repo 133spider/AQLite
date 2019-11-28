@@ -5,6 +5,7 @@
 	import flash.text.*;
 	import net.spider.handlers.optionHandler;
 	import flash.events.*;
+	import net.spider.main;
 	
 	public class listOptionsItemExtra extends MovieClip {
 		
@@ -20,6 +21,26 @@
 		}
 
 		public function onToggle(e:MouseEvent):void{
+			var modalClass:Class;
+			var modal:*;
+			var modalO:*;
+			switch(txtName.text){
+				case "Disable Skill Warning Messages":
+					if(optionHandler.chatFilter){
+						modalClass= main.Game.world.getClass("ModalMC");
+						modal = new modalClass();
+						modalO = {};
+						modalO.strBody = "Chat Filter must be disabled before changing this setting!";
+						modalO.params = {};
+						modalO.glow = "red,medium";
+						modalO.btns = "mono";
+						main._stage.addChild(modal);
+						modal.init(modalO);
+						return;
+					}
+					break;
+				default: break;
+			}
 			chkActive.checkmark.visible = !chkActive.checkmark.visible;
 			optionHandler.cmd(txtName.text);
 		}

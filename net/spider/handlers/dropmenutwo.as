@@ -82,7 +82,7 @@ package net.spider.handlers{
             }
         }
 
-        public function onToggle(e:Event):void{
+        public function onToggle(e:*):void{
             if(optionHandler.sbpcDrops){
                 var pos:* = main.sharedObject.data.dmtPos;
                 if(pos){
@@ -110,7 +110,7 @@ package net.spider.handlers{
             }
         }
 
-        public function onDropFrame(e:Event):void{
+        public function onDropFrame(e:*):void{
             if(!main.Game.sfc.isConnected){
                 itemCount = {};
                 invTree = new Array();

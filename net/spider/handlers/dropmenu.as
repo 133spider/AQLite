@@ -86,7 +86,7 @@ package net.spider.handlers{
             }
         }
 
-        public function onToggle(e:Event):void{
+        public function onToggle(e:*):void{
             if(optionHandler.cDrops){
                 main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
                 main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame);
@@ -106,7 +106,7 @@ package net.spider.handlers{
             }
         }
 
-        public function onDropFrame(e:Event):void{
+        public function onDropFrame(e:*):void{
             if(!main.Game.sfc.isConnected){
                 itemCount = {};
                 invTree = new Array();
@@ -170,9 +170,9 @@ package net.spider.handlers{
                                 }else{
                                     itemCount[dID] += int(resObj.items[dID].iQty);
                                 }
-                                if(optionHandler.filterChecks["chkCDropNotification"] && !resObj.items[dID].bTemp){
+                                if(optionHandler.filterChecks["chkCDropNotification"] && !main.Game.world.invTree[dID].bTemp){
                                     var dropClass:Class = main.Game.world.getClass("DFrameMC") as Class;
-                                    var droppedItem:* = main.Game.copyObj(resObj.items[dID]);
+                                    var droppedItem:* = main.Game.copyObj(main.Game.world.invTree[dID]);
                                     droppedItem.iQty = int(resObj.items[dID].iQty);
                                     var dropUI:* = new (dropClass)(droppedItem);
                                     main.Game.ui.dropStack.addChild(dropUI);

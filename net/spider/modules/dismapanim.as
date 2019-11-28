@@ -13,13 +13,7 @@ package net.spider.modules{
 	
 	public class dismapanim extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			dismapanim.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
+		public static function onToggle():void{
 			if(!optionHandler.disMapAnim){
 				propPlay(main.Game.world.CHARS);
 				var ctr:Number = 0;

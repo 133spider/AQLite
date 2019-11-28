@@ -12,13 +12,7 @@ package net.spider.modules{
 	
 	public class lockmons extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			lockmons.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
+		public static function onToggle():void{
 			if(!optionHandler.lockm){
 				var mons:Array = main.Game.world.getMonstersByCell(main.Game.world.strFrame);
 				for each(var _m in mons){

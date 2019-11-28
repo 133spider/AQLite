@@ -15,16 +15,6 @@ package net.spider.handlers{
 	import com.adobe.utils.StringUtil;
 	
 	public class boosts extends MovieClip {
-		
-        public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void {
-            boosts.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-        public static function onToggle(e:Event):void{
-            //optionHandler.boost
-        }
 
 		private static var runOnce:Boolean = false;
         public static function onTimerUpdate():void{

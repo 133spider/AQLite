@@ -12,16 +12,6 @@ package net.spider.modules{
 	
 	public class skillanim extends MovieClip{
 
-		public static var events:EventDispatcher = new EventDispatcher();
-
-		public static function onCreate():void{
-			skillanim.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
-		public static function onToggle(e:Event):void{
-			//optionHandler.disableSkillAnim
-		}
-
         public static function onTimerUpdate():void{
 			if(!optionHandler.disableSkillAnim || !main.Game.sfc.isConnected || !main.Game.world.myAvatar || !main.Game.world.myAvatar.pMC.spFX)
 				return;
