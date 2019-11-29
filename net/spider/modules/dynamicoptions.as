@@ -18,8 +18,6 @@ package net.spider.modules{
 	import com.adobe.utils.StringUtil;
 	
 	public class dynamicoptions extends MovieClip {
-		public static var events:EventDispatcher = new EventDispatcher();
-
 		public var optObj;
       	public var optItem:*;
 		public var Len;
@@ -56,9 +54,11 @@ package net.spider.modules{
 			txtSearch.addEventListener(Event.CHANGE, onSearch, false, 0, true);
             btnClose.addEventListener(MouseEvent.CLICK, onClose, false, 0, true);
 
-			dynamicoptions.events.addEventListener(ClientEvent.onUpdate, onUpdateCheck);
-
-            this.addEventListener(Event.ENTER_FRAME, onFrame);
+			 if(!main.isUpdated){
+                this.txtVersion.appendText(" (OUTDATED)");
+                this.txtVersion.textColor = 0xFF0000;
+                this.txtVersion.addEventListener(MouseEvent.CLICK, onGotoRelease);
+            }
 		}
 
 		public function initOptions():void{
@@ -314,71 +314,22 @@ package net.spider.modules{
 					strName: "House Entrance Teleport",
 					bEnabled: main.sharedObject.data.bHouseEntrance,
 					sDesc: "While already in your house, if you click on the house icon (the same one you use to go to your house), you can teleport to the entrance of your house!"
+				},
+				{
+					strName: "Display Memory Usage",
+					extra: "btn",
+					sDesc: "Toggles the Memory Usage Display"
 				}
 			];
 		}
-
-		public function onUpdateCheck(e:ClientEvent):void{
-            if(!main.isUpdated){
-                this.txtVersion.appendText(" (OUTDATED)");
-                this.txtVersion.textColor = 0xFF0000;
-                this.txtVersion.addEventListener(MouseEvent.CLICK, onGotoRelease);
-            }
-        }
 
         public function onGotoRelease(e:MouseEvent):void{
             navigateToURL(new URLRequest("https://github.com/133spider/AQLite/releases/latest"), "_blank");
         }
 
         public function onClose(evt:MouseEvent):void{
+			this.parent.removeChild(this);
             main.Game.ui.mcPopup.onClose();
-        }
-
-		private var runOnce:Boolean = true;
-        public function onFrame(e:Event):void{
-            if(!main.Game){
-                this.visible = false;
-                return;
-            }
-            if(!main.Game.ui){
-                this.visible = false;
-                return;
-            }
-            this.visible = flags.isOptions();
-			if(this.visible && !runOnce){
-				runOnce = true;
-			}else if(!this.visible && runOnce){
-				main._stage.focus = null;
-				runOnce = false;
-			}
-
-			if(main.Game.ui.mcOFrame.currentLabel == "Idle" && main.Game.ui.mcOFrame.t1.txtTitle.text == "Friends List"){
-				main.Game.ui.mcOFrame.t1.txtTitle.text = "Friends List (" + main.Game.world.myAvatar.friends.length + "/40)";
-			}
-
-			if((main.Game.ui.dropStack.numChildren < 1) || (optionHandler.blackListed.length < 1))
-				return;
-			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
-				try{
-					var mcDrop:* = (main.Game.ui.dropStack.getChildAt(i) as MovieClip);
-                    if(isBlacklisted(mcDrop.cnt.strName.text.toUpperCase())){
-                        mcDrop.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-                    }
-				}catch(exception){
-					trace("Error handling drops: " + exception);
-				}
-			}
-		}
-
-		public function isBlacklisted(item:String):Boolean{
-            for each(var blacklisted:* in optionHandler.blackListed){
-                if(item.indexOf(" X") != -1)
-                    item = item.substring(0, item.lastIndexOf(" X"));
-                if(StringUtil.trim(item) == StringUtil.trim(blacklisted.label)){
-                    return true;
-                }
-            }
-            return false;
         }
 
 		public function onOver(e:MouseEvent):void{

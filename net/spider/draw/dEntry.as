@@ -8,6 +8,7 @@ package net.spider.draw{
     import net.spider.handlers.DrawEvent;
     import net.spider.handlers.dropmenutwo;
     import net.spider.draw.dRender;
+    import net.spider.handlers.optionHandler;
 
     public class dEntry extends MovieClip {
 
@@ -126,11 +127,15 @@ package net.spider.draw{
         }
 
         function onBtNo(e:MouseEvent):void{
-            dropmenutwo.events.dispatchEvent(new DrawEvent(DrawEvent.onBtNo, itemObj));
+            optionHandler.dropmenutwoMC.onBtNo(itemObj);
         }
 
         function onBtPreview(e:MouseEvent):void{
-            dRender.events.dispatchEvent(new DrawEvent(DrawEvent.onBtPreview, itemObj));
+            if(main.Game.ui.getChildByName("renderPreview"))
+                main.Game.ui.removeChild(main.Game.ui.getChildByName("renderPreview"));
+            var dRenderObj:* = new dRender(itemObj);
+            dRenderObj.name = "renderPreview";
+            main.Game.ui.addChild(dRenderObj);
         }
 
         function onHighlight(e:MouseEvent):void{

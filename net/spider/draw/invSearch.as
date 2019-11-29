@@ -11,18 +11,8 @@ package net.spider.draw{
 
     public class invSearch extends MovieClip {
         public function invSearch(){
-            this.visible = false;
-            this.txtSearch.addEventListener(Event.CHANGE, onTextFormat);
-            this.txtSearch.addEventListener(KeyboardEvent.KEY_DOWN, onInvSearch);
-            this.addEventListener(Event.ENTER_FRAME, onFrame);
-        }
-
-        public function onFrame(e:Event):void{
-            if(!main.Game)
-                return;
-            if(!main.Game.ui)
-                return;
-            this.visible = flags.isInventory();
+            this.txtSearch.addEventListener(Event.CHANGE, onTextFormat, false, 0, true);
+            this.txtSearch.addEventListener(KeyboardEvent.KEY_DOWN, onInvSearch, false, 0, true);
         }
 
         public function onFilter(inventory:*, index:int, arr:Array):Boolean {

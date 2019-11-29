@@ -59,8 +59,11 @@ package net.spider.modules{
 
 		public static function onQuestItemRender(item:Object):Function{
 			return function(e:MouseEvent):void {
-				trace("Rendering " + item.sName + ": " + item.sFile + ", " + item.sLink);
-				dRender.events.dispatchEvent(new DrawEvent(DrawEvent.onBtPreview, item));
+				if(main.Game.ui.getChildByName("renderPreview"))
+					main.Game.ui.removeChild(main.Game.ui.getChildByName("renderPreview"));
+				var dRenderObj:* = new dRender(item);
+				dRenderObj.name = "renderPreview";
+				main.Game.ui.addChild(dRenderObj);
 			};
 		}
 	}

@@ -17,7 +17,6 @@ package net.spider.handlers{
 
     public class dropmenu extends MovieClip {
 
-        public static var events:EventDispatcher = new EventDispatcher();
         public var btnClose:SimpleButton;
         var hRun:int = 0;
         var moy:int = 0;
@@ -66,18 +65,17 @@ package net.spider.handlers{
             itemCount = {};
             invTree = new Array();
             ldr = new Loader();
-            dropmenu.events.addEventListener(ClientEvent.onToggle, onToggle);
-            dropmenu.events.addEventListener(ClientEvent.onShow, onShow);
-            dropmenu.events.addEventListener(ClientEvent.onUpdate, onUpdate);
+            main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+            main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame);
         }
 
-        function onUpdate(e:ClientEvent){
+        function onUpdate(){
             itemCount = {};
             invTree = new Array();
             fOpen();
         }
 
-        public function onShow(e:Event):void{
+        public function onShow():void{
             var mc:MovieClip = (this as MovieClip);
             if(mc.visible){
                 fClose();
@@ -86,22 +84,18 @@ package net.spider.handlers{
             }
         }
 
-        public function onToggle(e:*):void{
-            if(optionHandler.cDrops){
-                main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-                main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame);
-            }else{
-                main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-                main._stage.removeEventListener(Event.ENTER_FRAME, onDropFrame);
-                if(main.Game.ui.dropStack.numChildren < 1)
-                    return;
-                for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
-                    try{
-                        if(!(main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible)
-                            (main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible = true;
-                    }catch(exception){
-                        trace("Error handling drops: " + exception);
-                    }
+        //cleanup function as of version 13
+        public function cleanup():void{
+            main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+            main._stage.removeEventListener(Event.ENTER_FRAME, onDropFrame);
+            if(main.Game.ui.dropStack.numChildren < 1)
+                return;
+            for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+                try{
+                    if(!(main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible)
+                        (main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible = true;
+                }catch(exception){
+                    trace("Error handling drops: " + exception);
                 }
             }
         }
@@ -782,7 +776,7 @@ package net.spider.handlers{
             var h:MovieClip;
             var mcp:MovieClip;
             var mc:MovieClip;
-            rootClass = (stage.getChildAt(0) as MovieClip);
+            rootClass = (main._stage.getChildAt(0) as MovieClip);
             world = (rootClass.world as MovieClip);
             CHARS = (rootClass.world.CHARS as MovieClip);
             mc = (this as MovieClip);

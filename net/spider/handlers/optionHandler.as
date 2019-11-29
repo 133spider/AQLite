@@ -59,6 +59,11 @@ package net.spider.handlers{
         public static var filterChecks:Object = new Object();
         public static var blackListed:Array = new Array();
 
+        public static var cameratoolMC:cameratool;
+        public static var dropmenuMC:dropmenu;
+        public static var dropmenutwoMC:dropmenutwo;
+        public static var memoryusageMC:memoryusage;
+
         public static function onCreate():void{
             optionHandler.events.addEventListener(ClientEvent.onEnable, readSettings);
         }
@@ -112,12 +117,18 @@ package net.spider.handlers{
             }
             filterChecks["chkCDropNotification"] = main.sharedObject.data.filterChecks["chkCDropNotification"];
             cDrops = main.sharedObject.data.cDrops;
-            if(cDrops)
-                oldDispatch(dropmenu);
+            if(cDrops){
+                dropmenuMC = new dropmenu();
+                dropmenuMC.name = "dropmenu";
+                main.Game.ui.addChild(dropmenuMC);
+            }
 
             sbpcDrops = main.sharedObject.data.sbpcDrops;
-            if(sbpcDrops)
-                oldDispatch(dropmenutwo);
+            if(sbpcDrops){
+                dropmenutwoMC = new dropmenutwo();
+                dropmenutwoMC.name = "dropmenutwo";
+                main.Game.ui.addChild(dropmenutwoMC);
+            }
 
             detaildrop = main.sharedObject.data.detaildrop;
             if(detaildrop)
@@ -317,10 +328,15 @@ package net.spider.handlers{
                     cDrops = !cDrops;
                     if(cDrops){
                         main.Game.ui.mcPortrait.getChildByName("iconDrops").visible = true;
+                        dropmenuMC = new dropmenu();
+                        dropmenuMC.name = "dropmenu";
+                        main.Game.ui.addChild(dropmenuMC);
                     }else{
                         main.Game.ui.mcPortrait.getChildByName("iconDrops").visible = false;
+                        dropmenuMC.cleanup();
+                        main.Game.ui.removeChild(main.Game.ui.getChildByName("dropmenu"));
+                        dropmenuMC = null;
                     }
-                    oldDispatch(dropmenu);
                     main.sharedObject.data.cDrops = cDrops;
                     main.sharedObject.flush();
                     break;
@@ -328,10 +344,15 @@ package net.spider.handlers{
                     sbpcDrops = !sbpcDrops;
                     if(sbpcDrops){
                         main.Game.ui.mcPortrait.getChildByName("iconDrops").visible = true;
+                        dropmenutwoMC = new dropmenutwo();
+                        dropmenutwoMC.name = "dropmenutwo";
+                        main.Game.ui.addChild(dropmenutwoMC);
                     }else{
                         main.Game.ui.mcPortrait.getChildByName("iconDrops").visible = false;
+                        dropmenutwoMC.cleanup();
+                        main.Game.ui.removeChild(main.Game.ui.getChildByName("dropmenutwo"));
+                        dropmenutwoMC = null;
                     }
-                    oldDispatch(dropmenutwo);
                     main.sharedObject.data.sbpcDrops = sbpcDrops;
                     main.sharedObject.flush();
                     break;
@@ -403,6 +424,17 @@ package net.spider.handlers{
                 case "Display FPS":
                     main.Game.ui.mcFPS.visible = !main.Game.ui.mcFPS.visible;
                     break;
+                case "Display Memory Usage":
+                    if(!main.Game.ui.getChildByName("memoryusage")){
+                        memoryusageMC = new memoryusage();
+                        memoryusageMC.name = "memoryusage";
+                        main.Game.ui.addChild(memoryusageMC);
+                    }else{
+                        memoryusageMC.cleanup();
+                        main.Game.ui.removeChild(memoryusageMC);
+                        memoryusageMC = null;
+                    }
+                    break;
                 case "Color Picker":
                     if(!colorPickerMC){
                         colorPickerMC = new colorPicker();
@@ -419,9 +451,9 @@ package net.spider.handlers{
                         try{
                             main.Game.ui.dropStack.getChildAt(i).cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
                             if(cDrops)
-                                dropmenu.events.dispatchEvent(new ClientEvent(ClientEvent.onUpdate));
+                                dropmenuMC.onUpdate();
                             if(sbpcDrops)
-                                dropmenutwo.events.dispatchEvent(new ClientEvent(ClientEvent.onUpdate));
+                                dropmenutwoMC.onUpdate();
                         }catch(e){
                             continue;
                         }
@@ -508,7 +540,6 @@ package net.spider.handlers{
                 default: break;
             }
         }
-        public static var cameratoolMC:cameratool;
 
         public static function dispatch(e:*):void{
             e.onToggle();

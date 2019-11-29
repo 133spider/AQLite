@@ -61,32 +61,29 @@ package net.spider.modules{
 				return;
 			if(main._stage.focus == null || main._stage.focus != null && !("text" in main._stage.focus))
 			{
-				switch(param1.charCode)
+				if(param1.charCode == 49){
+					main.Game.world.approachTarget();
+					return;
+				}
+				if(param1.charCode > 49 && param1.charCode < 55)
 				{
-					case 49:
-						main.Game.world.approachTarget();
-						break;
-					default:
-						if(param1.charCode > 49 && param1.charCode < 55)
+					var toRound:Number = 1 - Math.min(Math.max(main.Game.world.myAvatar.dataLeaf.sta.$tha,-1),0.5);
+					var curTime:Number = new Date().getTime();
+					var skillObj:* = main.Game.world.actions.active[param1.charCode - 49];
+					if(skillObj != null)
+					{
+						if(skillObj.isOK)
 						{
-							var toRound:Number = 1 - Math.min(Math.max(main.Game.world.myAvatar.dataLeaf.sta.$tha,-1),0.5);
-							var curTime:Number = new Date().getTime();
-							var skillObj:* = main.Game.world.actions.active[param1.charCode - 49];
-							if(skillObj != null)
+							if(!(curTime - main.Game.world.GCDTS < main.Game.world.GCD))
 							{
-								if(skillObj.isOK)
+								if(curTime - skillObj.ts >= Math.round(skillObj.cd * toRound))
 								{
-									if(!(curTime - main.Game.world.GCDTS < main.Game.world.GCD))
-									{
-										if(curTime - skillObj.ts >= Math.round(skillObj.cd * toRound))
-										{
-											main.Game.world.testAction(skillObj);
-											skillObj = null;
-										}
-									}
+									main.Game.world.testAction(skillObj);
+									skillObj = null;
 								}
 							}
 						}
+					}
 				}
 			}
 		}
@@ -94,25 +91,22 @@ package net.spider.modules{
 		public static function actIconClick(param1:MouseEvent) : *
 		{
 			var skillObj:* = MovieClip(param1.currentTarget).actObj;
-			if(skillObj.auto != null && skillObj.auto == true)
-			{
+			if(skillObj.auto != null && skillObj.auto == true){
 				main.Game.world.approachTarget();
+				return;
 			}
-			else
+			var toRound:Number = 1 - Math.min(Math.max(main.Game.world.myAvatar.dataLeaf.sta.$tha,-1),0.5);
+			var curTime:Number = new Date().getTime();
+			if(skillObj != null)
 			{
-				var toRound:Number = 1 - Math.min(Math.max(main.Game.world.myAvatar.dataLeaf.sta.$tha,-1),0.5);
-				var curTime:Number = new Date().getTime();
-				if(skillObj != null)
+				if(skillObj.isOK)
 				{
-					if(skillObj.isOK)
+					if(!(curTime - main.Game.world.GCDTS < main.Game.world.GCD))
 					{
-						if(!(curTime - main.Game.world.GCDTS < main.Game.world.GCD))
+						if(curTime - skillObj.ts >= Math.round(skillObj.cd * toRound))
 						{
-							if(curTime - skillObj.ts >= Math.round(skillObj.cd * toRound))
-							{
-								main.Game.world.testAction(skillObj);
-								skillObj = null;
-							}
+							main.Game.world.testAction(skillObj);
+							skillObj = null;
 						}
 					}
 				}

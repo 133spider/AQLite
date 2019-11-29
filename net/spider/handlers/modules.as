@@ -10,6 +10,10 @@
     import net.spider.modules.*;
 	import net.spider.handlers.*;
 	import net.spider.main;
+	import net.spider.draw.invSearch;
+	import net.spider.draw.tryMe;
+	import net.spider.draw.btGender;
+	import com.adobe.utils.StringUtil;
 
 	public class modules extends MovieClip{
 
@@ -282,6 +286,46 @@
 			trace("Garbage temporary function flag for btnQuests");
 		}
 
+		public static function isPreviewable():Boolean{
+			if(!main.Game.ui.mcPopup.getChildByName("mcShop"))
+				return false;
+            if(!main.Game.ui.mcPopup.getChildByName("mcShop").iSel)
+                return false;
+            switch(main.Game.ui.mcPopup.getChildByName("mcShop").iSel.sES)
+            {
+                case "Weapon":
+                case "he":
+                case "ba":
+                case "pe":
+                case "ar":
+                case "co":
+                    if(main.Game.ui.mcPopup.getChildByName("mcShop").iSel.bUpg == 1)
+                        if(!main.Game.world.myAvatar.isUpgraded())
+                            return false;
+                    return true;
+                case "ho":
+                case "hi":
+                default:
+                    return false;
+            }
+        }
+
+		public static function isGender(mcFocus:String):Boolean{
+            if(main.Game.ui.mcPopup.currentLabel != "MergeShop")
+                if(main.Game.ui.mcPopup.getChildByName(mcFocus).splitPanel.visible)
+                    return false;
+            if(!main.Game.ui.mcPopup.getChildByName(mcFocus).iSel)
+                return false;
+            switch(main.Game.ui.mcPopup.getChildByName(mcFocus).iSel.sES)
+            {
+                case "ar":
+                case "co":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
 		private static var performOnceFlag:Boolean = false;
 		public static function onMaintainFrame(e:Event):void{
 			if(!main.Game || !main.Game.ui)
@@ -290,6 +334,19 @@
 			for each(var _module:* in moduleList){
 				if(_module.moduleType == "Frame"){
 					_module.moduleClass.onFrameUpdate();
+				}
+			}
+
+			if(main.Game.ui.mcPopup.currentLabel == "Option"){
+				if(!main.Game.ui.mcPopup.getChildByName("dynamicoptions")){
+					var mcDynamicOptions:* = main.Game.ui.mcPopup.addChild(new dynamicoptions());
+					mcDynamicOptions.name = "dynamicoptions";
+					mcDynamicOptions.x = 133.35;
+					mcDynamicOptions.y = -20.40;
+				}
+			}else{
+				if(main.Game.ui.mcPopup.getChildByName("dynamicoptions")){
+					main.Game.ui.mcPopup.removeChild(main.Game.ui.mcPopup.getChildByName("dynamicoptions"));
 				}
 			}
 
@@ -318,6 +375,23 @@
 					if(!MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory").multiPanel.frames[4].mc).hasEventListener(MouseEvent.MOUSE_WHEEL)){
 						MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory").multiPanel.frames[4].mc).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
 						MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory").splitPanel.frames[2].mc).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
+					}
+				}
+			}
+			
+			if(main.Game.ui.mcPopup.getChildByName("mcInventory")){
+				var invBackdrop:* = MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory").multiPanel);
+				if(flags.isInventory()){
+					if(!invBackdrop.getChildByName("invSearch")){
+						var invSearchMC:invSearch = new invSearch();
+						invSearchMC.name = "invSearch";
+						invBackdrop.addChild(invSearchMC);
+						invSearchMC.x = 32;
+						invSearchMC.y = 12;
+					}
+				}else{
+					if(invBackdrop.getChildByName("invSearch")){
+						invBackdrop.removeChild(invBackdrop.getChildByName("invSearch"));
 					}
 				}
 			}
@@ -370,7 +444,124 @@
             }else if(performOnceFlag && !main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor")){
                 performOnceFlag = false;
             }
+
+			if(main.Game.ui.mcOFrame.currentLabel == "Idle" && main.Game.ui.mcOFrame.t1.txtTitle.text == "Friends List"){
+				main.Game.ui.mcOFrame.t1.txtTitle.text = "Friends List (" + main.Game.world.myAvatar.friends.length + "/40)";
+			}
+
+			var mcFocus:MovieClip;
+            var mcTarget:String;
+            var mcUI:MovieClip;
+            switch(main.Game.ui.mcPopup.currentLabel){
+                case "Shop":
+                    if(!main.Game.ui.mcPopup.getChildByName("mcShop")){
+                        mcTarget = "None";
+                        break;
+                    }
+                    mcFocus = MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).previewPanel.getChildAt(3);
+                    mcTarget = (MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).previewPanel.visible) ? "mcShop" : "None";
+                    break;
+                case "MergeShop":
+                    if(!main.Game.ui.mcPopup.getChildByName("mcShop")){
+                        mcTarget = "None";
+                        break;
+                    }
+                    mcFocus = MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).mergePanel.getChildAt(3);
+                    mcTarget = (MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).mergePanel.visible) ? "mcShop" : "None";
+                    break;
+                case "Inventory":
+                    if(!main.Game.ui.mcPopup.getChildByName("mcInventory")){
+                        mcTarget = "None";
+                        break;
+                    }
+                    mcFocus = MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory")).previewPanel.getChildAt(3);
+                    mcTarget = (MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory")).previewPanel.visible) ? "mcInventory" : "None";
+                    break;
+                default:
+                    mcTarget = "None";
+                    break;
+            }
+
+            mcUI = main.Game.ui.mcPopup.getChildByName(mcTarget);
+            if(!(mcTarget == "None" || !mcUI)){
+				if(mcFocus.tInfo.textHeight > mcFocus.tInfo.height){
+					mcUI.iSel.sDesc = StringUtil.trim(mcUI.iSel.sDesc);
+					mcFocus.tInfo.htmlText = main.Game.getItemInfoStringB(mcUI.iSel);
+					if(mcFocus.tInfo.textHeight >= 109.8)
+						mcFocus.tInfo.y = int((mcFocus.btnDelete.y + mcFocus.btnDelete.height) - 
+							(mcFocus.tInfo.height - ((mcFocus.tInfo.textHeight == 109.8 || mcFocus.tInfo.textHeight == 122.95) ? 15 : 3)));
+				}
+
+				if(isGender(mcTarget)){
+					if(!mcFocus.getChildByName("btGender")){
+						var btGenderMC:* = new btGender();
+						btGenderMC.name = "btGender";
+						btGenderMC.height = 20;
+						btGenderMC.width = 25;
+						mcFocus.addChild(btGenderMC);
+					}
+					if((main.Game.ui.mcPopup.currentLabel == "Shop") && mcUI.previewPanel.visible && !(mcUI.splitPanel.visible)){
+						mcFocus.getChildByName("btGender").x = 255;
+						mcFocus.getChildByName("btGender").y = 175;
+					}else if(main.Game.ui.mcPopup.currentLabel == "MergeShop"){
+						mcFocus.getChildByName("btGender").x = 255;
+						mcFocus.getChildByName("btGender").y = 175;
+					}else if((main.Game.ui.mcPopup.currentLabel == "Inventory") && !(mcUI.splitPanel.visible)){
+						mcFocus.getChildByName("btGender").x = 253;
+						mcFocus.getChildByName("btGender").y = 150;
+					}
+				}else{
+					if(mcFocus.getChildByName("btGender")){
+						mcFocus.removeChild(mcFocus.getChildByName("btGender"));
+					}
+				}
+
+				if(isPreviewable()){
+					if(!mcFocus.getChildByName("tryMe")){
+						var tryMeMC:* = new tryMe();
+						tryMeMC.name = "tryMe";
+						mcFocus.addChild(tryMeMC);
+					}
+					if((main.Game.ui.mcPopup.currentLabel == "Shop") && mcUI.previewPanel.visible && !(mcUI.splitPanel.visible)){ //shop
+						mcFocus.getChildByName("tryMe").x = 17;
+						mcFocus.getChildByName("tryMe").y = 333;
+					}
+
+					if((main.Game.ui.mcPopup.currentLabel == "MergeShop")){ //merge shop
+						mcFocus.getChildByName("tryMe").x = 165;
+						mcFocus.getChildByName("tryMe").y = 293;
+					}
+				}else{
+					if(mcFocus.getChildByName("tryMe")){
+						mcFocus.removeChild(mcFocus.getChildByName("tryMe"));
+					}
+				}
+			}
+
+			if((main.Game.ui.dropStack.numChildren < 1) || (optionHandler.blackListed.length < 1))
+				return;
+			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+				try{
+					var mcDrop:* = (main.Game.ui.dropStack.getChildAt(i) as MovieClip);
+                    if(isBlacklisted(mcDrop.cnt.strName.text.toUpperCase())){
+                        mcDrop.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                    }
+				}catch(exception){
+					trace("Error handling drops: " + exception);
+				}
+			}
 		}
+
+		public static function isBlacklisted(item:String):Boolean{
+            for each(var blacklisted:* in optionHandler.blackListed){
+                if(item.indexOf(" X") != -1)
+                    item = item.substring(0, item.lastIndexOf(" X"));
+                if(StringUtil.trim(item) == StringUtil.trim(blacklisted.label)){
+                    return true;
+                }
+            }
+            return false;
+        }
 		
 		public static function onMaintainTimer(e:TimerEvent):void{
 			if(!main.Game || !main.Game.ui)

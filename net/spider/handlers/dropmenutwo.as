@@ -18,7 +18,6 @@ package net.spider.handlers{
     import net.spider.handlers.optionHandler;
 
     public class dropmenutwo extends MovieClip {
-        public static var events:EventDispatcher = new EventDispatcher();
         public function dropmenutwo(){
             this.visible = false;
             itemCount = {};
@@ -28,13 +27,17 @@ package net.spider.handlers{
             this.menuBar.addEventListener(MouseEvent.CLICK, onToggleMenu);
             this.menuBar.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
 			this.menuBar.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
-            dropmenutwo.events.addEventListener(ClientEvent.onToggle, onToggle);
-            dropmenutwo.events.addEventListener(DrawEvent.onBtNo, onBtNo);
-            dropmenutwo.events.addEventListener(ClientEvent.onShow, onShow);
-            dropmenutwo.events.addEventListener(ClientEvent.onUpdate, onUpdate);
+            var pos:* = main.sharedObject.data.dmtPos;
+            if(pos){
+                this.x = pos.x;
+                this.y = pos.y;
+            }
+            this.visible = false;
+            main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
+            main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame, false, 0, true);
         }
 
-        public function onShow(e:ClientEvent):void{
+        public function onShow():void{
             this.visible = !this.visible;
         }
 
@@ -48,7 +51,7 @@ package net.spider.handlers{
 			main.sharedObject.flush();
 		}
 
-        public function onUpdate(e:ClientEvent){
+        public function onUpdate(){
             itemCount = {};
             invTree = new Array();
             reDraw();
@@ -56,19 +59,19 @@ package net.spider.handlers{
 
         public function onBtNo(e:*):void{
             for(var val:* in invTree){ //add this to onBtYes in dEntry!!! bug issue with wrong quantity!
-                if(invTree[val].ItemID == e.data.ItemID){
+                if(invTree[val].ItemID == e.ItemID){
                     itemCount[invTree[val].dID] = null;
                     invTree.splice(val, 1);
                 }
             }
             for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
-                if(e.data.iStk == 1){
-                    if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == e.data.sName)
+                if(e.iStk == 1){
+                    if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == e.sName)
                         main.Game.ui.dropStack.getChildAt(i).cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
                 }else{
                     var nutext:String = main.Game.ui.dropStack.getChildAt(i).cnt.strName.text;
                     nutext = nutext.substring(0, nutext.lastIndexOf(" x"));
-                    if(nutext == e.data.sName)
+                    if(nutext == e.sName)
                         main.Game.ui.dropStack.getChildAt(i).cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
                 }
             }
@@ -82,30 +85,18 @@ package net.spider.handlers{
             }
         }
 
-        public function onToggle(e:*):void{
-            if(optionHandler.sbpcDrops){
-                var pos:* = main.sharedObject.data.dmtPos;
-                if(pos){
-                    this.x = pos.x;
-                    this.y = pos.y;
-                }
-                this.visible = false;
-                main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
-                main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame, false, 0, true);
-            }else{
-                this.visible = false;
-                main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-                main._stage.removeEventListener(Event.ENTER_FRAME, onDropFrame);
-                if(main.Game.ui.dropStack.numChildren < 1)
-                    return;
-                for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
-                    try{
-                        if(!(main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible){
-                            (main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible = true;
-                        }
-                    }catch(exception){
-                        trace("Error handling drops: " + exception);
+        public function cleanup():void{
+            main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+            main._stage.removeEventListener(Event.ENTER_FRAME, onDropFrame);
+            if(main.Game.ui.dropStack.numChildren < 1)
+                return;
+            for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+                try{
+                    if(!(main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible){
+                        (main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible = true;
                     }
+                }catch(exception){
+                    trace("Error handling drops: " + exception);
                 }
             }
         }

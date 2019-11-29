@@ -13,20 +13,13 @@ package net.spider.modules{
 	
 	public class qlog extends MovieClip{
 
-		public static var eventInitialized:Boolean = false;
 		public static function onToggle():void{
 			if(optionHandler.qLog){
 				if(main.Game.sfc.isConnected && main.Game.ui){
-					if(!eventInitialized){
-						main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister, false, 0, true);
-						eventInitialized = true;
-					}
+					main.Game.ui.mcInterface.mcMenu.btnQuest.addEventListener(MouseEvent.CLICK, onRegister, false, 0, true);
 				}
 			}else{
-				if(eventInitialized){
-					main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, onRegister);
-					eventInitialized = false;
-				}
+				main.Game.ui.mcInterface.mcMenu.btnQuest.removeEventListener(MouseEvent.CLICK, onRegister);
 			}
 		}
 

@@ -11,8 +11,7 @@ package net.spider.draw{
 
     public class questPin extends MovieClip {
         public function questPin(){
-            this.txtPin.mouseEnabled = false;
-            this.visible = false;
+            
         }
     }
 }

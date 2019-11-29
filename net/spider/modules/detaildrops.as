@@ -83,7 +83,11 @@ package net.spider.modules{
 		
 		public static function onPreview(itemObj:*):Function{
 			return function(e:MouseEvent):void {
-				dRender.events.dispatchEvent(new DrawEvent(DrawEvent.onBtPreview, itemObj));
+				if(main.Game.ui.getChildByName("renderPreview"))
+					main.Game.ui.removeChild(main.Game.ui.getChildByName("renderPreview"));
+				var dRenderObj:* = new dRender(itemObj);
+				dRenderObj.name = "renderPreview";
+				main.Game.ui.addChild(dRenderObj);
 			};
 		}
 	}

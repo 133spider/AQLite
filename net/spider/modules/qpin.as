@@ -9,13 +9,10 @@ package net.spider.modules{
     import net.spider.main;
 	import net.spider.handlers.ClientEvent;
 	import net.spider.draw.cMenu;
+	import net.spider.draw.questPin;
 	import net.spider.handlers.optionHandler;
 	
 	public class qpin extends MovieClip{
-
-		public static function setVisiblity(e:Boolean):void{
-			main.rootDisplay.getChildByName("mcQuestPin").visible = e;
-		}
 
 		private static var pinnedQuests:String = "";
 		public static function onPin(e:MouseEvent):void{
@@ -25,24 +22,15 @@ package net.spider.modules{
 			}
 		}
 
-		public static var eventInitialized:Boolean = false;
 		public static function onToggle():void{
 			if(optionHandler.qPin){
 				if(main.Game.ui){
-					if(!eventInitialized){
-						main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, onPinQuests, false, 0, true);
-						main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick);
-						eventInitialized = true;
-					}
+					main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, onPinQuests, false, 0, true);
+					main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick);
 				}
-				main.rootDisplay.getChildByName("mcQuestPin").btPin.addEventListener(MouseEvent.CLICK, onPin, false, 0, true);
 			}else{
-				if(eventInitialized){
-					main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, onPinQuests);
-					main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick, false, 0, true);
-					eventInitialized = false;
-				}
-				main.rootDisplay.getChildByName("mcQuestPin").btPin.removeEventListener(MouseEvent.CLICK, onPin);
+				main.Game.ui.iconQuest.removeEventListener(MouseEvent.CLICK, onPinQuests);
+				main.Game.ui.iconQuest.addEventListener(MouseEvent.CLICK, main.Game.oniconQuestClick, false, 0, true);
 			}
 		}
 
@@ -61,13 +49,20 @@ package net.spider.modules{
 				frame = main.Game.ui.ModalStack.getChildAt(0);
 				if(frame.cnt.strTitle){
 					if(frame.cnt.strTitle.htmlText.indexOf("Available Quests") > -1){
-						setVisiblity(true);
+						if(!frame.cnt.getChildByName("questPin")){
+							var pinUI:* = frame.cnt.addChild(new questPin());
+							pinUI.name = "questPin";
+							pinUI.x = 175;
+							pinUI.y = 24;
+							pinUI.addEventListener(MouseEvent.CLICK, onPin, false, 0, true);
+						}
 					}else{
-						setVisiblity(false);
+						if(frame.cnt.getChildByName("questPin")){
+							frame.cnt.getChildByName("questPin").removeEventListener(MouseEvent.CLICK, onPin);
+							frame.cnt.removeChild(frame.cnt.getChildByName("questPin"));
+						}
 					}
 				}
-			}else{
-				setVisiblity(false);
 			}
 		}
 	}

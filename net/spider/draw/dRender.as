@@ -26,27 +26,24 @@ package net.spider.draw
         var pLoaderD:ApplicationDomain;
         var pLoaderC:LoaderContext;
 
-        public static var events:EventDispatcher = new EventDispatcher();
-        public function dRender() : void
+        public function dRender(e:*) : void
         {
-            this.visible = false;
-            dRender.events.addEventListener(DrawEvent.onBtPreview, loadItem);
             rootClass = MovieClip(main.Game);
             pLoaderD = new ApplicationDomain(ApplicationDomain.currentDomain);
             pLoaderC = new LoaderContext(false, pLoaderD);
-            this.x = 50;
+            this.x = 325;
             this.y = 90;
             this.btnClose.addEventListener(MouseEvent.CLICK, xClick, false, 0, true);
             this.btnTryMe.addEventListener(MouseEvent.CLICK, xTryMe, false, 0, true);
             this.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
 			this.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
             mcStage = MovieClip(this.addChild(new MovieClip()));
-            return;
+            loadItem(e);
         }// end function
 
         private function xClick(event:MouseEvent)
         {
-            this.visible = false;
+            this.parent.removeChild(this);
             return;
         }// end function
 
@@ -114,7 +111,7 @@ package net.spider.draw
         public function loadItem(e:*) : void
         {
             this.visible = true;
-            var param1:* = e.data;
+            var param1:* = e;
             if (curItem != param1)
             {
                 this.btnTryMe.visible = false;

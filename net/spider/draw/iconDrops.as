@@ -19,9 +19,9 @@ package net.spider.draw{
         public function onBtDrop(e:MouseEvent):void{
             e.stopPropagation();
             if(optionHandler.cDrops)
-                dropmenu.events.dispatchEvent(new ClientEvent(ClientEvent.onShow));
+                optionHandler.dropmenuMC.onShow();
             if(optionHandler.sbpcDrops)
-                dropmenutwo.events.dispatchEvent(new ClientEvent(ClientEvent.onShow));
+                optionHandler.dropmenutwoMC.onShow();
         }
     }
 }
