@@ -18,21 +18,14 @@ package net.spider.handlers{
 	
 	public class skills extends MovieClip {
 		
-        public static var events:EventDispatcher = new EventDispatcher();
-
-		public function skills() {
-			this.visible = false;
-            skills.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
 		public var toolTip:ToolTipMC;
 		public var eventInitialized:Boolean = false;
-        public function onToggle(e:*):void{
+		public function skills() {
+			this.visible = false;
 			if(toolTip == null){
 				toolTip = new ToolTipMC();
 				main._stage.addChild(toolTip);
 			}
-            //this.visible = optionHandler.skill;
             if(optionHandler.skill){
 				auras = new Object();
 				if(main.Game.ui){
@@ -51,10 +44,10 @@ package net.spider.handlers{
 						main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
 					}
 				}
-				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
+				main._stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
 				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
 			}else{
-				stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
+				main._stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 				if(eventInitialized){
 					for(var j:* = 2; j < 6; j++){
@@ -65,7 +58,7 @@ package net.spider.handlers{
 				auras = null;
 				toolTip.close();
 			}
-        }
+		}
 
 		public var lastSkill:Object;
 		public function actIconClick(e:*):void{
@@ -74,7 +67,7 @@ package net.spider.handlers{
 
 		public function key_actBar(param1:KeyboardEvent) : *
 		{
-			if(stage.focus == null || stage.focus != null && !("text" in stage.focus))
+			if(main._stage.focus == null || main._stage.focus != null && !("text" in main._stage.focus))
 			{
 				if(param1.charCode > 49 && param1.charCode < 55)
 				{

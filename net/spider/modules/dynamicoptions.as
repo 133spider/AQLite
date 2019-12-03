@@ -54,7 +54,7 @@ package net.spider.modules{
 			txtSearch.addEventListener(Event.CHANGE, onSearch, false, 0, true);
             btnClose.addEventListener(MouseEvent.CLICK, onClose, false, 0, true);
 
-			 if(!main.isUpdated){
+			 if(main.isUpdated == false){
                 this.txtVersion.appendText(" (OUTDATED)");
                 this.txtVersion.textColor = 0xFF0000;
                 this.txtVersion.addEventListener(MouseEvent.CLICK, onGotoRelease);

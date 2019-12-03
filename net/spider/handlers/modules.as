@@ -185,12 +185,6 @@
 					moduleType: "",
 					responseHandler: true,
 					keyHandler: false
-				},
-				{
-					moduleClass: houseentrance,
-					moduleType: "Timer",
-					responseHandler: false,
-					keyHandler: false
 				}
 			]
 			
@@ -287,6 +281,12 @@
 		}
 
 		public static function isPreviewable():Boolean{
+			if(main.Game.ui.mcPopup.getChildByName("mcShop") && main.Game.ui.mcPopup.currentLabel != "MergeShop")
+                if(main.Game.ui.mcPopup.getChildByName("mcShop").splitPanel.visible)
+                    return false;
+			if(main.Game.ui.mcPopup.getChildByName("mcInventory"))
+                if(main.Game.ui.mcPopup.getChildByName("mcInventory").splitPanel.visible)
+                    return false;
 			if(!main.Game.ui.mcPopup.getChildByName("mcShop"))
 				return false;
             if(!main.Game.ui.mcPopup.getChildByName("mcShop").iSel)

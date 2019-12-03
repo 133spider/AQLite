@@ -18,22 +18,14 @@ package net.spider.handlers{
 	
 	public class targetskills extends MovieClip {
 		
-        public static var events:EventDispatcher = new EventDispatcher();
-        private static var skillTimer:Timer;
-
-		public function targetskills() {
-			this.visible = false;
-            targetskills.events.addEventListener(ClientEvent.onToggle, onToggle);
-		}
-
 		public var toolTip:ToolTipMC;
 		public var eventInitialized:Boolean = false;
-        public function onToggle(e:*):void{
-			if(toolTip == null){
+		public function targetskills() {
+			this.visible = false;
+            if(toolTip == null){
 				toolTip = new ToolTipMC();
 				main._stage.addChild(toolTip);
 			}
-            //this.visible = optionHandler.skill;
             if(optionHandler.skill){
 				if(main.Game.ui){
 					if(!eventInitialized){
@@ -43,11 +35,11 @@ package net.spider.handlers{
 						eventInitialized = true;
 					}
 				}
-				stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
+				main._stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
 				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
 				auras = new Object();
 			}else{
-				stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
+				main._stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 				if(eventInitialized){
 					for(var j:* = 2; j < 6; j++){
@@ -58,7 +50,7 @@ package net.spider.handlers{
 				auras = null;
 				toolTip.close();
 			}
-        }
+		}
 
 		public var lastSkill:Object;
 		public function actIconClick(e:*):void{
@@ -67,7 +59,7 @@ package net.spider.handlers{
 
 		public function key_actBar(param1:KeyboardEvent) : *
 		{
-			if(stage.focus == null || stage.focus != null && !("text" in stage.focus))
+			if(main._stage.focus == null || main._stage.focus != null && !("text" in main._stage.focus))
 			{
 				if(param1.charCode > 49 && param1.charCode < 55)
 				{

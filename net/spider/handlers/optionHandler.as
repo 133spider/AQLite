@@ -63,6 +63,8 @@ package net.spider.handlers{
         public static var dropmenuMC:dropmenu;
         public static var dropmenutwoMC:dropmenutwo;
         public static var memoryusageMC:memoryusage;
+        public static var skillsMC:skills;
+        public static var targetskillsMC:targetskills;
 
         public static function onCreate():void{
             optionHandler.events.addEventListener(ClientEvent.onEnable, readSettings);
@@ -140,8 +142,12 @@ package net.spider.handlers{
 
             skill = main.sharedObject.data.skill;
             if(skill){
-                oldDispatch(skills);
-                oldDispatch(targetskills);
+                skillsMC = new skills();
+                skillsMC.name = "skillsMC";
+                main.Game.ui.addChild(skillsMC);
+                targetskillsMC = new targetskills();
+                targetskillsMC.name = "targetskillsMC";
+                main.Game.ui.addChild(targetskillsMC);
             }
 
             //passive = main.sharedObject.data.passive;
@@ -298,8 +304,19 @@ package net.spider.handlers{
                     break;
                 case "Class Actives/Auras UI":
                     skill = !skill;
-                    oldDispatch(skills);
-                    oldDispatch(targetskills);
+                    if(!main.Game.ui.getChildByName("skillsMC")){
+                        skillsMC = new skills();
+                        skillsMC.name = "skillsMC";
+                        main.Game.ui.addChild(skillsMC);
+                        targetskillsMC = new targetskills();
+                        targetskillsMC.name = "targetskillsMC";
+                        main.Game.ui.addChild(targetskillsMC);
+                    }else{
+                        main.Game.ui.removeChild(main.Game.ui.getChildByName("skillsMC"));
+                        main.Game.ui.removeChild(main.Game.ui.getChildByName("targetskillsMC"));
+                        skillsMC = null;
+                        targetskillsMC = null;
+                    }
                     main.sharedObject.data.skill = skill;
                     main.sharedObject.flush();
                     break;
