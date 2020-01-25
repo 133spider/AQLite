@@ -255,13 +255,11 @@ package net.spider.handlers{
 							lastSkill = main.Game.world.actions.active[0];
                             break;
 						case "sAct":
-							if(!eventInitialized){
-								for(var k:* = 2; k < 6; k++){
-									main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
-								}
-								lastSkill = main.Game.world.actions.active[0];
-								eventInitialized = true;
+							for(var k:* = 2; k < 6; k++){
+								main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 							}
+							lastSkill = main.Game.world.actions.active[0];
+							//eventInitialized = true;
 							break;
                     }
                 }

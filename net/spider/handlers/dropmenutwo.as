@@ -19,7 +19,6 @@ package net.spider.handlers{
 
     public class dropmenutwo extends MovieClip {
         public function dropmenutwo(){
-            this.visible = false;
             itemCount = {};
             invTree = new Array();
             this.menu.visible = false;
@@ -27,14 +26,24 @@ package net.spider.handlers{
             this.menuBar.addEventListener(MouseEvent.CLICK, onToggleMenu);
             this.menuBar.addEventListener(MouseEvent.MOUSE_DOWN, onHold, false);
 			this.menuBar.addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false);
-            var pos:* = main.sharedObject.data.dmtPos;
+            var pos:Boolean = main.sharedObject.data.dmtPos;
             if(pos){
-                this.x = pos.x;
-                this.y = pos.y;
+                this.x = main.sharedObject.data.dmtPos.x;
+                this.y = main.sharedObject.data.dmtPos.y;
+            }else{
+                this.x = 383;
+                this.y = 461;
             }
             this.visible = false;
             main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
             main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame, false, 0, true);
+        }
+
+        public function resetPos():void{
+            this.x = 383;
+            this.y = 461;
+            main.sharedObject.data.dmtPos = {x: this.x, y: this.y};
+			main.sharedObject.flush();
         }
 
         public function onShow():void{

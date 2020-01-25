@@ -71,7 +71,7 @@ package net.spider.modules{
 				{
 					strName: "Detailed Item Drops",
 					bEnabled: main.sharedObject.data.detaildrop,
-					sDesc: "Identifies dropped items if they're member only, ac, or both\nClick on the item icon to preview the item!"
+					sDesc: "Identifies dropped items if they're member only, ac, or both"
 				},
 				{
 					strName: "Enhanced Item Descriptions",
@@ -176,6 +176,11 @@ package net.spider.modules{
 							strName: "Invert Menu",
 							bEnabled: main.sharedObject.data.filterChecks["chkInvertDrop"],
 							sDesc: "This will change SBP's Custom Drops UI's drop menu from having the list go downward to having the list go upward instead"
+						},
+						{
+							strName: "Reset Position",
+							extra: "btn",
+							sDesc: "If the Drop UI somehow goes off-screen and you can't see it"
 						}
 					]
 				},
@@ -381,7 +386,11 @@ package net.spider.modules{
 
 						for(var j:int = 0; j < optObj.extra.length; j++){
 							posI++;
-							optItem = new listOptionsItemExtra(optObj.extra[j].bEnabled, optObj.extra[j].sDesc);
+							if(optObj.extra[j].hasOwnProperty("extra")){
+								optItem = new listOptionsItemExtraBtn(optObj.extra[j].sDesc);
+							}else{
+								optItem = new listOptionsItemExtra(optObj.extra[j].bEnabled, optObj.extra[j].sDesc);
+							}
 							optItem.txtName.text = optObj.extra[j].strName;
 							item = optionList.addChild(optItem);
 							item.x = cntMask.x+9;

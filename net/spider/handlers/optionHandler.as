@@ -554,6 +554,11 @@ package net.spider.handlers{
                     main.sharedObject.data.bHouseEntrance = bHouseEntrance;
                     main.sharedObject.flush();
                     break;
+                case "Reset Position":
+                    if(sbpcDrops){
+                        dropmenutwoMC.resetPos();
+                    }
+                    break;
                 default: break;
             }
         }
