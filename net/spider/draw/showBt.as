@@ -20,7 +20,7 @@
 			var sES:String = (main.Game.ui.mcPopup.getChildByName("mcInventory").iSel).sES;
 			if(sES == "ar")
 				sES = "co";
-			if((main.Game.ui.mcPopup.getChildByName("mcInventory").iSel).sFile == 
+			if(main.Game.world.myAvatar.objData.eqp[sES] && (main.Game.ui.mcPopup.getChildByName("mcInventory").iSel).sFile == 
 				main.Game.world.myAvatar.objData.eqp[sES].sFile)
 				this.txtShow.text = "Hide";
 			else
