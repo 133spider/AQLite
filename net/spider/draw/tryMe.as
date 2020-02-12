@@ -43,15 +43,13 @@ package net.spider.draw{
                 }
                 main.Game.world.myAvatar.objData.eqp[sES].oldFile = main.Game.world.myAvatar.objData.eqp[sES].sFile;
                 main.Game.world.myAvatar.objData.eqp[sES].oldLink = main.Game.world.myAvatar.objData.eqp[sES].sLink;
-                main.Game.world.myAvatar.objData.eqp[sES].sFile = (item.sFile == "undefined" ? "" : item.sFile);
-                main.Game.world.myAvatar.objData.eqp[sES].sLink = item.sLink;
             }else{
                 if("sType" in item){
                     main.Game.world.myAvatar.objData.eqp[sES].sType = item.sType;
                 }
-                main.Game.world.myAvatar.objData.eqp[sES].sFile = (item.sFile == "undefined" ? "" : item.sFile);
-                main.Game.world.myAvatar.objData.eqp[sES].sLink = item.sLink;
             }
+            main.Game.world.myAvatar.objData.eqp[sES].sFile = (item.sFile == "undefined" ? "" : item.sFile);
+            main.Game.world.myAvatar.objData.eqp[sES].sLink = item.sLink;
             main.Game.world.myAvatar.loadMovieAtES(sES, item.sFile, item.sLink);
             if((sES == "pe") && (item.sName.indexOf("Bank Pet") != -1)){
                 petDisable.addEventListener(TimerEvent.TIMER, onPetDisable, false, 0, true);

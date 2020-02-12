@@ -40,8 +40,8 @@ package net.spider.handlers{
 						auraUI.name = "auraUI";
 						auraUI.x = 86;
 						auraUI.y = 82;
-						main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
-						main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
+						//main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
+						//main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
 					}
 				}
 				main._stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
@@ -236,8 +236,8 @@ package net.spider.handlers{
 								auraUI.name = "auraUI";
 								auraUI.x = 86;
 								auraUI.y = 82;
-								main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
-								main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
+								//main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
+								//main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
 							}
 							for(var k:* = 2; k < 6; k++){
 								main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);

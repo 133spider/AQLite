@@ -14,22 +14,19 @@ package net.spider.modules{
 	
 	public class houseentrance extends MovieClip{
 
-		private static var passInit:Boolean = false;
-		private static var houseEvent:Boolean = false;
+		public static var houseEvent:Boolean = false;
 		public static function onToggle():void{
 			if(!main.Game)
 				return;
 			if(!main.Game.ui)
 				return;
-			if(!houseEvent && passInit){
+			if(!houseEvent){
 				main.Game.ui.mcInterface.mcMenu.btnHouse.addEventListener(MouseEvent.CLICK, onHouseClick, false, 0, true);
 				houseEvent = true;
 			}else{
 				main.Game.ui.mcInterface.mcMenu.btnHouse.removeEventListener(MouseEvent.CLICK, onHouseClick);
 				houseEvent = false;
 			}
-			if(!passInit) //dodge the first initial dispatch
-				passInit = true;
 		}
 
 		public static function onHouseClick(e:MouseEvent):void{

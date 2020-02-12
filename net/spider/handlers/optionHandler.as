@@ -55,6 +55,10 @@ package net.spider.handlers{
         public static var hidePNames:Boolean;
         public static var bBattlePet:Boolean;
         public static var bHouseEntrance:Boolean;
+        public static var bDisQuestTracker:Boolean;
+        public static var bQuestNotif:Boolean;
+        public static var bBankKey:Boolean;
+        public static var bDisPetAnim:Boolean;
 
         public static var filterChecks:Object = new Object();
         public static var blackListed:Array = new Array();
@@ -102,12 +106,12 @@ package net.spider.handlers{
                 main.sharedObject.data.filterChecks["chkInvertDrop"] = false;
                 main.sharedObject.flush();
             }
-            filterChecks["chkShadow"] = main.sharedObject.data.filterChecks["chkShadow"];
+            filterChecks["chkInvertDrop"] = main.sharedObject.data.filterChecks["chkInvertDrop"];
             if(main.sharedObject.data.filterChecks["chkShadow"] == null){
                 main.sharedObject.data.filterChecks["chkShadow"] = false;
                 main.sharedObject.flush();
             }
-            filterChecks["chkInvertDrop"] = main.sharedObject.data.filterChecks["chkInvertDrop"];
+            filterChecks["chkShadow"] = main.sharedObject.data.filterChecks["chkShadow"];
             if(main.sharedObject.data.filterChecks["chkRedSkills"] == null){
                 main.sharedObject.data.filterChecks["chkRedSkills"] = true;
                 main.sharedObject.flush();
@@ -118,6 +122,16 @@ package net.spider.handlers{
                 main.sharedObject.flush();
             }
             filterChecks["chkCDropNotification"] = main.sharedObject.data.filterChecks["chkCDropNotification"];
+            if(main.sharedObject.data.filterChecks["chkGuild"] == null){
+                main.sharedObject.data.filterChecks["chkGuild"] = true;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkGuild"] = main.sharedObject.data.filterChecks["chkGuild"];
+            if(main.sharedObject.data.filterChecks["chkDisPetAnim"] == null){
+                main.sharedObject.data.filterChecks["chkDisPetAnim"] = true;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkDisPetAnim"] = main.sharedObject.data.filterChecks["chkDisPetAnim"];
             cDrops = main.sharedObject.data.cDrops;
             if(cDrops){
                 dropmenuMC = new dropmenu();
@@ -210,6 +224,11 @@ package net.spider.handlers{
             if(bHouseEntrance)
                 dispatch(houseentrance);
 
+            bDisPetAnim = main.sharedObject.data.bDisPetAnim;
+            if(bDisPetAnim)
+                dispatch(dispetanim);
+
+            bBankKey = main.sharedObject.data.bBankKey;
             draggable = main.sharedObject.data.draggable;
             disableSkillAnim = main.sharedObject.data.disableSkillAnim;
             mType = main.sharedObject.data.mType;
@@ -226,10 +245,13 @@ package net.spider.handlers{
             alphaBOL = main.sharedObject.data.alphaBOL;
             bTheArchive = main.sharedObject.data.theArchive;
             cleanRep = main.sharedObject.data.cleanRep;
+            bDisQuestTracker = main.sharedObject.data.bDisQuestTracker;
+            bQuestNotif = main.sharedObject.data.bQuestNotif;
         }
 
         public static var colorPickerMC:colorPicker;
         public static var blackListMC:blackList;
+        public static var travelMenuMC:travelMenu;
         public static function cmd(id:String):void{
             switch(id){
                 case "Draggable Drops":
@@ -308,9 +330,11 @@ package net.spider.handlers{
                         skillsMC = new skills();
                         skillsMC.name = "skillsMC";
                         main.Game.ui.addChild(skillsMC);
+                        skillsMC.mouseEnabled = false;
                         targetskillsMC = new targetskills();
                         targetskillsMC.name = "targetskillsMC";
                         main.Game.ui.addChild(targetskillsMC);
+                        targetskillsMC.mouseEnabled = false;
                     }else{
                         main.Game.ui.removeChild(main.Game.ui.getChildByName("skillsMC"));
                         main.Game.ui.removeChild(main.Game.ui.getChildByName("targetskillsMC"));
@@ -557,6 +581,45 @@ package net.spider.handlers{
                 case "Reset Position":
                     if(sbpcDrops){
                         dropmenutwoMC.resetPos();
+                    }
+                    break;
+                case "Hide Guild Names Only":
+                    filterChecks["chkGuild"] = !filterChecks["chkGuild"];
+                    main.sharedObject.data.filterChecks["chkGuild"] = filterChecks["chkGuild"];
+                    main.sharedObject.flush();
+                    break;
+                case "Disable Quest Tracker":
+                    bDisQuestTracker = !bDisQuestTracker;
+                    main.sharedObject.data.bDisQuestTracker = bDisQuestTracker;
+                    main.sharedObject.flush();
+                    break;
+                case "Quest Progress Notifications":
+                    bQuestNotif = !bQuestNotif;
+                    main.sharedObject.data.bQuestNotif = bQuestNotif;
+                    main.sharedObject.flush();
+                    break;
+                case "Open Bank with Keybind":
+                    bBankKey = !bBankKey;
+                    main.sharedObject.data.bBankKey = bBankKey;
+                    main.sharedObject.flush();
+                    break;
+                case "Disable Pet Animations":
+                    bDisPetAnim = !bDisPetAnim;
+                    dispatch(dispetanim);
+                    main.sharedObject.data.bDisPetAnim = bDisPetAnim;
+                    main.sharedObject.flush();
+                    break;
+                case "Keep Your Pet Animations Only":
+                    filterChecks["chkDisPetAnim"] = !filterChecks["chkDisPetAnim"];
+                    main.sharedObject.data.filterChecks["chkDisPetAnim"] = filterChecks["chkDisPetAnim"];
+                    main.sharedObject.flush();
+                    break;
+                case "Travel Menu":
+                    if(!travelMenuMC){
+                        travelMenuMC = new travelMenu();
+                        main._stage.addChild(travelMenuMC);
+                    }else{
+                        travelMenuMC.visible = !travelMenuMC.visible;
                     }
                     break;
                 default: break;

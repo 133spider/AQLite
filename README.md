@@ -1,8 +1,8 @@
-![](https://i.imgur.com/NYIvSeb.png)  |  ![](https://i.imgur.com/BNZ4yIy.png)
+![](https://i.imgur.com/wX45qhi.png)  |  ![](https://i.imgur.com/yLhha5F.png)
 
-![](https://i.imgur.com/JgV0TS6.png)  |  ![](https://i.imgur.com/XsmeRcA.png)
+![](https://i.imgur.com/t0PFDz6.png)  |  ![](https://i.imgur.com/eldyoO3.png)
 
-![](https://i.imgur.com/6u19JVa.png)  |  ![](https://i.imgur.com/f5ufJ5w.png)
+![](https://i.imgur.com/DnylCY5.png)  |  ![](https://i.imgur.com/lYmw8KK.png)
 
 ![](https://i.imgur.com/GwstQQS.png)  |  ![](https://i.imgur.com/8xwqXbU.png)
 
@@ -22,7 +22,7 @@ If you'd like to donate some money to help out a College kid like me, that would
 * Goto this link https://github.com/133spider/AQLite/releases/
 * Click the text that says "CLICK ME FOR LAUNCHER DOWNLOAD OPTIONS"
 * Choose and Download the .zip file according to your operating system
-* Extract the file and run the program (The latest version is Version 13.1!)
+* Extract the file and run the program (The latest version is Version 13.3!)
 
 ## Stuck at 0%
 **Client stuck at 0?**
@@ -32,6 +32,11 @@ Make sure that the directory that AQLite is in does not contain any accents!
 Example of a directory containing accent marks: C:\Users\Andr**é**\Desktop\AQLite
 
 To fix this issue, put AQLite in your C:\ Drive, or any other directories that do not contain accent marks!
+
+**Still stuck at 0%?**
+
+1. Delete the folder at: C:\Users\You\AppData\Roaming\AQLite
+2. Run AQLite
 
 **Accents not an issue?**
 

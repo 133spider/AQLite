@@ -8,6 +8,7 @@ package net.spider.handlers{
 	import flash.system.*;
 	import flash.ui.*;
 	import flash.utils.*;
+    import fl.data.DataProvider;
     import net.spider.main;
     import net.spider.modules.options;
     import net.spider.handlers.*;
@@ -409,8 +410,47 @@ package net.spider.handlers{
             stage.removeEventListener(MouseEvent.MOUSE_UP, onMenuBGRelease);
         }
 
+        public function onModifyBlacklist(o:Object):void{
+            if(o.accept){
+                var t_dataProvider:DataProvider = new DataProvider(main.sharedObject.data.listBlack);
+                t_dataProvider.addItem( { label: o.sName.toUpperCase(), value: o.sName.toUpperCase()} );
+                main.sharedObject.data.listBlack = t_dataProvider.toArray();
+                main.sharedObject.flush();
+                optionHandler.blackListed = t_dataProvider.toArray();
+                for(var val:* in invTree){ 
+                    if(invTree[val].ItemID == o.ItemID){
+                        itemCount[invTree[val].dID] = null;
+                        invTree.splice(val, 1);
+                    }
+                }
+                fOpen();
+            }
+        }
+
         var item_load:Object;
         public function onMenuItemClick(e:MouseEvent):void{
+            if(e.shiftKey){
+                if(!(((e.currentTarget as MovieClip).val).sName))
+                    return;
+                var modalClass:Class;
+                var modal:*;
+                var modalO:*;
+                modalClass= main.Game.world.getClass("ModalMC");
+                modal = new modalClass();
+                modalO = {};
+                modalO.strBody = "Are you sure you want to add " + ((e.currentTarget as MovieClip).val).sName + " to the item blacklist?";
+                modalO.callback = onModifyBlacklist;
+                modalO.params = {
+                    "sName": ((e.currentTarget as MovieClip).val).sName,
+                    "ItemID": ((e.currentTarget as MovieClip).val).ItemID
+                };
+                modalO.glow = "red,medium";
+                modalO.btns = "dual";
+                main._stage.addChild(modal);
+                modal.init(modalO);
+                return;
+            }
+
             var imc:MovieClip;
             var cmc:MovieClip;
             var parMC:MovieClip;

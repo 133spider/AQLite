@@ -4,10 +4,13 @@ package net.spider.draw{
     import flash.display.DisplayObject;
     import flash.filters.GlowFilter;
     import flash.text.*;
+    import fl.data.DataProvider;
     import net.spider.main;
     import net.spider.handlers.DrawEvent;
     import net.spider.handlers.dropmenutwo;
+    import net.spider.handlers.modules;
     import net.spider.draw.dRender;
+    import net.spider.draw.detailedCheck;
     import net.spider.handlers.optionHandler;
 
     public class dEntry extends MovieClip {
@@ -93,15 +96,65 @@ package net.spider.draw{
                 AssetClass = (main.Game.world.getClass("iibag") as Class);
                 mcIcon = this.icon.addChild(new (AssetClass)());
             }
+            if(isOwned(resObj.bHouse, resObj.ItemID)){
+                var check:detailedCheck = new detailedCheck();
+                check.width = mcIcon.width;
+                check.height = mcIcon.height;
+                check.x = 0;
+                check.y = 0;
+                mcIcon.addChild(check);
+            }
             mcIcon.scaleX = (mcIcon.scaleY = 0.4);
 
             this.addEventListener(MouseEvent.ROLL_OVER, onHighlight, false, 0, true);
             this.addEventListener(MouseEvent.ROLL_OUT, onDeHighlight, false, 0, true);
+            this.addEventListener(MouseEvent.CLICK, onShiftClick, false, 0, true);
 
             this.btYes.addEventListener(MouseEvent.CLICK, onBtYes, false, 0, true);
             this.btNo.addEventListener(MouseEvent.CLICK, onBtNo, false, 0, true);
             this.btPreview.addEventListener(MouseEvent.CLICK, onBtPreview, false, 0, true);
         }
+
+        function onShiftClick(e:MouseEvent):void{
+            if(e.shiftKey){
+                var modalClass:Class;
+                var modal:*;
+                var modalO:*;
+                modalClass= main.Game.world.getClass("ModalMC");
+                modal = new modalClass();
+                modalO = {};
+                modalO.strBody = "Are you sure you want to add " + itemObj.sName + " to the item blacklist?";
+                modalO.callback = onModifyBlacklist;
+                modalO.params = {
+                    "sName": itemObj.sName
+                };
+                modalO.glow = "red,medium";
+                modalO.btns = "dual";
+                main._stage.addChild(modal);
+                modal.init(modalO);
+            }
+        }
+
+        function onModifyBlacklist(o:Object):void{
+            if(o.accept){
+                var t_dataProvider:DataProvider = new DataProvider(main.sharedObject.data.listBlack);
+                t_dataProvider.addItem( { label: o.sName.toUpperCase(), value: o.sName.toUpperCase()} );
+                main.sharedObject.data.listBlack = t_dataProvider.toArray();
+                main.sharedObject.flush();
+                optionHandler.blackListed = t_dataProvider.toArray();
+                optionHandler.dropmenutwoMC.onBtNo(itemObj);
+            }
+        }
+
+        function isOwned(isHouse:Boolean, itemID:*):Boolean{
+			for each(var item:* in ((isHouse) ? main.Game.world.myAvatar.houseitems : main.Game.world.myAvatar.items)){
+				if(item.ItemID == itemID)
+					return true;
+			}
+			if(main.Game.world.bankinfo.isItemInBank(itemID))
+				return true;
+			return false;
+		}
 
         function updateFormat(size:int):void{
             format.size = size;

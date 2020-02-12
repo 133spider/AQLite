@@ -22,16 +22,17 @@ package net.spider.modules{
 			if (main.Game.ui.ModalStack.numChildren)
 			{
 				frame = main.Game.ui.ModalStack.getChildAt(0);
-				if(frame.cnt.core){
-					if(frame.cnt.core.rewardsStatic)
-						establishRender(frame.cnt.core.rewardsStatic);
-					if(frame.cnt.core.rewardsRoll)
-						establishRender(frame.cnt.core.rewardsRoll);
-					if(frame.cnt.core.rewardsChoice)
-						establishRender(frame.cnt.core.rewardsChoice);
-					if(frame.cnt.core.rewardsRandom)
-						establishRender(frame.cnt.core.rewardsRandom);
-				}
+				if(flash.utils.getQualifiedClassName(frame) == "QFrameMC")
+					if(frame.cnt.core){
+						if(frame.cnt.core.rewardsStatic)
+							establishRender(frame.cnt.core.rewardsStatic);
+						if(frame.cnt.core.rewardsRoll)
+							establishRender(frame.cnt.core.rewardsRoll);
+						if(frame.cnt.core.rewardsChoice)
+							establishRender(frame.cnt.core.rewardsChoice);
+						if(frame.cnt.core.rewardsRandom)
+							establishRender(frame.cnt.core.rewardsRandom);
+					}
 			}
 		}
 

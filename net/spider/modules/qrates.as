@@ -22,26 +22,27 @@ package net.spider.modules{
 			if (main.Game.ui.ModalStack.numChildren)
 			{
 				var frame:* = main.Game.ui.ModalStack.getChildAt(0);
-				if(frame.cnt.core){
-					if(!frame.cnt.core.rewardsRoll)
-						return;
-					for(var i:Number = 1; i < frame.cnt.core.rewardsRoll.numChildren; i++){
-						var rItem:* = frame.cnt.core.rewardsRoll.getChildAt(i);
-						if(rItem.strType.text.indexOf("%") >= 0)
-							continue;
-						inner: for each(var s:* in frame.qData.reward){
-							if(s["ItemID"] == rItem.ItemID){
-								if(rItem.strQ.visible)
-									if(s["iQty"].toString() != rItem.strQ.text.substring(1))
-										continue;
-								rItem.strType.text += " (" + s["iRate"] + "%)";
-								rItem.strType.width = 100;
-								rItem.strRate.visible = false;
-								break inner;
+				if(flash.utils.getQualifiedClassName(frame) == "QFrameMC")
+					if(frame.cnt.core){
+						if(!frame.cnt.core.rewardsRoll)
+							return;
+						for(var i:Number = 1; i < frame.cnt.core.rewardsRoll.numChildren; i++){
+							var rItem:* = frame.cnt.core.rewardsRoll.getChildAt(i);
+							if(rItem.strType.text.indexOf("%") >= 0)
+								continue;
+							inner: for each(var s:* in frame.qData.reward){
+								if(s["ItemID"] == rItem.ItemID){
+									if(rItem.strQ.visible)
+										if(s["iQty"].toString() != rItem.strQ.text.substring(1))
+											continue;
+									rItem.strType.text += " (" + s["iRate"] + "%)";
+									rItem.strType.width = 100;
+									rItem.strRate.visible = false;
+									break inner;
+								}
 							}
 						}
 					}
-				}
 			}
 		}
 	}

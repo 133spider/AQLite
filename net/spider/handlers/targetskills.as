@@ -94,8 +94,8 @@ package net.spider.handlers{
 					auraUI.name = "auraUI";
 					auraUI.x = 16;
 					auraUI.y = 85;
-					main.Game.ui.mcPortraitTarget.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
-					main.Game.ui.mcPortraitTarget.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
+					//main.Game.ui.mcPortraitTarget.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
+					//main.Game.ui.mcPortraitTarget.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
 				}
 			if(!icons.hasOwnProperty(auraName)){
 				var icon:Class;

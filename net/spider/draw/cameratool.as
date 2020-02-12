@@ -21,6 +21,7 @@ package net.spider.draw{
             this.btnExpandTxt.mouseEnabled = false;
             this.weaponUI.visible = false;    
             this.dummyMC.visible = false;    
+            this.cameratoolUI.secondary.visible = false;
 
             this.btnExpand.addEventListener(MouseEvent.CLICK, onBtnExpand, false, 0, true);
             
@@ -39,14 +40,14 @@ package net.spider.draw{
 
             this.addChild(AvatarDisplay);
 
-            this.cameratoolUI.txtClassName.text = main.Game.world.myAvatar.objData.strClassName;
+            this.cameratoolUI.primary.txtClassName.text = main.Game.world.myAvatar.objData.strClassName;
 
             this.background.mouseEnabled = true;
             this.background.addEventListener(MouseEvent.CLICK, onWalk, false, 0, true);
 
-            //cameratoolUI
-            this.cameratoolUI.colBG.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColBG, false, 0, true);
-            this.cameratoolUI.colBG.addEventListener(Event.CLOSE, onColBG, false, 0, true);
+            //cameratoolUI primary
+            this.cameratoolUI.primary.colBG.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColBG, false, 0, true);
+            this.cameratoolUI.primary.colBG.addEventListener(Event.CLOSE, onColBG, false, 0, true);
 
             //emotes
             var emotes:Array = [
@@ -280,17 +281,17 @@ package net.spider.draw{
 
             emotes.sortOn("label");
             
-            this.cameratoolUI.cbEmotes.dataProvider = new DataProvider(emotes);
-            this.cameratoolUI.btnEmote.addEventListener(MouseEvent.CLICK, onBtnEmote, false, 0, true);
+            this.cameratoolUI.primary.cbEmotes.dataProvider = new DataProvider(emotes);
+            this.cameratoolUI.primary.btnEmote.addEventListener(MouseEvent.CLICK, onBtnEmote, false, 0, true);
 
             //class
-            this.cameratoolUI.btnClass1.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
-            this.cameratoolUI.btnClass2.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
-            this.cameratoolUI.btnClass3.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
-            this.cameratoolUI.btnClass4.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
-            this.cameratoolUI.btnClass5.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
+            this.cameratoolUI.primary.btnClass1.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
+            this.cameratoolUI.primary.btnClass2.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
+            this.cameratoolUI.primary.btnClass3.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
+            this.cameratoolUI.primary.btnClass4.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
+            this.cameratoolUI.primary.btnClass5.addEventListener(MouseEvent.CLICK, onBtnClass, false, 0, true);
 
-            this.cameratoolUI.btnToggleDummy.addEventListener(MouseEvent.CLICK, onBtnToggleDummy, false, 0, true);
+            this.cameratoolUI.primary.btnToggleDummy.addEventListener(MouseEvent.CLICK, onBtnToggleDummy, false, 0, true);
 
             this.dummyMC.addEventListener(MouseEvent.MOUSE_DOWN, onDummyDown, false, 0, true);
             this.dummyMC.addEventListener(MouseEvent.MOUSE_UP, onDummyUp, false, 0, true);
@@ -328,16 +329,16 @@ package net.spider.draw{
 
             visible.sortOn("label");
 
-            this.cameratoolUI.cbVisibility.dataProvider = new DataProvider(visible);
-            this.cameratoolUI.btnVisibility.addEventListener(MouseEvent.CLICK, onBtnVisibility, false, 0, true);
+            this.cameratoolUI.primary.cbVisibility.dataProvider = new DataProvider(visible);
+            this.cameratoolUI.primary.btnVisibility.addEventListener(MouseEvent.CLICK, onBtnVisibility, false, 0, true);
 
             //scaling
-            this.cameratoolUI.numScaling.addEventListener(Event.CHANGE, onNumScaling, false, 0, true);
+            this.cameratoolUI.primary.numScaling.addEventListener(Event.CHANGE, onNumScaling, false, 0, true);
 
             //weapon deattachment
-            this.cameratoolUI.btnDeattach.addEventListener(MouseEvent.CLICK, onBtnDeattach, false, 0, true);
+            this.cameratoolUI.primary.btnDeattach.addEventListener(MouseEvent.CLICK, onBtnDeattach, false, 0, true);
 
-            this.cameratoolUI.btnShowDeattach.addEventListener(MouseEvent.CLICK, onBtnShowDeattach, false, 0, true);
+            this.cameratoolUI.primary.btnShowDeattach.addEventListener(MouseEvent.CLICK, onBtnShowDeattach, false, 0, true);
 
             //weapon UI
             this.weaponUI.background.addEventListener(MouseEvent.MOUSE_DOWN, onWeaponUIDown, false, 0, true);
@@ -358,26 +359,46 @@ package net.spider.draw{
 
             //player options
 
-            this.cameratoolUI.btnFreezePlayer.addEventListener(MouseEvent.CLICK, onBtnFreezePlayer, false, 0, true);
-            this.cameratoolUI.btnStonePlayer.addEventListener(MouseEvent.CLICK, onBtnStonePlayer, false, 0, true);
-            this.cameratoolUI.btnHitPlayer.addEventListener(MouseEvent.CLICK, onBtnHitPlayer, false, 0, true);
-            this.cameratoolUI.btnResetPlayer.addEventListener(MouseEvent.CLICK, onBtnResetPlayer, false, 0, true);
+            this.cameratoolUI.primary.btnFreezePlayer.addEventListener(MouseEvent.CLICK, onBtnFreezePlayer, false, 0, true);
+            this.cameratoolUI.primary.btnStonePlayer.addEventListener(MouseEvent.CLICK, onBtnStonePlayer, false, 0, true);
+            this.cameratoolUI.primary.btnHitPlayer.addEventListener(MouseEvent.CLICK, onBtnHitPlayer, false, 0, true);
+            this.cameratoolUI.primary.btnResetPlayer.addEventListener(MouseEvent.CLICK, onBtnResetPlayer, false, 0, true);
 
             //glow
-            this.cameratoolUI.colGlow.addEventListener(Event.CLOSE, onColGlow, false, 0, true);
-            this.cameratoolUI.colGlow.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlow, false, 0, true);
+            this.cameratoolUI.primary.colGlow.addEventListener(Event.CLOSE, onColGlow, false, 0, true);
+            this.cameratoolUI.primary.colGlow.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlow, false, 0, true);
 
-            this.cameratoolUI.colGlowMain.addEventListener(Event.CLOSE, onColGlowMain, false, 0, true);
-            this.cameratoolUI.colGlowMain.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlowMain, false, 0, true);
+            this.cameratoolUI.primary.colGlowMain.addEventListener(Event.CLOSE, onColGlowMain, false, 0, true);
+            this.cameratoolUI.primary.colGlowMain.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlowMain, false, 0, true);
 
-            this.cameratoolUI.colGlowOff.addEventListener(Event.CLOSE, onColGlowOff, false, 0, true);
-            this.cameratoolUI.colGlowOff.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlowOff, false, 0, true);
+            this.cameratoolUI.primary.colGlowOff.addEventListener(Event.CLOSE, onColGlowOff, false, 0, true);
+            this.cameratoolUI.primary.colGlowOff.addEventListener(ColorPickerEvent.ITEM_ROLL_OVER, onColGlowOff, false, 0, true);
 
-            this.cameratoolUI.btnGlowMain.addEventListener(MouseEvent.CLICK, onBtnGlowMain, false, 0, true);
-            this.cameratoolUI.btnGlowOff.addEventListener(MouseEvent.CLICK, onBtnGlowOff, false, 0, true);
-            this.cameratoolUI.btnGlowPlayer.addEventListener(MouseEvent.CLICK, onBtnGlowPlayer, false, 0, true);
+            this.cameratoolUI.primary.btnGlowMain.addEventListener(MouseEvent.CLICK, onBtnGlowMain, false, 0, true);
+            this.cameratoolUI.primary.btnGlowOff.addEventListener(MouseEvent.CLICK, onBtnGlowOff, false, 0, true);
+            this.cameratoolUI.primary.btnGlowPlayer.addEventListener(MouseEvent.CLICK, onBtnGlowPlayer, false, 0, true);
+
+            //cameratoolUI secondary
+            this.cameratoolUI.secondary.btnGender.addEventListener(MouseEvent.CLICK, onBtnGender, false, 0, true);
+            this.cameratoolUI.secondary.btnTurnHead.addEventListener(MouseEvent.CLICK, onBtnTurnHead, false, 0, true);
+
+            //misc
+            this.txtLeft.mouseEnabled = false;
+            this.txtRight.mouseEnabled = false;
 
             this.btnClose.addEventListener(MouseEvent.CLICK, onBtnClose, false, 0, true);
+            this.btnLeft.addEventListener(MouseEvent.CLICK, onBtnLeft, false, 0, true);
+            this.btnRight.addEventListener(MouseEvent.CLICK, onBtnRight, false, 0, true);
+        }
+
+        public function onBtnLeft(e:MouseEvent):void{
+            this.cameratoolUI.primary.visible = !this.cameratoolUI.primary.visible;
+            this.cameratoolUI.secondary.visible = !this.cameratoolUI.secondary.visible;
+        }
+
+        public function onBtnRight(e:MouseEvent):void{
+            this.cameratoolUI.primary.visible = !this.cameratoolUI.primary.visible;
+            this.cameratoolUI.secondary.visible = !this.cameratoolUI.secondary.visible;
         }
 
         public function copyTo(param1:MovieClip) : void{
@@ -551,9 +572,17 @@ package net.spider.draw{
             if(cameratoolUI.visible){
                 this.cameratoolUI.visible = false;
                 this.weaponUI.visible = false;
+                this.btnLeft.visible = false;
+                this.btnRight.visible = false;
+                this.txtLeft.visible = false;
+                this.txtRight.visible = false;
                 this.btnExpandTxt.text = "+";
             }else{
                 this.cameratoolUI.visible = true;
+                this.btnLeft.visible = true;
+                this.btnRight.visible = true;
+                this.txtLeft.visible = true;
+                this.txtRight.visible = true;
                 this.btnExpandTxt.text = "-";
             }
         }
@@ -565,12 +594,12 @@ package net.spider.draw{
         }
 
         public function onBtnEmote(e:MouseEvent):void{
-            if(this.cameratoolUI.cbEmotes.selectedItem.label == "Walk"){
+            if(this.cameratoolUI.primary.cbEmotes.selectedItem.label == "Walk"){
                 AvatarDisplay.mcChar.onMove = true;
             }else{
                 AvatarDisplay.mcChar.onMove = false;
             }
-            AvatarDisplay.mcChar.gotoAndPlay(this.cameratoolUI.cbEmotes.selectedItem.label);
+            AvatarDisplay.mcChar.gotoAndPlay(this.cameratoolUI.primary.cbEmotes.selectedItem.label);
         }
 
         public function onBtnClass(e:MouseEvent):void{
@@ -707,7 +736,7 @@ package net.spider.draw{
             "backrobe": false
         };
         public function onBtnVisibility(e:MouseEvent):void{
-            switch(cameratoolUI.cbVisibility.selectedItem.label){
+            switch(cameratoolUI.primary.cbVisibility.selectedItem.label){
                 case "Mainhand":
                     AvatarDisplay.mcChar.weapon.visible = !AvatarDisplay.mcChar.weapon.visible;
                     break;
@@ -785,7 +814,7 @@ package net.spider.draw{
 
         public var scaleAvt:Number = 3;
         public function onNumScaling(e:Event):void{
-            scaleAvt = this.cameratoolUI.numScaling.textField.text;
+            scaleAvt = this.cameratoolUI.primary.numScaling.textField.text;
             AvatarDisplay.scale(scaleAvt);
         }
 
@@ -797,7 +826,7 @@ package net.spider.draw{
                 weaponDeattached = false;
                 isMirrored = false;
                 isMirroredOff = false;
-                this.cameratoolUI.txtDeattached.text = "Weapon Deattachment: OFF";
+                this.cameratoolUI.primary.txtDeattached.text = "Weapon Deattachment: OFF";
 
                 deattachedMain.removeEventListener(MouseEvent.MOUSE_DOWN, onWeaponDownDrag);
                 deattachedMain.removeEventListener(MouseEvent.MOUSE_UP, onWeaponUpDrag);
@@ -821,7 +850,7 @@ package net.spider.draw{
                 deattachedOff = null;
             }else{
                 weaponDeattached = true;
-                this.cameratoolUI.txtDeattached.text = "Weapon Deattachment: ON";
+                this.cameratoolUI.primary.txtDeattached.text = "Weapon Deattachment: ON";
 
                 main.Game.world.queueLoad({
                     "strFile":main.Game.world.rootClass.getFilePath() + AvatarDisplay.pAV.objData.eqp.Weapon.sFile,
@@ -1145,7 +1174,7 @@ package net.spider.draw{
             };
             if(weaponDeattached){
                 weaponDeattached = false;
-                this.cameratoolUI.txtDeattached.text = "Weapon Deattachment: OFF";
+                this.cameratoolUI.primary.txtDeattached.text = "Weapon Deattachment: OFF";
                 deattachedMain.removeEventListener(MouseEvent.MOUSE_DOWN, onWeaponDownDrag);
                 deattachedMain.removeEventListener(MouseEvent.MOUSE_UP, onWeaponUpDrag);
 
@@ -1219,7 +1248,7 @@ package net.spider.draw{
 
         public var glowMain:Boolean;
         public function onBtnGlowMain(e:MouseEvent):void{
-            var glowFilter:* = new GlowFilter(this.cameratoolUI.colGlowMain.selectedColor, 
+            var glowFilter:* = new GlowFilter(this.cameratoolUI.primary.colGlowMain.selectedColor, 
                 1, 8, 8, 2, 1, false, false);
             if(!glowMain){
                 glowMain = true;
@@ -1232,7 +1261,7 @@ package net.spider.draw{
 
         public var glowOff:Boolean;
         public function onBtnGlowOff(e:MouseEvent):void{
-            var glowFilter:* = new GlowFilter(this.cameratoolUI.colGlowOff.selectedColor, 
+            var glowFilter:* = new GlowFilter(this.cameratoolUI.primary.colGlowOff.selectedColor, 
                 1, 8, 8, 2, 1, false, false);
             if(!glowOff){
                 glowOff = true;
@@ -1245,7 +1274,7 @@ package net.spider.draw{
 
         public var glowPlayer:Boolean;
         public function onBtnGlowPlayer(e:MouseEvent):void{
-            var glowFilter:* = new GlowFilter(this.cameratoolUI.colGlow.selectedColor, 
+            var glowFilter:* = new GlowFilter(this.cameratoolUI.primary.colGlow.selectedColor, 
                 1, 8, 8, 2, 1, false, false);
             if(!glowPlayer){
                 glowPlayer = true;
@@ -1253,6 +1282,73 @@ package net.spider.draw{
             }else{
                 glowPlayer = false;
                 AvatarDisplay.mcChar.filters = [];
+            }
+        }
+
+        public function onBtnGender(e:MouseEvent):void{
+            var _loc3_:* = undefined;
+            AvatarDisplay.pAV = main.Game.world.myAvatar;
+            AvatarDisplay.strGender = (AvatarDisplay.strGender == "M") ? "F" : "M";
+            var _loc2_:* = ["cape","backhair","robe","backrobe"];
+            for(_loc3_ in _loc2_)
+            {
+                if(typeof AvatarDisplay.mcChar[_loc2_[_loc3_]] != undefined)
+                {
+                    AvatarDisplay.mcChar[_loc2_[_loc3_]].visible = false;
+                }
+            }
+            if(!AvatarDisplay.pAV.dataLeaf.showHelm || !("he" in AvatarDisplay.pAV.objData.eqp) && AvatarDisplay.pAV.objData.eqp.he == null)
+            {
+                AvatarDisplay.loadHair();
+            }
+            for(var _loc7_ in main.Game.world.myAvatar.objData.eqp)
+            {
+                switch(_loc7_)
+                {
+                    case "Weapon":
+                        AvatarDisplay.loadWeapon(AvatarDisplay.pAV.objData.eqp[_loc7_].sFile, null);
+                        continue;
+                    case "he":
+                        if(AvatarDisplay.pAV.dataLeaf.showHelm)
+                        {
+                            AvatarDisplay.loadHelm(AvatarDisplay.pAV.objData.eqp[_loc7_].sFile, null);
+                        }
+                        continue;
+                    case "ba":
+                        if(AvatarDisplay.pAV.dataLeaf.showCloak)
+                        {
+                            AvatarDisplay.loadCape(AvatarDisplay.pAV.objData.eqp[_loc7_].sFile, null);
+                        }
+                        continue;
+                    case "ar":
+                        if(main.Game.world.myAvatar.objData.eqp.co == null)
+                        {
+                            AvatarDisplay.loadClass(AvatarDisplay.pAV.objData.eqp[_loc7_].sFile, null);
+                        }
+                        continue;
+                    case "co":
+                        AvatarDisplay.loadArmor(AvatarDisplay.pAV.objData.eqp[_loc7_].sFile, AvatarDisplay.pAV.objData.eqp[_loc7_].sLink);
+                        continue;
+                    default:
+                        continue;
+                }
+            }
+        }
+
+        var oldX:int;
+        var oldY:int;
+        //adjust head position in the future
+        public function onBtnTurnHead(e:MouseEvent):void{
+            if(!oldX){
+                oldX = AvatarDisplay.mcChar.head.x;
+                oldY = AvatarDisplay.mcChar.head.y;
+            }
+            AvatarDisplay.mcChar.head.scaleX *= -1;
+            if(AvatarDisplay.mcChar.head.scaleX < 0){
+                AvatarDisplay.mcChar.head.x -= 7;
+            }else{
+                AvatarDisplay.mcChar.head.x = oldX;
+                AvatarDisplay.mcChar.head.y = oldY;
             }
         }
 

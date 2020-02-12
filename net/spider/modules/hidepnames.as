@@ -15,8 +15,11 @@ package net.spider.modules{
 		public static function onToggle():void{
 			if(!optionHandler.hideP){
 				for(var playerMC:* in main.Game.world.avatars)
-					if(main.Game.world.avatars[playerMC].pMC)
+					if(main.Game.world.avatars[playerMC].pMC){
 						main.Game.world.avatars[playerMC].pMC.pname.visible = true;
+						main.Game.world.avatars[playerMC].pMC.pname.ti.visible = true;
+						main.Game.world.avatars[playerMC].pMC.pname.tg.visible = true;
+					}
 			}
 		}
 
@@ -35,10 +38,22 @@ package net.spider.modules{
 			for(var playerMC:* in main.Game.world.avatars){
 				if(!main.Game.world.avatars[playerMC].objData)
 					continue;
-				if(main.Game.world.avatars[playerMC].pMC.pname.visible && mouseOverAvatar != main.Game.world.avatars[playerMC].pMC.pname.ti.text){
-					main.Game.world.avatars[playerMC].pMC.pname.visible = false;
-				}else if(!main.Game.world.avatars[playerMC].pMC.pname.visible && main.Game.world.avatars[playerMC].pMC.pname.ti.text == mouseOverAvatar){
-					main.Game.world.avatars[playerMC].pMC.pname.visible = true;
+				if(optionHandler.filterChecks["chkGuild"]){
+					if(main.Game.world.avatars[playerMC].pMC.pname.tg.visible 
+						&& mouseOverAvatar != main.Game.world.avatars[playerMC].pMC.pname.ti.text){
+						main.Game.world.avatars[playerMC].pMC.pname.tg.visible = false;
+					}else if(!main.Game.world.avatars[playerMC].pMC.pname.tg.visible 
+						&& main.Game.world.avatars[playerMC].pMC.pname.ti.text == mouseOverAvatar){
+						main.Game.world.avatars[playerMC].pMC.pname.tg.visible = true;
+					}
+				}else{
+					if(main.Game.world.avatars[playerMC].pMC.pname.visible 
+						&& mouseOverAvatar != main.Game.world.avatars[playerMC].pMC.pname.ti.text){
+						main.Game.world.avatars[playerMC].pMC.pname.visible = false;
+					}else if(!main.Game.world.avatars[playerMC].pMC.pname.visible 
+						&& main.Game.world.avatars[playerMC].pMC.pname.ti.text == mouseOverAvatar){
+						main.Game.world.avatars[playerMC].pMC.pname.visible = true;
+					}
 				}
 				if(!main.Game.world.avatars[playerMC].dataLeaf.hasMouseOverEvent){
 					try{

@@ -71,7 +71,7 @@ package net.spider.modules{
 				{
 					strName: "Detailed Item Drops",
 					bEnabled: main.sharedObject.data.detaildrop,
-					sDesc: "Identifies dropped items if they're member only, ac, or both"
+					sDesc: "Identifies dropped items if they're member only, ac, or both\nYou must have your items in your bank LOADED for it to detect them!"
 				},
 				{
 					strName: "Enhanced Item Descriptions",
@@ -91,7 +91,7 @@ package net.spider.modules{
 				{
 					strName: "Detailed Quest Rewards",
 					bEnabled: main.sharedObject.data.detailquest,
-					sDesc: "Identifies quest rewards if they're member only, ac, or both"
+					sDesc: "Identifies quest rewards if they're member only, ac, or both\nA checkmark will appear if you already own the item in the bank/inv\nYou must have your items in your bank LOADED for it to detect them!"
 				},
 				{
 					strName: "Allow Quest Log Turn-Ins",
@@ -106,7 +106,7 @@ package net.spider.modules{
 				{
 					strName: "Quest Pinner",
 					bEnabled: main.sharedObject.data.qPin,
-					sDesc: "A replacement for quest box glitching.\n1. Open quests from any NPC\n2. Press the \"Pin Quests\" button\n3. You can now access it from anywhere by clicking on the yellow (!) quest log icon at the top left!"
+					sDesc: "A replacement for quest box glitching.\n1. Open quests from any NPC\n2. Press the \"Pin Quests\" button (left)\n3. You can now access it from anywhere by clicking on the yellow (!) quest log icon at the top left!\nShift+Click the yellow (!) quest log icon to open the Quest Tracker!"
 				},
 				{
 					strName: "Disable Skill Animations",
@@ -133,7 +133,7 @@ package net.spider.modules{
 				{
 					strName: "Class Actives/Auras UI",
 					bEnabled: main.sharedObject.data.skill,
-					sDesc: "(Draggable UI) Show buffs/passives and their stacks like your average MMO's buff/passive tracker"
+					sDesc: "Show buffs/passives and their stacks like your average MMO's buff/passive tracker"
 				},
 				{
 					strName: "Freeze / Lock Monster Position",
@@ -158,7 +158,7 @@ package net.spider.modules{
 				{
 					strName: "Custom Drops UI",
 					bEnabled: main.sharedObject.data.cDrops,
-					sDesc: "A reimagined UI of AQW's drops",
+					sDesc: "A reimagined UI of AQW's drops\nShift+Click to blacklist an item!\nYou must have your items in your bank LOADED for it to detect them!",
 					extra: [
 						{
 							strName: "Drop Notifications",
@@ -170,7 +170,7 @@ package net.spider.modules{
 				{
 					strName: "SBP's Custom Drops UI",
 					bEnabled: main.sharedObject.data.sbpcDrops,
-					sDesc: "Inspired by SharpBladePoint on r/AQW\nA reimagined UI of AQW's drops",
+					sDesc: "Inspired by SharpBladePoint on r/AQW\nA reimagined UI of AQW's drops\nShift+Click to blacklist an item!\nYou must have your items in your bank LOADED for it to detect them!",
 					extra: [
 						{
 							strName: "Invert Menu",
@@ -308,7 +308,14 @@ package net.spider.modules{
 				{
 					strName: "Hide Player Names",
 					bEnabled: main.sharedObject.data.hidePNames,
-					sDesc: "Hides player names\nHover over a player to reveal their name & guild"
+					sDesc: "Hides player names\nHover over a player to reveal their name & guild",
+					extra: [
+						{
+							strName: "Hide Guild Names Only",
+							bEnabled: main.sharedObject.data.filterChecks["chkGuild"],
+							sDesc: "Player names will be visible, and guild names will be hidden"
+						}
+					]
 				},
 				{
 					strName: "Battlepets",
@@ -324,6 +331,38 @@ package net.spider.modules{
 					strName: "Display Memory Usage",
 					extra: "btn",
 					sDesc: "Toggles the Memory Usage Display"
+				},
+				{
+					strName: "Disable Quest Tracker",
+					bEnabled: main.sharedObject.data.bDisQuestTracker,
+					sDesc: "Prevents the Quest Tracker from popping up"
+				},
+				{
+					strName: "Quest Progress Notifications",
+					bEnabled: main.sharedObject.data.bQuestNotif,
+					sDesc: "Quest Progress will continue to notify/update you even when you've completed the quest"
+				},
+				{
+					strName: "Open Bank with Keybind",
+					bEnabled: main.sharedObject.data.bBankKey,
+					sDesc: "If you have a bank pet in your inventory (or a bank cape), pressing b on your keyboard will open the bank regardless if you have the pet equipped or not"
+				},
+				{
+					strName: "Disable Pet Animations",
+					bEnabled: main.sharedObject.data.bDisPetAnim,
+					sDesc: "Disables pet animations\nYou can disable a specific player's pet animations by targetting them and clicking on their portrait!",
+					extra: [
+						{
+							strName: "Keep Your Pet Animations Only",
+							bEnabled: main.sharedObject.data.filterChecks["chkDisPetAnim"],
+							sDesc: "Only works if \"Disable Pet Animation\" is enabled!\nHaving this enabled will allow your pet animations to continue working while others have theirs disabled"
+						}
+					]
+				},
+				{
+					strName: "Travel Menu",
+					extra: "btn",
+					sDesc: "Jump between multiple maps in an efficient manner"
 				}
 			];
 		}

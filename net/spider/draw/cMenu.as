@@ -30,7 +30,7 @@ package net.spider.draw{
             mc.addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
             fData = {};
             fData.params = {};
-            fData.user = ["Char Page", "Is Staff?", "Hide Weapon", "Hide Player", "Disable Wep Anim", "Whisper", "Add Friend", "Go To", "Invite", "Report", "Delete Friend", "Ignore", "Close"];
+            fData.user = ["Char Page", "Is Staff?", "Hide Helm", "Hide Cape", "Hide Weapon", "Hide Player", "Disable Wep Anim", "Whisper", "Add Friend", "Go To", "Invite", "Report", "Delete Friend", "Ignore", "Close"];
             fData.party = ["Char Page", "Whisper", "Add Friend", "Go To", "Remove", "Summon", "Promote", "Report", "Delete Friend", "Ignore", "Close"];
             fData.self = ["Char Page", "Reputation", "Leave Party", "Close"];
             fData.pvpqueue = ["Leave Queue", "Close"];
@@ -86,6 +86,12 @@ package net.spider.draw{
                 if ((((fData.cl[_local3] == "Ignore")) && (rootClass.chatF.isIgnored(_local5)))){
                     fData.cl[_local3] = "Unignore";
                 }
+                if ((fData.cl[_local3] == "Hide Helm") && !rootClass.world.getAvatarByUserName(_local5).pMC.mcChar.head.helm.visible){
+                    fData.cl[_local3] = "Show Helm";
+                }
+                if ((fData.cl[_local3] == "Hide Cape") && !rootClass.world.getAvatarByUserName(_local5).pMC.mcChar.cape.visible){
+                    fData.cl[_local3] = "Show Cape";
+                }
                 if ((fData.cl[_local3] == "Hide Player") && !rootClass.world.getAvatarByUserName(_local5).pMC.mcChar.visible){
                     fData.cl[_local3] = "Show Player";
                 }
@@ -110,9 +116,6 @@ package net.spider.draw{
                         };
                         break;
                     case "go to":
-                        if (!((rootClass.world.isPartyMember(_local5)) || (rootClass.world.myAvatar.isFriend(fData.params.ID)))){
-                            _local9 = false;
-                        };
                         break;
                     case "ignore":
                     case "unignore":
@@ -121,9 +124,6 @@ package net.spider.draw{
                         };
                         break;
                     case "invite":
-                        if ((((((((((((((_local5 == rootClass.sfc.myUserName)) || ((_local6 == null)))) || (((((!((rootClass.world.getAvatarByUserName(_local5) == null))) && (!((rootClass.world.getAvatarByUserName(_local5).objData == null))))) && (((rootClass.world.getAvatarByUserName(_local5).isStaff()) && (!(rootClass.world.myAvatar.isStaff())))))))) || ((rootClass.world.partyMembers.length > 4)))) || (rootClass.world.isPartyMember(fData.params.strUsername)))) || (((rootClass.world.bPvP) && (!((_local6.pvpTeam == rootClass.world.myAvatar.dataLeaf.pvpTeam))))))) || ((((rootClass.world.partyMembers.length > 0)) && (!((rootClass.world.partyOwner.toLowerCase() == rootClass.sfc.myUserName))))))){
-                            _local9 = false;
-                        };
                         break;
                     case "leave party":
                         if (rootClass.world.partyMembers.length == 0){
@@ -232,6 +232,26 @@ package net.spider.draw{
                     break;
                 case "unfreeze monster":
                     fData.params.target.noMove = false;
+                    break;
+                case "hide helm":
+                    playerMC = rootClass.world.getAvatarByUserName(_local4);
+                    playerMC.pMC.mcChar.head.helm.visible = false;
+                    playerMC.pMC.mcChar.head.hair.visible = true;
+                    playerMC.pMC.mcChar.backhair.visible = playerMC.pMC.bBackHair;
+                    break;
+                case "show helm":
+                    playerMC = rootClass.world.getAvatarByUserName(_local4);
+                    playerMC.pMC.mcChar.head.helm.visible = true;
+                    playerMC.pMC.mcChar.head.hair.visible = false;
+                    playerMC.pMC.mcChar.backhair.visible = false;
+                    break;
+                case "hide cape":
+                    playerMC = rootClass.world.getAvatarByUserName(_local4);
+                    playerMC.pMC.mcChar.cape.visible = false;
+                    break;
+                case "show cape":
+                    playerMC = rootClass.world.getAvatarByUserName(_local4);
+                    playerMC.pMC.mcChar.cape.visible = true;
                     break;
                 case "hide monster":
                     fData.params.target.getChildAt(1).visible = false;

@@ -39,12 +39,33 @@ package net.spider.modules{
                     {
                         case "dropItem":
 							for (dID in resObj.items)
-                                if(itemArchive[dID] == null)
-                                    itemArchive.push(main.Game.copyObj(resObj.items[dID]));
+								if(resObj.items[dID].sName == null){
+									if(!itemExists(main.Game.world.invTree[dID].sName))
+										itemArchive.push(main.Game.copyObj(main.Game.world.invTree[dID]));
+								}else if(!itemExists(resObj.items[dID].sName)){
+									itemArchive.push(main.Game.copyObj(resObj.items[dID]));
+								}
                         	break;
                     }
                 }
         }
+
+		public static function itemExists(item:String):Boolean{
+			for each(var t_item:* in itemArchive)
+				if(t_item.sName == item)
+					return true;
+			return false;
+		}
+
+		public static function isOwned(isHouse:Boolean, itemID:*):Boolean{
+			for each(var item:* in ((isHouse) ? main.Game.world.myAvatar.houseitems : main.Game.world.myAvatar.items)){
+				if(item.ItemID == itemID)
+					return true;
+			}
+			if(main.Game.world.bankinfo.isItemInBank(itemID))
+				return true;
+			return false;
+		}
 
         public static function onFrameUpdate():void{
 			if(!optionHandler.detaildrop || !main.Game.sfc.isConnected || (main.Game.ui.dropStack.numChildren < 1))
@@ -57,7 +78,7 @@ package net.spider.modules{
 					if(!mcDrop.cnt.bg.getChildByName("flag")){
 						var sName:String = mcDrop.cnt.strName.text.replace(/ x[0-9]/g, "");
 						for each(var item:* in itemArchive){
-							if(item.sName == sName){
+							if(item.sName != null && item.sName == sName){
 								if(item.bCoins == 1){
 									var glowFilter:* = new GlowFilter(0xF6CA2A, 1, 8, 8, 2, 1, false, false);
 									mcDrop.filters = [glowFilter];
@@ -66,6 +87,15 @@ package net.spider.modules{
 									var txtFormat:TextFormat = mcDrop.cnt.strName.defaultTextFormat;
 									txtFormat.color = 0xFCC749;
 									mcDrop.cnt.strName.setTextFormat(txtFormat);
+								}
+								if(isOwned(item.bHouse, item.ItemID)){
+									trace("register " + itemArchive.length);
+									var t_check:detailedCheck = new detailedCheck();
+									t_check.width = mcDrop.cnt.icon.width;
+									t_check.height = mcDrop.cnt.icon.height;
+									t_check.x = 0;
+									t_check.y = 0;
+									mcDrop.cnt.icon.addChild(t_check);
 								}
 								//mcDrop.cnt.icon.addEventListener(MouseEvent.CLICK, onPreview(item), false, 0, true); --causing crashes
 								var flag:mcCoin = new mcCoin();

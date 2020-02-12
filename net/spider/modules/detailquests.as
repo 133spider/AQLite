@@ -22,17 +22,28 @@ package net.spider.modules{
 			if (main.Game.ui.ModalStack.numChildren)
 			{
 				frame = main.Game.ui.ModalStack.getChildAt(0);
-				if(frame.cnt.core){
-					if(frame.cnt.core.rewardsStatic)
-						establishRender(frame.cnt.core.rewardsStatic);
-					if(frame.cnt.core.rewardsRoll)
-						establishRender(frame.cnt.core.rewardsRoll);
-					if(frame.cnt.core.rewardsChoice)
-						establishRender(frame.cnt.core.rewardsChoice);
-					if(frame.cnt.core.rewardsRandom)
-						establishRender(frame.cnt.core.rewardsRandom);
-				}
+				if(flash.utils.getQualifiedClassName(frame) == "QFrameMC")
+					if(frame.cnt.core){
+						if(frame.cnt.core.rewardsStatic)
+							establishRender(frame.cnt.core.rewardsStatic);
+						if(frame.cnt.core.rewardsRoll)
+							establishRender(frame.cnt.core.rewardsRoll);
+						if(frame.cnt.core.rewardsChoice)
+							establishRender(frame.cnt.core.rewardsChoice);
+						if(frame.cnt.core.rewardsRandom)
+							establishRender(frame.cnt.core.rewardsRandom);
+					}
 			}
+		}
+
+		public static function isOwned(isHouse:Boolean, itemID:*):Boolean{
+			for each(var item:* in ((isHouse) ? main.Game.world.myAvatar.houseitems : main.Game.world.myAvatar.items)){
+				if(item.ItemID == itemID)
+					return true;
+			}
+			if(main.Game.world.bankinfo.isItemInBank(itemID))
+				return true;
+			return false;
 		}
 
 		public static var itemUI:*;
@@ -61,6 +72,14 @@ package net.spider.modules{
 										txtFormat = itemUI.strQ.defaultTextFormat;
 										txtFormat.color = 0xFCC749;
 										itemUI.strQ.setTextFormat(txtFormat);
+									}
+									if(isOwned(k.bHouse, k.ItemID)){
+										var check:detailedCheck = new detailedCheck();
+										check.width = itemUI.icon.width;
+										check.height = itemUI.icon.height;
+										check.x = 0;
+										check.y = 0;
+										itemUI.icon.addChild(check);
 									}
 									var flag:mcCoin = new mcCoin();
 									flag.visible = false;

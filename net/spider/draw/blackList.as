@@ -11,6 +11,7 @@ package net.spider.draw{
     import fl.data.DataProvider;
     import fl.controls.TextInput;
     import fl.managers.StyleManager;
+    import net.spider.handlers.optionHandler;
 
     public class blackList extends MovieClip {
         public function blackList(){
@@ -28,7 +29,8 @@ package net.spider.draw{
         }
 
         private function onClose(e:MouseEvent):void{
-            this.visible = false;
+            optionHandler.blackListMC = null;
+            this.parent.removeChild(this);
         }
 
         private function onBtnAddBlacklist(evt:MouseEvent):void{

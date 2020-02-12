@@ -10,9 +10,7 @@
     import net.spider.modules.*;
 	import net.spider.handlers.*;
 	import net.spider.main;
-	import net.spider.draw.invSearch;
-	import net.spider.draw.tryMe;
-	import net.spider.draw.btGender;
+	import net.spider.draw.*;
 	import com.adobe.utils.StringUtil;
 
 	public class modules extends MovieClip{
@@ -185,6 +183,30 @@
 					moduleType: "",
 					responseHandler: true,
 					keyHandler: false
+				},
+				{
+					moduleClass: questnotif,
+					moduleType: "",
+					responseHandler: true,
+					keyHandler: false
+				},
+				{
+					moduleClass: disquesttracker,
+					moduleType: "Timer",
+					responseHandler: false,
+					keyHandler: false
+				},
+				{
+					moduleClass: bankkey,
+					moduleType: "",
+					responseHandler: false,
+					keyHandler: true
+				},
+				{
+					moduleClass: dispetanim,
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				}
 			]
 			
@@ -196,6 +218,16 @@
 			maintainTimer = new Timer(0);
 			maintainTimer.addEventListener(TimerEvent.TIMER, onMaintainTimer);
 			maintainTimer.start();
+		}
+
+		private static var t_mcAC:mcAC;
+		public static function onMcGoldMouseOver(e:MouseEvent):void{
+			t_mcAC.strAC.text = main.Game.world.myAvatar.objData.intCoins;
+			t_mcAC.visible = true;
+		}
+
+		public static function onMcGoldMouseOut(e:MouseEvent):void{
+			t_mcAC.visible = false;
 		}
 
 		public static function onWheel(e:MouseEvent):void{
@@ -310,6 +342,30 @@
             }
         }
 
+		public static function isShowable():Boolean{
+			if(!main.Game.ui.mcPopup.getChildByName("mcInventory"))
+				return false;
+            if(!main.Game.ui.mcPopup.getChildByName("mcInventory").iSel)
+                return false;
+            switch(main.Game.ui.mcPopup.getChildByName("mcInventory").iSel.sES)
+            {
+                case "Weapon":
+                case "he":
+                case "ba":
+				case "ar":
+                case "co":
+                    if(main.Game.ui.mcPopup.getChildByName("mcInventory").iSel.bUpg == 1)
+                        if(!main.Game.world.myAvatar.isUpgraded())
+                            return false;
+                    return true;
+				case "pe":
+                case "ho":
+                case "hi":
+                default:
+                    return false;
+            }
+        }
+
 		public static function isGender(mcFocus:String):Boolean{
             if(main.Game.ui.mcPopup.currentLabel != "MergeShop")
                 if(main.Game.ui.mcPopup.getChildByName(mcFocus).splitPanel.visible)
@@ -326,6 +382,74 @@
             }
         }
 
+		static var mDown:Boolean = false;
+		static var hRun:int = 0;
+		static var dRun:int = 0;
+		static var mbY:int = 0;
+		static var mhY:int = 0;
+		static var mbD:int = 0;
+		private static function merge_scrDown(param1:MouseEvent) : *
+		{
+			mbY = int(param1.currentTarget.parent.mouseY);
+			mhY = int(MovieClip(param1.currentTarget.parent).h.y);
+			mDown = true;
+			main._stage.addEventListener(MouseEvent.MOUSE_UP, merge_scrUp,false,0,true);
+		}
+		
+		private static function merge_scrUp(param1:MouseEvent) : *
+		{
+			mDown = false;
+			main._stage.removeEventListener(MouseEvent.MOUSE_UP, merge_scrUp);
+		}
+
+		private static function merge_hEF(param1:Event) : *
+		{
+			var _loc2_:* = undefined;
+			if(mDown)
+			{
+				_loc2_ = MovieClip(param1.currentTarget.parent);
+				mbD = int(param1.currentTarget.parent.mouseY) - mbY;
+				_loc2_.h.y = mhY + mbD;
+				if(_loc2_.h.y + _loc2_.h.height > _loc2_.b.height)
+				{
+				_loc2_.h.y = int(_loc2_.b.height - _loc2_.h.height);
+				}
+				if(_loc2_.h.y < 0)
+				{
+				_loc2_.h.y = 0;
+				}
+			}
+		}
+		
+		private static function merge_dEF(param1:Event) : *
+		{
+			var _loc2_:* = MovieClip(param1.currentTarget.parent).getChildByName("scrollMC");
+			var _loc3_:* = MovieClip(param1.currentTarget);
+			var _loc4_:* = -_loc2_.h.y / hRun;
+			var _loc5_:* = int(_loc4_ * dRun) + _loc3_.oy;
+			if(Math.abs(_loc5_ - _loc3_.y) > 0.2)
+			{
+				_loc3_.y = _loc3_.y + (_loc5_ - _loc3_.y) / 4;
+			}
+			else
+			{
+				_loc3_.y = _loc5_;
+			}
+		}
+
+		public static function onMergeBoxScroll(e:MouseEvent):void{
+			var mc_merge:MovieClip = MovieClip(e.currentTarget.getChildByName("scrollMC"));
+			mc_merge.h.y  += (e.delta*-1)*6;
+
+			if(mc_merge.h.y < 0)
+				mc_merge.h.y = 0;
+			if(mc_merge.h.y + mc_merge.h.height > mc_merge.b.height)
+				mc_merge.h.y = int(mc_merge.b.height - mc_merge.h.height);
+		}
+
+		static var cachedItem:int = 0;
+		static var mergeScrollFlag:Boolean = false;
+		static var mcbtColorPicker:btColorPicker;
 		private static var performOnceFlag:Boolean = false;
 		public static function onMaintainFrame(e:Event):void{
 			if(!main.Game || !main.Game.ui)
@@ -367,6 +491,27 @@
 						}
 					}
 				}
+			}
+
+			if(main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor") && !main.Game.ui.mcPopup.mcCustomizeArmor.getChildByName("mcBtColorPicker")){
+				mcbtColorPicker = new btColorPicker();
+				mcbtColorPicker.name = "mcBtColorPicker";
+				mcbtColorPicker.x = main.Game.ui.mcPopup.mcCustomizeArmor.btnClose.x;
+				mcbtColorPicker.y = main.Game.ui.mcPopup.mcCustomizeArmor.btnClose.y + mcbtColorPicker.height + 3;
+				main.Game.ui.mcPopup.mcCustomizeArmor.addChild(mcbtColorPicker);
+			}
+
+			if(main.Game.ui.mcPopup.getChildByName("mcCustomize") && !main.Game.ui.mcPopup.mcCustomize.getChildByName("mcBtColorPicker")){
+				mcbtColorPicker = new btColorPicker();
+				mcbtColorPicker.name = "mcBtColorPicker";
+				mcbtColorPicker.x = main.Game.ui.mcPopup.mcCustomize.btnClose.x;
+				mcbtColorPicker.y = main.Game.ui.mcPopup.mcCustomize.btnClose.y + mcbtColorPicker.height + 3;
+				main.Game.ui.mcPopup.mcCustomize.addChild(mcbtColorPicker);
+			}
+
+			if(!main.Game.ui.mcPopup.getChildByName("mcCustomizeArmor") && !main.Game.ui.mcPopup.getChildByName("mcCustomize") && mcbtColorPicker){
+				mcbtColorPicker.destroy();
+				mcbtColorPicker = null;
 			}
 
 			if(main.Game.ui.mcPopup.currentLabel == "Inventory")
@@ -412,15 +557,81 @@
 					if(!MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[8].mc).hasEventListener(MouseEvent.MOUSE_WHEEL)){
 						MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[8].mc).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
 					}
+					if(main.Game.ui.mcPopup.getChildByName("mcShop").iSel && main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel)
+						if(main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[10].mc.iList.height >= 208.4 && !mergeScrollFlag){
+							var t_mc:MovieClip = main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[10].mc;
+							t_mc.bg.height = 186;
+							if(!t_mc.getChildByName("maskMC")){
+								var maskMC:Shape = new Shape();
+								maskMC.graphics.beginFill(0);
+								maskMC.graphics.drawRect(0, 0, t_mc.bg.width, t_mc.bg.height);
+								maskMC.graphics.endFill();
+								t_mc.addChild(maskMC);
+								maskMC.name = "maskMC";
+								maskMC.x = t_mc.bg.x;
+								maskMC.y = t_mc.bg.y;
+								t_mc.iList.mask = maskMC;
+
+								var scrollMC:mergeScroll = new mergeScroll();
+								t_mc.addChild(scrollMC);
+								scrollMC.name = "scrollMC";
+								scrollMC.x = (t_mc.bg.x + t_mc.bg.width) - scrollMC.width/2;
+								scrollMC.y = t_mc.bg.y + 5;
+								scrollMC.height = t_mc.bg.height - 10;
+								scrollMC.h.height /= 2;
+							}else{
+								t_mc.getChildByName("maskMC").height = t_mc.bg.height;
+								t_mc.getChildByName("maskMC").width = t_mc.bg.width;
+								t_mc.getChildByName("maskMC").x = t_mc.bg.x;
+								t_mc.getChildByName("maskMC").y = t_mc.bg.y;
+
+								t_mc.getChildByName("scrollMC").visible = true;
+								t_mc.getChildByName("scrollMC").x = (t_mc.bg.x + t_mc.bg.width) - t_mc.getChildByName("scrollMC").width/2;
+								t_mc.getChildByName("scrollMC").y = t_mc.bg.y + 5;
+								t_mc.getChildByName("scrollMC").height = t_mc.bg.height - 10;
+							}
+							var t_scrollMC:MovieClip = MovieClip(t_mc.getChildByName("scrollMC"));
+
+							hRun = t_scrollMC.b.height - t_scrollMC.h.height;
+							dRun = (int(t_mc.iList.height + t_mc.iList.y * 2) + 1) - t_mc.getChildByName("maskMC").height + 5;
+							t_scrollMC.h.y = 0;
+							t_mc.iList.oy = t_mc.iList.y;
+							t_scrollMC.hit.alpha = 0;
+							mDown = false;
+
+							t_scrollMC.hit.addEventListener(MouseEvent.MOUSE_DOWN,merge_scrDown,false,0,true);
+							t_scrollMC.h.addEventListener(Event.ENTER_FRAME,merge_hEF,false,0,true);
+							t_mc.iList.addEventListener(Event.ENTER_FRAME,merge_dEF,false,0,true);
+							t_mc.ti.y = t_mc.bg.height + 2;
+							cachedItem = main.Game.ui.mcPopup.getChildByName("mcShop").iSel.ItemID;
+
+							t_mc.addEventListener(MouseEvent.MOUSE_WHEEL, onMergeBoxScroll, false, 0, true);
+							mergeScrollFlag = true;
+						}else if(mergeScrollFlag && main.Game.ui.mcPopup.getChildByName("mcShop").iSel.ItemID != cachedItem){
+							var t2_mc:MovieClip = main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[10].mc;
+							if(t2_mc.getChildByName("scrollMC")){
+								t2_mc.getChildByName("scrollMC").visible = false;
+								MovieClip(t2_mc.getChildByName("scrollMC")).hit.removeEventListener(MouseEvent.MOUSE_DOWN, merge_scrDown);
+								MovieClip(t2_mc.getChildByName("scrollMC")).h.removeEventListener(Event.ENTER_FRAME, merge_hEF);
+							}
+							t2_mc.iList.y = 0;
+							t2_mc.iList.removeEventListener(Event.ENTER_FRAME, merge_dEF);
+							t2_mc.removeEventListener(MouseEvent.MOUSE_WHEEL, onMergeBoxScroll);
+							t2_mc.bg.height = t2_mc.iList.height + 1;
+							t2_mc.ti.y = t2_mc.bg.height + 2;
+							mergeScrollFlag = false;
+							cachedItem = -1;
+						}
 				}
 			}
 
 			if (main.Game.ui.ModalStack.numChildren)
 			{
 				var frame:MovieClip = main.Game.ui.ModalStack.getChildAt(0);
-				if(!MovieClip(frame.cnt).hasEventListener(MouseEvent.MOUSE_WHEEL)){
-					MovieClip(frame.cnt).addEventListener(MouseEvent.MOUSE_WHEEL, onQuestWheel, false, 0, true);
-				}
+				if(flash.utils.getQualifiedClassName(frame) == "QFrameMC")
+					if(!MovieClip(frame.cnt).hasEventListener(MouseEvent.MOUSE_WHEEL)){
+						MovieClip(frame.cnt).addEventListener(MouseEvent.MOUSE_WHEEL, onQuestWheel, false, 0, true);
+					}
 			}
 
 			if(main.Game.ui.mcPopup.currentLabel == "Bank")
@@ -445,7 +656,8 @@
                 performOnceFlag = false;
             }
 
-			if(main.Game.ui.mcOFrame.currentLabel == "Idle" && main.Game.ui.mcOFrame.t1.txtTitle.text == "Friends List"){
+			if(main.Game.ui.mcOFrame.currentLabel == "Idle" && main.Game.ui.mcOFrame.t1.txtTitle.text == "Friends List"
+				&& main.Game.ui.mcOFrame.t1.txtTitle.text.indexOf("(") == -1){
 				main.Game.ui.mcOFrame.t1.txtTitle.text = "Friends List (" + main.Game.world.myAvatar.friends.length + "/40)";
 			}
 
@@ -530,12 +742,45 @@
 					if((main.Game.ui.mcPopup.currentLabel == "MergeShop")){ //merge shop
 						mcFocus.getChildByName("tryMe").x = 165;
 						mcFocus.getChildByName("tryMe").y = 293;
+						MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).mergePanel.frames[3].mc.mouseEnabled = 
+							MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop")).mergePanel.frames[3].mc.mouseChildren =false;
 					}
 				}else{
 					if(mcFocus.getChildByName("tryMe")){
 						mcFocus.removeChild(mcFocus.getChildByName("tryMe"));
 					}
 				}
+
+				if(isShowable()){
+					if(!mcFocus.getChildByName("showBt")){
+						var t_showBt:* = new showBt();
+						t_showBt.name = "showBt";
+						t_showBt.x = 28;
+						t_showBt.y = 336;
+						mcFocus.addChild(t_showBt);
+					}else{
+						if(mcFocus.getChildByName("showBt"))
+							MovieClip(mcFocus.getChildByName("showBt")).bt_update();
+					}
+					MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory")).previewPanel.getChildAt(6).visible = false;
+				}else{
+					if(mcFocus.getChildByName("showBt")){
+						mcFocus.removeChild(mcFocus.getChildByName("showBt"));
+					}
+				}
+			}
+
+			if (main.Game.ui.ModalStack.numChildren > 0)
+			{
+				var q_frame:* = main.Game.ui.ModalStack.getChildAt(0);
+				if(flash.utils.getQualifiedClassName(q_frame) == "QFrameMC")
+					if(main.Game.world.myAvatar.dataLeaf.intState > 1 && q_frame.alpha > .5){
+						q_frame.alpha -= .05;
+						main.Game.ui.ModalStack.mouseEnabled = main.Game.ui.ModalStack.mouseChildren = false;
+					}else if(main.Game.world.myAvatar.dataLeaf.intState == 1 && q_frame.alpha != 1){
+						q_frame.alpha = 1;
+						main.Game.ui.ModalStack.mouseEnabled = main.Game.ui.ModalStack.mouseChildren = true;
+					}
 			}
 
 			if((main.Game.ui.dropStack.numChildren < 1) || (optionHandler.blackListed.length < 1))
@@ -563,10 +808,13 @@
             return false;
         }
 		
+		static var prevPet:String;
+		static var petPos:int;
+		static var petFlag:Boolean = false;
 		public static function onMaintainTimer(e:TimerEvent):void{
 			if(!main.Game || !main.Game.ui)
 				return;
-			
+
 			for each(var _module:* in moduleList){
 				if(_module.moduleType == "Timer"){
 					_module.moduleClass.onTimerUpdate();
@@ -590,6 +838,31 @@
 				if(main.Game.world.myAvatar.target)
 					if(main.Game.world.myAvatar.target.dataLeaf.intState == 0)
 						main.Game.world.myAvatar.pMC.clearQueue();
+
+			if(!main.Game.ui.mcInterface.mcGold.getChildByName("mcAC")){
+				t_mcAC = new mcAC();
+				main.Game.ui.mcInterface.mcGold.addChild(t_mcAC);
+				t_mcAC.name = "mcAC";
+				t_mcAC.visible = false;
+
+				main.Game.ui.mcInterface.mcGold.addEventListener(MouseEvent.ROLL_OVER, onMcGoldMouseOver, false, 0, true);
+				main.Game.ui.mcInterface.mcGold.addEventListener(MouseEvent.ROLL_OUT, onMcGoldMouseOut, false, 0, true);
+			}
+
+			if(main.Game.world.myAvatar)
+				if(main.Game.world.myAvatar.objData.eqp["pe"] && main.Game.world.myAvatar.petMC)
+					if(main.Game.world.myAvatar.petMC.mcChar.scaleX < 0 && !petFlag){
+						petPos = main.Game.world.myAvatar.pMC.mcChar.width/7;
+						main.Game.world.myAvatar.petMC.mcChar.x += petPos;
+						prevPet = main.Game.world.myAvatar.objData.eqp["pe"].sFile;
+						petFlag = true;
+					}else if(main.Game.world.myAvatar.petMC.mcChar.scaleX > 0 && petFlag){
+						if(main.Game.world.myAvatar.objData.eqp["pe"].sFile == prevPet){
+							main.Game.world.myAvatar.petMC.mcChar.x -= petPos;
+							prevPet = "";
+						}
+						petFlag = false;
+					}
 		}
 
 		public static function onItemRollOver(param1:Event) : void

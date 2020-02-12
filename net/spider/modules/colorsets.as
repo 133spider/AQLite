@@ -27,6 +27,7 @@ package net.spider.modules{
                     _menu.y += main.Game.ui.mcPopup.mcCustomizeArmor.height + 12;
                     _menu.onUpdate();
 					main.Game.ui.mcPopup.mcCustomizeArmor.addChild(_menu);
+					main.Game.ui.mcPopup.mcCustomizeArmor.setChildIndex(_menu, 0);
 				}
 
                 performOnceFlag = true;
@@ -42,6 +43,7 @@ package net.spider.modules{
                     _menu.y += main.Game.ui.mcPopup.mcCustomize.height + 12;
                     _menu.onUpdate();
 					main.Game.ui.mcPopup.mcCustomize.addChild(_menu);
+					main.Game.ui.mcPopup.mcCustomize.setChildIndex(_menu, 0);
 				}
                 performOnceFlag2 = true;
             }else if(performOnceFlag2 && !main.Game.ui.mcPopup.getChildByName("mcCustomize")){

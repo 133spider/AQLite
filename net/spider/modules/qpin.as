@@ -35,6 +35,10 @@ package net.spider.modules{
 		}
 
 		public static function onPinQuests(e:MouseEvent):void{
+			if(e.shiftKey){
+				main.Game.ui.mcQTracker.toggle();
+				return;
+			}
 			if(pinnedQuests == "")
 				return;
 			main.Game.world.showQuests(pinnedQuests, "q");
@@ -47,22 +51,26 @@ package net.spider.modules{
 			if (main.Game.ui.ModalStack.numChildren)
 			{
 				frame = main.Game.ui.ModalStack.getChildAt(0);
-				if(frame.cnt.strTitle){
-					if(frame.cnt.strTitle.htmlText.indexOf("Available Quests") > -1){
-						if(!frame.cnt.getChildByName("questPin")){
-							var pinUI:* = frame.cnt.addChild(new questPin());
-							pinUI.name = "questPin";
-							pinUI.x = 175;
-							pinUI.y = 24;
-							pinUI.addEventListener(MouseEvent.CLICK, onPin, false, 0, true);
-						}
-					}else{
-						if(frame.cnt.getChildByName("questPin")){
-							frame.cnt.getChildByName("questPin").removeEventListener(MouseEvent.CLICK, onPin);
-							frame.cnt.removeChild(frame.cnt.getChildByName("questPin"));
+				if(flash.utils.getQualifiedClassName(frame) == "QFrameMC")
+					if(frame.cnt.strTitle){
+						if(frame.cnt.strTitle.htmlText.indexOf("Available Quests") > -1){
+							if(!frame.cnt.bg.getChildByName("questPin")){
+								var pinUI:* = frame.cnt.bg.addChild(new questPin());
+								pinUI.name = "questPin";
+								pinUI.x = 27;
+								pinUI.y = 19;
+								pinUI.addEventListener(MouseEvent.CLICK, onPin, false, 0, true);
+								frame.cnt.bg.setChildIndex(frame.cnt.bg.getChildByName("tl2"), frame.cnt.bg.numChildren-1);
+								frame.cnt.strTitle.mouseEnabled = false;
+								frame.cnt.strTitle.x += 11;
+							}
+						}else{
+							if(frame.cnt.bg.getChildByName("questPin")){
+								frame.cnt.bg.getChildByName("questPin").removeEventListener(MouseEvent.CLICK, onPin);
+								frame.cnt.bg.removeChild(frame.cnt.bg.getChildByName("questPin"));
+							}
 						}
 					}
-				}
 			}
 		}
 	}
