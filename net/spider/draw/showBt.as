@@ -40,16 +40,16 @@
 				}
 				if(!main.Game.world.myAvatar.objData.eqp[sES].isShowable){
 					main.Game.world.myAvatar.objData.eqp[sES].isShowable = true;
-					if("sType" in item){
-						main.Game.world.myAvatar.objData.eqp[sES].oldType = main.Game.world.myAvatar.objData.eqp[sES].sType;
-						main.Game.world.myAvatar.objData.eqp[sES].sType = item.sType;
+					if(!main.Game.world.myAvatar.objData.eqp[sES].isPreview){
+						if("sType" in item){
+							main.Game.world.myAvatar.objData.eqp[sES].oldType = main.Game.world.myAvatar.objData.eqp[sES].sType;
+						}
+						main.Game.world.myAvatar.objData.eqp[sES].oldFile = main.Game.world.myAvatar.objData.eqp[sES].sFile;
+						main.Game.world.myAvatar.objData.eqp[sES].oldLink = main.Game.world.myAvatar.objData.eqp[sES].sLink;
 					}
-					main.Game.world.myAvatar.objData.eqp[sES].oldFile = main.Game.world.myAvatar.objData.eqp[sES].sFile;
-					main.Game.world.myAvatar.objData.eqp[sES].oldLink = main.Game.world.myAvatar.objData.eqp[sES].sLink;
-				}else{
-					if("sType" in item){
-						main.Game.world.myAvatar.objData.eqp[sES].sType = item.sType;
-					}
+				}
+				if("sType" in item){
+					main.Game.world.myAvatar.objData.eqp[sES].sType = item.sType;
 				}
 				main.Game.world.myAvatar.objData.eqp[sES].sFile = (item.sFile == "undefined" ? "" : item.sFile);
 				main.Game.world.myAvatar.objData.eqp[sES].sLink = item.sLink;

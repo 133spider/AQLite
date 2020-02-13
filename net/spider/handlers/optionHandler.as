@@ -59,6 +59,7 @@ package net.spider.handlers{
         public static var bQuestNotif:Boolean;
         public static var bBankKey:Boolean;
         public static var bDisPetAnim:Boolean;
+        public static var bTransQuest:Boolean;
 
         public static var filterChecks:Object = new Object();
         public static var blackListed:Array = new Array();
@@ -227,6 +228,10 @@ package net.spider.handlers{
             bDisPetAnim = main.sharedObject.data.bDisPetAnim;
             if(bDisPetAnim)
                 dispatch(dispetanim);
+
+            bTransQuest = main.sharedObject.data.bTransQuest;
+            if(bTransQuest)
+                dispatch(transquest);
 
             bBankKey = main.sharedObject.data.bBankKey;
             draggable = main.sharedObject.data.draggable;
@@ -621,6 +626,12 @@ package net.spider.handlers{
                     }else{
                         travelMenuMC.visible = !travelMenuMC.visible;
                     }
+                    break;
+                case "Transparent Quest Box":
+                    bTransQuest = !bTransQuest;
+                    dispatch(transquest);
+                    main.sharedObject.data.bTransQuest = bTransQuest;
+                    main.sharedObject.flush();
                     break;
                 default: break;
             }

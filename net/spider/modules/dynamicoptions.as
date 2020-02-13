@@ -363,6 +363,11 @@ package net.spider.modules{
 					strName: "Travel Menu",
 					extra: "btn",
 					sDesc: "Jump between multiple maps in an efficient manner"
+				},
+				{
+					strName: "Transparent Quest Box",
+					bEnabled: main.sharedObject.data.bTransQuest,
+					sDesc: "If you are in combat and you have the quest window open, it will allow you to click through it while being transparent"
 				}
 			];
 		}

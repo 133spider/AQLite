@@ -207,6 +207,12 @@
 					moduleType: "Frame",
 					responseHandler: false,
 					keyHandler: false
+				},
+				{
+					moduleClass: transquest,
+					moduleType: "Frame",
+					responseHandler: false,
+					keyHandler: false
 				}
 			]
 			
@@ -770,19 +776,6 @@
 				}
 			}
 
-			if (main.Game.ui.ModalStack.numChildren > 0)
-			{
-				var q_frame:* = main.Game.ui.ModalStack.getChildAt(0);
-				if(flash.utils.getQualifiedClassName(q_frame) == "QFrameMC")
-					if(main.Game.world.myAvatar.dataLeaf.intState > 1 && q_frame.alpha > .5){
-						q_frame.alpha -= .05;
-						main.Game.ui.ModalStack.mouseEnabled = main.Game.ui.ModalStack.mouseChildren = false;
-					}else if(main.Game.world.myAvatar.dataLeaf.intState == 1 && q_frame.alpha != 1){
-						q_frame.alpha = 1;
-						main.Game.ui.ModalStack.mouseEnabled = main.Game.ui.ModalStack.mouseChildren = true;
-					}
-			}
-
 			if((main.Game.ui.dropStack.numChildren < 1) || (optionHandler.blackListed.length < 1))
 				return;
 			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
@@ -810,6 +803,7 @@
 		
 		static var prevPet:String;
 		static var petPos:int;
+		static var shadowPos:int;
 		static var petFlag:Boolean = false;
 		public static function onMaintainTimer(e:TimerEvent):void{
 			if(!main.Game || !main.Game.ui)
@@ -853,12 +847,15 @@
 				if(main.Game.world.myAvatar.objData.eqp["pe"] && main.Game.world.myAvatar.petMC)
 					if(main.Game.world.myAvatar.petMC.mcChar.scaleX < 0 && !petFlag){
 						petPos = main.Game.world.myAvatar.pMC.mcChar.width/7;
+						shadowPos = main.Game.world.myAvatar.petMC.mcChar.width/2;
 						main.Game.world.myAvatar.petMC.mcChar.x += petPos;
+						main.Game.world.myAvatar.petMC.shadow.x += shadowPos;
 						prevPet = main.Game.world.myAvatar.objData.eqp["pe"].sFile;
 						petFlag = true;
 					}else if(main.Game.world.myAvatar.petMC.mcChar.scaleX > 0 && petFlag){
 						if(main.Game.world.myAvatar.objData.eqp["pe"].sFile == prevPet){
 							main.Game.world.myAvatar.petMC.mcChar.x -= petPos;
+							main.Game.world.myAvatar.petMC.shadow.x -= shadowPos;
 							prevPet = "";
 						}
 						petFlag = false;
