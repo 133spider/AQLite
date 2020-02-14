@@ -24,7 +24,8 @@ package net.spider.modules{
 				main.Game.ui.mcInterface.mcMenu.btnHouse.addEventListener(MouseEvent.CLICK, onHouseClick, false, 0, true);
 				houseEvent = true;
 			}else{
-				main.Game.ui.mcInterface.mcMenu.btnHouse.removeEventListener(MouseEvent.CLICK, onHouseClick);
+				if(main.Game.ui)
+					main.Game.ui.mcInterface.mcMenu.btnHouse.removeEventListener(MouseEvent.CLICK, onHouseClick);
 				houseEvent = false;
 			}
 		}
