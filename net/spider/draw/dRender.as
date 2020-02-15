@@ -23,14 +23,10 @@ package net.spider.draw
         var sLinkPet:String = "";
         var sLinkWeapon:String = "";
         var sLinkHouse:String = "";
-        var pLoaderD:ApplicationDomain;
-        var pLoaderC:LoaderContext;
 
         public function dRender(e:*) : void
         {
             rootClass = MovieClip(main.Game);
-            pLoaderD = new ApplicationDomain(ApplicationDomain.currentDomain);
-            pLoaderC = new LoaderContext(false, pLoaderD);
             this.x = 325;
             this.y = 90;
             this.btnClose.addEventListener(MouseEvent.CLICK, xClick, false, 0, true);
@@ -71,21 +67,19 @@ package net.spider.draw
                     }
                     if(!main.Game.world.myAvatar.objData.eqp[sES].isPreview){
                         main.Game.world.myAvatar.objData.eqp[sES].isPreview = true;
-                        if("sType" in curItem){
-                            main.Game.world.myAvatar.objData.eqp[sES].oldType = main.Game.world.myAvatar.objData.eqp[sES].sType;
-                            main.Game.world.myAvatar.objData.eqp[sES].sType = curItem.sType;
+                        if(!main.Game.world.myAvatar.objData.eqp[sES].isShowable){
+                            if("sType" in curItem){
+                                main.Game.world.myAvatar.objData.eqp[sES].oldType = main.Game.world.myAvatar.objData.eqp[sES].sType;
+                            }
+                            main.Game.world.myAvatar.objData.eqp[sES].oldFile = main.Game.world.myAvatar.objData.eqp[sES].sFile;
+                            main.Game.world.myAvatar.objData.eqp[sES].oldLink = main.Game.world.myAvatar.objData.eqp[sES].sLink;
                         }
-                        main.Game.world.myAvatar.objData.eqp[sES].oldFile = main.Game.world.myAvatar.objData.eqp[sES].sFile;
-                        main.Game.world.myAvatar.objData.eqp[sES].oldLink = main.Game.world.myAvatar.objData.eqp[sES].sLink;
-                        main.Game.world.myAvatar.objData.eqp[sES].sFile = (curItem.sFile == "undefined" ? "" : curItem.sFile);
-                        main.Game.world.myAvatar.objData.eqp[sES].sLink = curItem.sLink;
-                    }else{
-                        if("sType" in curItem){
-                            main.Game.world.myAvatar.objData.eqp[sES].sType = curItem.sType;
-                        }
-                        main.Game.world.myAvatar.objData.eqp[sES].sFile = (curItem.sFile == "undefined" ? "" : curItem.sFile);
-                        main.Game.world.myAvatar.objData.eqp[sES].sLink = curItem.sLink;
                     }
+                    if("sType" in curItem){
+                        main.Game.world.myAvatar.objData.eqp[sES].sType = curItem.sType;
+                    }
+                    main.Game.world.myAvatar.objData.eqp[sES].sFile = (curItem.sFile == "undefined" ? "" : curItem.sFile);
+                    main.Game.world.myAvatar.objData.eqp[sES].sLink = curItem.sLink;
                     main.Game.world.myAvatar.loadMovieAtES(sES, curItem.sFile, curItem.sLink);
                     if((sES == "pe") && (curItem.sName.indexOf("Bank Pet") != -1)){
                         petDisable.addEventListener(TimerEvent.TIMER, onPetDisable, false, 0, true);
@@ -202,7 +196,7 @@ package net.spider.draw
             clearStage();
             sLinkHouse = param2;
             ldr = new Loader();
-            ldr.load(new URLRequest("http://aqworldscdn.aq.com/game/gamefiles/" + param1),pLoaderC);
+            ldr.load(new URLRequest("http://game.aq.com/game/gamefiles/" + param1),new LoaderContext(false, new ApplicationDomain()));
             ldr.contentLoaderInfo.addEventListener(Event.COMPLETE,onloadHouseItemComplete,false,0,true);
             return;
         }
@@ -222,7 +216,7 @@ package net.spider.draw
             clearStage();
             sLinkWeapon = param2;
             ldr = new Loader();
-            ldr.load(new URLRequest("http://aqworldscdn.aq.com/game/gamefiles/" + param1), pLoaderC);
+            ldr.load(new URLRequest("http://game.aq.com/game/gamefiles/" + param1), new LoaderContext(false, new ApplicationDomain()));
             ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadWeaponComplete, false, 0, true);
             return;
         }// end function
@@ -232,7 +226,7 @@ package net.spider.draw
             clearStage();
             sLinkCape = param2;
             ldr = new Loader();
-            ldr.load(new URLRequest("http://aqworldscdn.aq.com/game/gamefiles/" + param1), pLoaderC);
+            ldr.load(new URLRequest("http://game.aq.com/game/gamefiles/" + param1), new LoaderContext(false, new ApplicationDomain()));
             ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadCapeComplete, false, 0, true);
             return;
         }// end function
@@ -242,7 +236,7 @@ package net.spider.draw
             clearStage();
             sLinkHelm = param2;
             ldr = new Loader();
-            ldr.load(new URLRequest("http://aqworldscdn.aq.com/game/gamefiles/" + param1), pLoaderC);
+            ldr.load(new URLRequest("http://game.aq.com/game/gamefiles/" + param1), new LoaderContext(false, new ApplicationDomain()));
             ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadHelmComplete, false, 0, true);
             return;
         }// end function
@@ -252,7 +246,7 @@ package net.spider.draw
             clearStage();
             sLinkPet = param2;
             ldr = new Loader();
-            ldr.load(new URLRequest("http://aqworldscdn.aq.com/game/gamefiles/" + param1), pLoaderC);
+            ldr.load(new URLRequest("http://game.aq.com/game/gamefiles/" + param1), new LoaderContext(false, new ApplicationDomain()));
             ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadPetComplete, false, 0, true);
             return;
         }// end function
@@ -262,7 +256,7 @@ package net.spider.draw
             clearStage();
             var _loc_2:* = "maps/" + curItem.sFile.substr(0, -4) + "_preview.swf";
             ldr = new Loader();
-            ldr.load(new URLRequest("http://aqworldscdn.aq.com/game/gamefiles/" + _loc_2), pLoaderC);
+            ldr.load(new URLRequest("http://game.aq.com/game/gamefiles/" + _loc_2), new LoaderContext(false, new ApplicationDomain()));
             ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadHouseComplete, false, 0, true);
             return;
         }// end function
@@ -338,13 +332,14 @@ package net.spider.draw
 
         function onLoadHelmComplete(event:Event) : void
         {
+            trace("SAME DOMAIN? " + ldr.contentLoaderInfo.sameDomain);
+            //ldr.contentLoaderInfo.applicationDomain
             var _loc_2:* = (ldr.contentLoaderInfo.applicationDomain.getDefinition(sLinkHelm) as Class);
             var _loc_3:* = new _loc_2;
             _loc_3.x = 170;
             _loc_3.y = 200;
             mcStage.addChild(_loc_3);
             addGlow(_loc_3);
-            return;
         }// end function
 
         function onLoadPetComplete(event:Event) : void
@@ -372,7 +367,7 @@ package net.spider.draw
         {
             clearStage();
             var _loc_1:* = new Loader();
-            _loc_1.load(new URLRequest("http://aqworldscdn.aq.com/game/gamefiles/" + curItem.sFile), pLoaderC);
+            _loc_1.load(new URLRequest("http://game.aq.com/game/gamefiles/" + curItem.sFile), new LoaderContext(false, new ApplicationDomain()));
             _loc_1.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadItemFileComplete, false, 0, true);
             _loc_1.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadError, false, 0, true);
             return;

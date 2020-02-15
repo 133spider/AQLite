@@ -498,7 +498,9 @@ package net.spider.handlers{
                         break;
                     default:
                         trace("Loading " + item.sLink + ":" + item.sFile);
-                        ldr.load(new URLRequest(("http://aqworldscdn.aq.com/game/gamefiles/" + item.sFile)), new LoaderContext(false, ApplicationDomain.currentDomain)); //rootClass.sFilePath
+                        //"http://aqworldscdn.aq.com/game/gamefiles/"
+                        //ApplicationDomain.currentDomain
+                        ldr.load(new URLRequest(("http://game.aq.com/game/gamefiles/" + item.sFile)), new LoaderContext(false, new ApplicationDomain())); //rootClass.sFilePath
                         ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
                         ldr.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
                         break;

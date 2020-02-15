@@ -6,6 +6,7 @@ package net.spider.avatar{
     import flash.net.*;
     import flash.system.*;
     import flash.filters.*;
+    import net.spider.main;
 
     public class AvatarMC extends MovieClip {
 
@@ -15,7 +16,7 @@ package net.spider.avatar{
         public var noGlow:Boolean = false;
         var ldr:Loader;
         var defaultCT:ColorTransform;
-        var serverFilePath:String = "http://aqworldscdn.aq.com/game/gamefiles/";
+        var serverFilePath:String = "http://game.aq.com/game/gamefiles/";
         public var pAV:Object;
         var strSkinLinkage:String;
 
@@ -23,6 +24,7 @@ package net.spider.avatar{
             this.ldr = new Loader();
             this.defaultCT = MovieClip(this).transform.colorTransform;
             this.pAV = new Object();
+            this.serverFilePath = "http://game.aq.com/game/gamefiles/";
             visible = false;
             this.hideOptionalParts();
         }
@@ -38,7 +40,7 @@ package net.spider.avatar{
         public function loadArmor(strFilename:String, sLink:String){
             this.hideOptionalParts();
             this.strSkinLinkage = sLink;
-            this.ldr.load(new URLRequest(((((this.serverFilePath + "classes/") + this.pAV.objData.strGender) + "/") + strFilename)), new LoaderContext(false, ApplicationDomain.currentDomain));
+            this.ldr.load(new URLRequest(((((this.serverFilePath + "classes/") + this.pAV.objData.strGender) + "/") + strFilename)), new LoaderContext(false, new ApplicationDomain()));
             this.ldr.contentLoaderInfo.addEventListener(Event.COMPLETE, this.onLoadSkinComplete, false, 0, true);
             this.ldr.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this.ioErrorHandler, false, 0, true);
         }
