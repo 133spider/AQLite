@@ -24,13 +24,15 @@ If you'd like to donate some money to help out a College kid like me, that would
 * Choose and Download the .zip file according to your operating system
 * Extract the file and run the program (The latest version is Version 13.5!)
 
-##OBS Studio Black Screen
+## OBS Studio Black Screen
 
 1. Right-click AQLite.exe
 2. Go to properties
 3. Compatibility tab
 4. "Run this program in compatibility mode for: Windows 8"
+
 ![](https://pbs.twimg.com/media/EP-Og-dU4AAYO6H?format=png&name=small)
+
 5. Hit Apply & OK
 6. Restart AQLite if AQLite is already running
 
