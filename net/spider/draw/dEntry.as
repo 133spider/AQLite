@@ -141,9 +141,10 @@ package net.spider.draw{
                 t_dataProvider.addItem( { label: o.sName.toUpperCase(), value: o.sName.toUpperCase()} );
                 main.sharedObject.data.listBlack = t_dataProvider.toArray();
                 main.sharedObject.flush();
-                optionHandler.blackListed = t_dataProvider.toArray();
+                optionHandler.blackListed = main.sharedObject.data.listBlack;
                 optionHandler.dropmenutwoMC.onBtNo(itemObj);
             }
+            main._stage.focus = null;
         }
 
         function isOwned(isHouse:Boolean, itemID:*):Boolean{
@@ -163,11 +164,14 @@ package net.spider.draw{
 
         function onBtYes(e:MouseEvent):void{
             for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+                if(!main.Game.ui.dropStack.getChildAt(i))
+                    continue;
                 if(itemObj.iStk == 1){
-                    if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == itemObj.sName){
-                        main.Game.ui.dropStack.getChildAt(i).cnt.ybtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-                        break;
-                    }
+                    if(main.Game.ui.dropStack.getChildAt(i).cnt && main.Game.ui.dropStack.getChildAt(i).cnt.strName)
+                        if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == itemObj.sName){
+                            main.Game.ui.dropStack.getChildAt(i).cnt.ybtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                            break;
+                        }
                 }else{
                     var nutext:String = main.Game.ui.dropStack.getChildAt(i).cnt.strName.text;
                     nutext = nutext.substring(0, nutext.lastIndexOf(" x"));
@@ -177,10 +181,12 @@ package net.spider.draw{
                     }
                 }
             }
+            main._stage.focus = null;
         }
 
         function onBtNo(e:MouseEvent):void{
             optionHandler.dropmenutwoMC.onBtNo(itemObj);
+            main._stage.focus = null;
         }
 
         function onBtPreview(e:MouseEvent):void{
@@ -189,6 +195,7 @@ package net.spider.draw{
             var dRenderObj:* = new dRender(itemObj);
             dRenderObj.name = "renderPreview";
             main.Game.ui.addChild(dRenderObj);
+            main._stage.focus = null;
         }
 
         function onHighlight(e:MouseEvent):void{

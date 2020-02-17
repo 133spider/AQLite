@@ -23,7 +23,7 @@ package net.spider.modules{
 			{
 				frame = main.Game.ui.ModalStack.getChildAt(0);
 				if(flash.utils.getQualifiedClassName(frame) == "QFrameMC")
-					if(frame.cnt.core){
+					if(frame.cnt.core && frame.qData && frame.qData.reward){
 						if(frame.cnt.core.rewardsStatic)
 							establishRender(frame.cnt.core.rewardsStatic);
 						if(frame.cnt.core.rewardsRoll)

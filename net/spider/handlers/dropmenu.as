@@ -898,17 +898,21 @@ package net.spider.handlers{
                     main.events.dispatchEvent(new ClientEvent(ClientEvent.onCostumePending));
                     break;
             }
+            main._stage.focus = null;
         }
 
         public function onItemAddClick(e:MouseEvent):void{
             var item:Object;
             item = MovieClip(e.currentTarget.parent).item;
             for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+                if(!main.Game.ui.dropStack.getChildAt(i))
+                    continue;
                 if(item.iStk == 1){
-                    if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == item.sName){
-                        main.Game.ui.dropStack.getChildAt(i).cnt.ybtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-                        break;
-                    }
+                    if(main.Game.ui.dropStack.getChildAt(i).cnt && main.Game.ui.dropStack.getChildAt(i).cnt.strName)
+                        if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == item.sName){
+                            main.Game.ui.dropStack.getChildAt(i).cnt.ybtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                            break;
+                        }
                 }else{
                     var nutext:String = main.Game.ui.dropStack.getChildAt(i).cnt.strName.text;
                     nutext = nutext.substring(0, nutext.lastIndexOf(" x"));
@@ -918,6 +922,7 @@ package net.spider.handlers{
                     }
                 }
             }
+            main._stage.focus = null;
         }
 
         public function onItemDelClick(e:MouseEvent):void{
@@ -930,9 +935,12 @@ package net.spider.handlers{
                 }
             }
             for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+                if(!main.Game.ui.dropStack.getChildAt(i))
+                    continue;
                 if(item.iStk == 1){
-                    if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == item.sName)
-                        main.Game.ui.dropStack.getChildAt(i).cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                    if(main.Game.ui.dropStack.getChildAt(i).cnt && main.Game.ui.dropStack.getChildAt(i).cnt.strName)
+                        if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == item.sName)
+                            main.Game.ui.dropStack.getChildAt(i).cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
                 }else{
                     var nutext:String = main.Game.ui.dropStack.getChildAt(i).cnt.strName.text;
                     nutext = nutext.substring(0, nutext.lastIndexOf(" x"));
@@ -941,6 +949,7 @@ package net.spider.handlers{
                 }
             }
             fOpen();
+            main._stage.focus = null;
         }
 
         public function buildMenu():void{

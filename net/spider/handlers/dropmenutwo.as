@@ -74,9 +74,12 @@ package net.spider.handlers{
                 }
             }
             for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+                if(!main.Game.ui.dropStack.getChildAt(i))
+                    continue;
                 if(e.iStk == 1){
-                    if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == e.sName)
-                        main.Game.ui.dropStack.getChildAt(i).cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                    if(main.Game.ui.dropStack.getChildAt(i).cnt && main.Game.ui.dropStack.getChildAt(i).cnt.strName)
+                        if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == e.sName)
+                            main.Game.ui.dropStack.getChildAt(i).cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
                 }else{
                     var nutext:String = main.Game.ui.dropStack.getChildAt(i).cnt.strName.text;
                     nutext = nutext.substring(0, nutext.lastIndexOf(" x"));

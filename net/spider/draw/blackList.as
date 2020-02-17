@@ -33,6 +33,20 @@ package net.spider.draw{
             this.parent.removeChild(this);
         }
 
+        private function blacklistwarn():void{
+            var modalClass:Class;
+            var modal:*;
+            var modalO:*;
+            modalClass= main.Game.world.getClass("ModalMC");
+            modal = new modalClass();
+            modalO = {};
+            modalO.strBody = "You must relog for blacklist changes to take effect";
+            modalO.glow = "red,medium";
+            modalO.btns = "mono";
+            main._stage.addChild(modal);
+            modal.init(modalO);
+        }
+
         private function onBtnAddBlacklist(evt:MouseEvent):void{
             if(!this.listBlack)
                 return;
@@ -52,7 +66,8 @@ package net.spider.draw{
             }
             main.sharedObject.data.listBlack = this.listBlack.dataProvider.toArray();
 			main.sharedObject.flush();
-            optionHandler.blackListed = this.listBlack.dataProvider.toArray();
+            optionHandler.blackListed = main.sharedObject.data.listBlack;
+            blacklistwarn();
         }
 
         private function onBtnClearBlacklist(evt:MouseEvent):void{
@@ -61,7 +76,8 @@ package net.spider.draw{
             this.listBlack.removeAll();
             main.sharedObject.data.listBlack = this.listBlack.dataProvider.toArray();
 			main.sharedObject.flush();
-            optionHandler.blackListed = this.listBlack.dataProvider.toArray();
+            optionHandler.blackListed = main.sharedObject.data.listBlack;
+            blacklistwarn();
         }
 
         private function onDrag(e:MouseEvent):void{

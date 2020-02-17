@@ -783,10 +783,13 @@
 				return;
 			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
 				try{
+					if(!main.Game.ui.dropStack.getChildAt(i))
+                    	continue;
 					var mcDrop:* = (main.Game.ui.dropStack.getChildAt(i) as MovieClip);
-                    if(isBlacklisted(mcDrop.cnt.strName.text.toUpperCase())){
-                        mcDrop.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-                    }
+					if(main.Game.ui.dropStack.getChildAt(i).cnt && main.Game.ui.dropStack.getChildAt(i).cnt.strName)
+						if(isBlacklisted(mcDrop.cnt.strName.text.toUpperCase())){
+							mcDrop.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						}
 				}catch(exception){
 					trace("Error handling drops: " + exception);
 				}
@@ -804,10 +807,10 @@
             return false;
         }
 		
-		static var prevPet:String;
-		static var petPos:int;
-		static var shadowPos:int;
-		static var petFlag:Boolean = false;
+		//static var prevPet:String;
+		//static var petPos:int;
+		//static var shadowPos:int;
+		//static var petFlag:Boolean = false;
 		public static function onMaintainTimer(e:TimerEvent):void{
 			if(!main.Game || !main.Game.ui)
 				return;
@@ -846,23 +849,23 @@
 				main.Game.ui.mcInterface.mcGold.addEventListener(MouseEvent.ROLL_OUT, onMcGoldMouseOut, false, 0, true);
 			}
 
-			if(main.Game.world.myAvatar)
+			/**if(main.Game.world.myAvatar)
 				if(main.Game.world.myAvatar.objData.eqp["pe"] && main.Game.world.myAvatar.petMC)
-					if(main.Game.world.myAvatar.petMC.mcChar.scaleX < 0 && !petFlag){
+					if(main.Game.world.myAvatar.pMC.mcChar.scaleX < 0 && main.Game.world.myAvatar.petMC.mcChar.scaleX < 0 && !petFlag){
 						petPos = main.Game.world.myAvatar.pMC.mcChar.width/7;
 						shadowPos = main.Game.world.myAvatar.petMC.mcChar.width/2;
 						main.Game.world.myAvatar.petMC.mcChar.x += petPos;
 						main.Game.world.myAvatar.petMC.shadow.x += shadowPos;
 						prevPet = main.Game.world.myAvatar.objData.eqp["pe"].sFile;
 						petFlag = true;
-					}else if(main.Game.world.myAvatar.petMC.mcChar.scaleX > 0 && petFlag){
+					}else if(main.Game.world.myAvatar.pMC.mcChar.scaleX > 0 && main.Game.world.myAvatar.petMC.mcChar.scaleX > 0 && petFlag){
 						if(main.Game.world.myAvatar.objData.eqp["pe"].sFile == prevPet){
 							main.Game.world.myAvatar.petMC.mcChar.x -= petPos;
 							main.Game.world.myAvatar.petMC.shadow.x -= shadowPos;
 							prevPet = "";
 						}
 						petFlag = false;
-					}
+					}**/
 		}
 
 		public static function onItemRollOver(param1:Event) : void
