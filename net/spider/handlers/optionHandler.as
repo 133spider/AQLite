@@ -133,6 +133,11 @@ package net.spider.handlers{
                 main.sharedObject.flush();
             }
             filterChecks["chkDisPetAnim"] = main.sharedObject.data.filterChecks["chkDisPetAnim"];
+            if(main.sharedObject.data.filterChecks["chkTimestamp"] == null){
+                main.sharedObject.data.filterChecks["chkTimestamp"] = true;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkTimestamp"] = main.sharedObject.data.filterChecks["chkTimestamp"];
             cDrops = main.sharedObject.data.cDrops;
             if(cDrops){
                 dropmenuMC = new dropmenu();
@@ -631,6 +636,11 @@ package net.spider.handlers{
                     bTransQuest = !bTransQuest;
                     dispatch(transquest);
                     main.sharedObject.data.bTransQuest = bTransQuest;
+                    main.sharedObject.flush();
+                    break;
+                case "Message Timestamps":
+                    filterChecks["chkTimestamp"] = !filterChecks["chkTimestamp"];
+                    main.sharedObject.data.filterChecks["chkTimestamp"] = filterChecks["chkTimestamp"];
                     main.sharedObject.flush();
                     break;
                 default: break;

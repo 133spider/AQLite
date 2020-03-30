@@ -242,6 +242,11 @@ package net.spider.modules{
 							strName: "Disable Skill Warning Messages",
 							bEnabled: main.sharedObject.data.filterChecks["chkRedSkills"],
 							sDesc: "You must retoggle Chat Filter for this to work!\nDisables the skill not available warning messages"
+						},
+						{
+							strName: "Message Timestamps",
+							bEnabled: main.sharedObject.data.filterChecks["chkTimestamp"],
+							sDesc: "Suggested by u/chickeniggets from r/AQW"
 						}
 					]
 				},

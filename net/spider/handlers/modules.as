@@ -486,8 +486,10 @@
 					if(book){
 						if(book.btnRight){
 							if(!book.btnRight.hasEventListener(MouseEvent.MOUSE_WHEEL)){
-								main._stage.addEventListener(MouseEvent.MOUSE_WHEEL,onWheel,false,0,true);
+								book.addEventListener(MouseEvent.MOUSE_WHEEL,onWheel,false,0,true);
 							}
+						}else{
+							book.removeEventListener(MouseEvent.MOUSE_WHEEL,onWheel);
 						}
 						if(book.btnQuests && !book.btnQuests.hasEventListener(MouseEvent.DOUBLE_CLICK)){
 							if(optionHandler.bTheArchive){

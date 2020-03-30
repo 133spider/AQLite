@@ -37,6 +37,7 @@ package net.spider.modules{
 						eventInitialized = false;
 					}
 				}
+				main.Game.ui.mcInterface.t1.x = 24;
 			}else{
 				if(optionHandler.filterChecks["chkRedSkills"] && firstRuntimePassed){
 					if(!eventInitialized){
@@ -113,6 +114,34 @@ package net.spider.modules{
 			}
 		}
 
+		public static function format_time():String{
+			var hours:Number = main.Game.date_server.hours;
+			var minutes:Number = main.Game.date_server.minutes;
+
+			var format_hrs:String = ("" + hours);
+			var format_mints:String = ("" + minutes);
+			if(hours < 10)
+				format_hrs = "0" + hours;
+			if(minutes < 10)
+				format_mints = "0" + minutes;
+			return format_hrs + ":" + format_mints + " ";
+		}
+
+		public static function createTimestamp(clog:*, i:*):void{
+			var txtui:Class = main.Game.world.getClass("uiTextLine");
+			var mc_txtui:MovieClip = new (txtui as Class)();
+			clog.getChildAt(i).addChild(mc_txtui);
+			mc_txtui.ti.htmlText = "<font size=\"11\" style=\"font-family:purista;\">" + format_time() + "</font>";
+			mc_txtui.x -= mc_txtui.ti.textWidth;
+			mc_txtui.y += 1;
+			mc_txtui.name = "mc_txtui";
+			mc_txtui.mouseEnabled = mc_txtui.mouseChildren = false;
+		}
+
+		public static function updateTimestamp(clog:*, i:*):void{
+			clog.getChildAt(i).getChildByName("mc_txtui").ti.htmlText = "<font size=\"11\" style=\"font-family:purista;\">" + format_time() + "</font>";
+		}
+
 		private static var clog:*;
 		private static var txt:*;
         public static function onFrameUpdate():void{
@@ -120,7 +149,26 @@ package net.spider.modules{
 				return;
 			//main.Game.ui.mcInterface.t1.visible = false;
 			clog = main.Game.ui.mcInterface.t1;
+			if(optionHandler.filterChecks["chkTimestamp"] && main.Game.ui.mcInterface.t1.x == 24){
+				main.Game.ui.mcInterface.t1.x = 36;
+			}else if(!optionHandler.filterChecks["chkTimestamp"] && main.Game.ui.mcInterface.t1.x != 24){
+				main.Game.ui.mcInterface.t1.x = 24;
+			}
 			for(var i:uint = 0; i < clog.numChildren; i++){
+				if(optionHandler.filterChecks["chkTimestamp"]){
+					switch(true){
+						case (!clog.getChildAt(i).getChildByName("mc_txtui")):
+							createTimestamp(clog, i);
+							break;
+						case (clog.getChildAt(i).getChildByName("mc_txtui") && clog.getChildAt(i).getChildByName("mc_txtui").ti.htmlText.length < 1):
+							updateTimestamp(clog, i);
+							break;
+					}
+				}else{
+					if(clog.getChildAt(i).getChildByName("mc_txtui")){
+						clog.getChildAt(i).removeChild(clog.getChildAt(i).getChildByName("mc_txtui"));
+					}
+				}
 				if(!clog.getChildAt(i).getChildAt(0).ti)
 					continue;
 				txt = clog.getChildAt(i).getChildAt(0).ti.htmlText;

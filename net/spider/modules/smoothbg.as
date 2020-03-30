@@ -38,6 +38,11 @@ package net.spider.modules{
 					main.Game.world.map.getChildAt(ctr).visible){
 					main.Game.world.map.getChildAt(ctr).visible = false;
 				}
+				if(main.Game.world.strMapName.toLowerCase() == "bludrutbrawl")
+					if((getQualifiedClassName(main.Game.world.map.getChildAt(ctr)).indexOf("asset_") > -1) &&
+						main.Game.world.map.getChildAt(ctr).visible){
+						main.Game.world.map.getChildAt(ctr).visible = false;
+					}
 				ctr++;
             }
 		}

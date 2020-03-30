@@ -29,11 +29,11 @@ package net.spider.modules{
 							if(resObj.bSuccess != 0)
 							{
 								if(main.Game.world.questTree[resObj.QuestID]){
-									if(!main.Game.world.questTree[resObj.QuestID].bOnce){
-										if(getQuestValidationString(main.Game.world.questTree[resObj.QuestID]) == ""){
-											main.Game.world.acceptQuest(int(resObj.QuestID));
-										}
-									}
+									if(main.Game.world.questTree[resObj.QuestID].hasOwnProperty("bOnce"))
+										if(main.Game.world.questTree[resObj.QuestID].bOnce > 0)
+											break;
+									if(getQuestValidationString(main.Game.world.questTree[resObj.QuestID]) == "")
+										main.Game.world.acceptQuest(int(resObj.QuestID));
 								}
 							}
 							break;
