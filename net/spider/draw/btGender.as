@@ -20,7 +20,20 @@
 		
 		
 		public function btGender() {
+            t_tip = new ToolTipMC();
+            main._stage.addChild(t_tip);
 			this.addEventListener(MouseEvent.CLICK, onBtGender, false, 0, true);
+            this.addEventListener(MouseEvent.MOUSE_OVER, onHover, false, 0, true);
+			this.addEventListener(MouseEvent.MOUSE_OUT, onOut, false, 0, true);
+		}
+
+		private var t_tip:ToolTipMC;
+		public function onHover(e:MouseEvent):void{
+            t_tip.openWith({str:"Switch Gender Preview"});
+        }
+
+		public function onOut(e:MouseEvent):void{
+			t_tip.close();
 		}
 
 		public function onClick(e:MouseEvent):void{

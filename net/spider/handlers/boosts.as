@@ -29,7 +29,7 @@ package net.spider.handlers{
 			if(flags.isInventory() && !runOnce){
 				for each(var pItem:* in main.Game.world.myAvatar.items){
 					if(!pItem.oldDesc)
-						pItem.oldDesc = (StringUtil.trim(pItem.sDesc) != "") ? pItem.sDesc : "";
+						pItem.oldDesc = (pItem.sDesc && StringUtil.trim(pItem.sDesc) != "") ? pItem.sDesc : "";
 					var nuDesc:String = "";
 					if(pItem.sMeta)
 						nuDesc = "sMeta: " + pItem.sMeta + "\n";

@@ -75,6 +75,24 @@ package net.spider.draw
           this.parent.removeChild(this);
       }
 
+      public function orderName(a, b):int 
+      { 
+        var name1 = a["strName"]; 
+        var name2 = b["strName"]; 
+        if (name1 < name2) 
+        { 
+          return -1; 
+        } 
+        else if (name1 > name2) 
+        { 
+          return 1; 
+        } 
+        else 
+        { 
+          return 0; 
+        } 
+      } 
+
       public function theArchive()
       {
          preview.imgMask.visible = false;
@@ -86,7 +104,7 @@ package net.spider.draw
          this.btnBack.addEventListener(MouseEvent.CLICK, onQuit, false, 0, true);
          preview.visible = false;
          //Security.allowDomain("*");
-         var questsGet:Array = [
+         var questsGet:Vector.<Object> = new <Object>[
             {
               strName: "Willowcreek",
               strMap: "willowcreek",
@@ -831,7 +849,7 @@ package net.spider.draw
             }
          ];
          Len = questsGet.length;
-         questsGet.sortOn("strName");
+         questsGet.sort(orderName);
          i = 0;
          while(i < Len)
          {

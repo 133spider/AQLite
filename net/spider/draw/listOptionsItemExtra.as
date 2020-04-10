@@ -39,6 +39,34 @@
 						return;
 					}
 					break;
+				case "Force Basic Rider Animation":
+					if(optionHandler.filterChecks["chkHorseRiderAnim"]){
+						modalClass= main.Game.world.getClass("ModalMC");
+						modal = new modalClass();
+						modalO = {};
+						modalO.strBody = "You can only have one of these enabled at a time.";
+						modalO.params = {};
+						modalO.glow = "red,medium";
+						modalO.btns = "mono";
+						main._stage.addChild(modal);
+						modal.init(modalO);
+						return;
+					}
+					break;
+				case "Force Horse Rider Animation":
+					if(optionHandler.filterChecks["chkBasicRiderAnim"]){
+						modalClass= main.Game.world.getClass("ModalMC");
+						modal = new modalClass();
+						modalO = {};
+						modalO.strBody = "You can only have one of these enabled at a time.";
+						modalO.params = {};
+						modalO.glow = "red,medium";
+						modalO.btns = "mono";
+						main._stage.addChild(modal);
+						modal.init(modalO);
+						return;
+					}
+					break;
 				default: break;
 			}
 			chkActive.checkmark.visible = !chkActive.checkmark.visible;

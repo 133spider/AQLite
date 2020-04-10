@@ -19,13 +19,13 @@ package net.spider.modules{
 
 		public static function onToggle():void{
 			if(optionHandler.detaildrop){
-				itemArchive = new Array();
+				itemArchive = new Vector.<Object>();
 			}else{
 				itemArchive = null;
 			}
 		}
 
-		public static var itemArchive:Array;
+		public static var itemArchive:Vector.<Object>;
         public static function onExtensionResponseHandler(e:*):void{
 			if(!optionHandler.detaildrop)
 				return;
@@ -104,6 +104,7 @@ package net.spider.modules{
 								mcDrop.cnt.bg.addChild(flag);
 							}
 						}
+						itemArchive.length = 0;
 					}
 				}catch(exception){
 					trace("Error handling drops: " + exception);

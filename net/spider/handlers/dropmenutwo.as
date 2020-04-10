@@ -20,7 +20,7 @@ package net.spider.handlers{
     public class dropmenutwo extends MovieClip {
         public function dropmenutwo(){
             itemCount = {};
-            invTree = new Array();
+            invTree = new Vector.<Object>();
             this.menu.visible = false;
             this.txtQty.mouseEnabled = false;
             this.menuBar.addEventListener(MouseEvent.CLICK, onToggleMenu);
@@ -37,6 +37,16 @@ package net.spider.handlers{
             this.visible = false;
             main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
             main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame, false, 0, true);
+            createUIStack();
+        }
+
+        public function createUIStack():void{
+            var dsUI:MovieClip;
+            dsUI = new MovieClip();
+            dsUI.name = "dsUI";
+            main.Game.ui.addChild(dsUI);
+            dsUI.x = main.Game.ui.dropStack.x;
+            dsUI.y = main.Game.ui.dropStack.y;
         }
 
         public function resetPos():void{
@@ -62,7 +72,7 @@ package net.spider.handlers{
 
         public function onUpdate(){
             itemCount = {};
-            invTree = new Array();
+            invTree.length = 0;
             reDraw();
         }
 
@@ -100,36 +110,65 @@ package net.spider.handlers{
         public function cleanup():void{
             main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
             main._stage.removeEventListener(Event.ENTER_FRAME, onDropFrame);
-            if(main.Game.ui.dropStack.numChildren < 1)
-                return;
-            for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
-                try{
-                    if(!(main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible){
-                        (main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible = true;
-                    }
-                }catch(exception){
-                    trace("Error handling drops: " + exception);
-                }
+            main.Game.ui.dropStack.visible = true;
+            main.Game.ui.removeChild(main.Game.ui.getChildByName("dsUI"));
+            if(achvmnt_timer && achvmnt_timer.running){
+                achvmnt_timer.reset();
+                achvmnt_timer.removeEventListener(TimerEvent.TIMER, onAchvmntCooldown);
             }
+            achvmnt_timer = null;
         }
 
+        private function onAchvmntCooldown(e:TimerEvent):void{
+            if(main.Game.ui.dropStack.numChildren > 0){
+                for(var i:uint = 0; i < main.Game.ui.dropStack.numChildren; i++){
+                    var dropObj:* = main.Game.ui.dropStack.getChildAt(i);
+                    if(getQualifiedClassName(dropObj) == "mcAchievement"){
+                        return;
+                    }
+                }
+            }
+            e.target.reset();
+            e.target.removeEventListener(TimerEvent.TIMER, onAchvmntCooldown);
+            achvmnt_timer = null;
+        }
+
+        private var achvmnt_timer:Timer;
         public function onDropFrame(e:*):void{
             if(!main.Game.sfc.isConnected){
                 itemCount = {};
-                invTree = new Array();
+                invTree.length = 0;
+                if(achvmnt_timer && achvmnt_timer.running){
+                    achvmnt_timer.reset();
+                    achvmnt_timer.removeEventListener(TimerEvent.TIMER, onAchvmntCooldown);
+                }
+                achvmnt_timer = null;
                 return;
             }
+            main.Game.ui.dropStack.visible = false;
             if(main.Game.ui.dropStack.numChildren < 1)
-				return;
-			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
-				try{
-					if(getQualifiedClassName(main.Game.ui.dropStack.getChildAt(i) as MovieClip).indexOf("DFrame2MC") > -1){
-						(main.Game.ui.dropStack.getChildAt(i) as MovieClip).visible = false;
-                    }
-				}catch(exception){
-					trace("Error handling drops: " + exception);
-				}
-			}
+                return;
+            if(achvmnt_timer && achvmnt_timer.running)
+                return;
+            for(var i:uint = 0; i < main.Game.ui.dropStack.numChildren; i++){
+                var dropObj:* = main.Game.ui.dropStack.getChildAt(i);
+                if(getQualifiedClassName(dropObj) == "mcAchievement"){
+                    var achievementClass:Class = main.Game.world.getClass("mcAchievement") as Class;
+                    var achvmnt_ui:*;
+                    achvmnt_ui = main.Game.ui.getChildByName("dsUI").addChild(new (achievementClass)()) as MovieClip;
+                    achvmnt_ui.cnt.tBody.text = dropObj.cnt.tBody.text;
+                    achvmnt_ui.cnt.tPts.text = dropObj.cnt.tPts.text;
+                    achvmnt_ui.fWidth = 348;
+                    achvmnt_ui.fHeight = 90;
+                    achvmnt_ui.fX = achvmnt_ui.x = -(achvmnt_ui.fWidth / 2);
+                    achvmnt_ui.fY = achvmnt_ui.y = -(achvmnt_ui.fHeight + 8);
+                    cleanDSUI();
+                    achvmnt_timer = new Timer(7000);
+                    achvmnt_timer.addEventListener(TimerEvent.TIMER, onAchvmntCooldown);
+                    achvmnt_timer.start();
+                    break;
+                }
+            }
         }
 
         public function isBlacklisted(item:String):Boolean{
@@ -143,9 +182,116 @@ package net.spider.handlers{
             return false;
         }
 
+        public function cleanDSUI():void{
+            var notifCtr = main.Game.ui.getChildByName("dsUI").numChildren;
+            notifCtr -= 2;
+            var notifObj:MovieClip;
+            var notifObj2:MovieClip;
+            while(notifCtr > -1)
+            {
+                notifObj = main.Game.ui.getChildByName("dsUI").getChildAt(notifCtr) as MovieClip;
+                notifObj2 = main.Game.ui.getChildByName("dsUI").getChildAt(notifCtr + 1) as MovieClip;
+                notifObj.fY = notifObj.y = notifObj2.fY - (notifObj2.fHeight + 8);
+                notifCtr--;
+            }
+        }
+
+        public function showQuestpopup(param1:Object) : void
+        {
+            var _loc2_:* = null;
+            var _loc3_:MovieClip = null;
+            var _loc4_:String = null;
+            var _loc5_:Object = null;
+            var _loc6_:int = 0;
+            var questPopupClass:Class = main.Game.world.getClass("mcQuestpopup") as Class;
+            _loc2_ = new (questPopupClass)();
+            _loc2_.cnt.mcAC.visible = false;
+            _loc3_ = main.Game.ui.getChildByName("dsUI").addChild(_loc2_) as MovieClip;
+            _loc3_.cnt.tName.text = param1.sName;
+            _loc3_.cnt.rewards.tRewards.htmlText = "";
+            _loc4_ = "";
+            _loc5_ = param1.rewardObj;
+            if(param1.rewardType == "ac")
+            {
+                _loc4_ = "<font color=\'#FFFFFF\'>" + param1.intAmount + "</font>";
+                _loc4_ = _loc4_ + "<font color=\'#FFCC00\'> Adventure Coins</font>";
+                _loc3_.cnt.mcAC.visible = true;
+            }
+            else
+            {
+                if("intGold" in _loc5_ && _loc5_.intGold > 0)
+                {
+                _loc4_ = "<font color=\'#FFFFFF\'>" + _loc5_.intGold + "</font>";
+                _loc4_ = _loc4_ + "<font color=\'#FFCC00\'>g</font>";
+                }
+                if("intExp" in _loc5_ && _loc5_.intExp > 0)
+                {
+                if(_loc4_.length > 0)
+                {
+                    _loc4_ = _loc4_ + "<font color=\'#FFFFFF\'>, </font>";
+                }
+                _loc4_ = _loc4_ + ("<font color=\'#FFFFFF\'>" + _loc5_.intExp + "</font>");
+                _loc4_ = _loc4_ + "<font color=\'#FF00FF\'>xp</font>";
+                }
+                if("iRep" in _loc5_ && _loc5_.iRep > 0)
+                {
+                if(_loc4_.length > 0)
+                {
+                    _loc4_ = _loc4_ + "<font color=\'#FFFFFF\'>, </font>";
+                }
+                _loc4_ = _loc4_ + ("<font color=\'#FFFFFF\'>" + _loc5_.iRep + "</font>");
+                _loc4_ = _loc4_ + "<font color=\'#00CCFF\'>rep</font>";
+                }
+                if("guildRep" in _loc5_ && _loc5_.guildRep > 0)
+                {
+                if(_loc4_.length > 0)
+                {
+                    _loc4_ = _loc4_ + "<font color=\'#FFFFFF\'>, </font>";
+                }
+                _loc4_ = _loc4_ + ("<font color=\'#FFFFFF\'>" + _loc5_.guildRep + "</font>");
+                _loc4_ = _loc4_ + "<font color=\'#00CCFF\'>guild rep</font>";
+                }
+            }
+            _loc3_.cnt.rewards.tRewards.htmlText = _loc4_;
+            _loc3_.fWidth = 240;
+            _loc3_.fHeight = 70;
+            _loc6_ = _loc3_.cnt.rewards.tRewards.x + _loc3_.cnt.rewards.tRewards.textWidth;
+            _loc3_.cnt.rewards.x = Math.round(_loc3_.fWidth / 2 - _loc6_ / 2);
+            _loc3_.fX = _loc3_.x = -(_loc3_.fWidth / 2);
+            _loc3_.fY = _loc3_.y = -(_loc3_.fHeight + 8);
+            cleanDSUI();
+        }
+
+        public function showItemDS(item:*, qty:*):void{
+            var dropClass:Class = main.Game.world.getClass("DFrameMC") as Class;
+            var droppedItem:* = main.Game.copyObj(item);
+            droppedItem.iQty = qty;
+
+            var dropUI:* = new (dropClass)(droppedItem);
+            main.Game.ui.getChildByName("dsUI").addChild(dropUI);
+            dropUI.init();
+            if(qty > 1){
+                dropUI.cnt.bg.width = int(dropUI.cnt.strName.textWidth) + 50;
+                dropUI.cnt.bg.width += dropUI.cnt.strQ.textWidth + 2;
+                dropUI.cnt.strQ.x = dropUI.cnt.strName.textWidth + 12;
+                dropUI.cnt.fx1.width = dropUI.cnt.bg.width;
+                dropUI.fWidth = dropUI.cnt.bg.width;
+            }else{
+                if(dropUI.cnt.strName.textWidth < dropUI.cnt.strType.textWidth){
+                    dropUI.cnt.bg.width = int(dropUI.cnt.strType.textWidth) + 50;
+                    dropUI.cnt.fx1.width = dropUI.cnt.bg.width;
+                    dropUI.fWidth = dropUI.cnt.bg.width;
+                }
+            }
+            dropUI.fY = dropUI.y = -(dropUI.fHeight + 8);
+            dropUI.fX = dropUI.x = -(dropUI.fWidth / 2);
+            cleanDSUI();
+        }
+
         var itemCount:Object;
-        var invTree:Array;
+        var invTree:Vector.<Object>;
         public function onExtensionResponseHandler(e:*):void{
+            var t_dItem:*;
             var dItem:*;
             var dID:*;
             var protocol:* = e.params.type;
@@ -182,6 +328,10 @@ package net.spider.handlers{
                             }
                         reDraw();
                         break;
+                        case "addItems":
+                            for (dID in resObj.items)
+                                showItemDS((main.Game.world.invTree[dID] == null) ? resObj.items[dID] : main.Game.world.invTree[dID], int(resObj.items[dID].iQty));
+                            break;
                         case "getDrop":
                             for(var val:* in invTree){
                                 if (invTree[val].ItemID == resObj.ItemID)
@@ -194,6 +344,24 @@ package net.spider.handlers{
                                 }
                             }
                         reDraw();
+                        break;
+                        case "powerGem":
+                            for(dID in resObj.items)
+                                showItemDS((main.Game.world.invTree[dID] == null) ? resObj.items[dID] : main.Game.world.invTree[dID], int(resObj.items[dID].iQty));
+                        break;
+                        case "buyItem":
+                            if(resObj.CharItemID != -1)
+                            {
+                                t_dItem = main.Game.copyObj(main.Game.world.shopBuyItem);
+                                t_dItem.CharItemID = resObj.CharItemID;
+                                showItemDS((main.Game.world.invTree[t_dItem.ItemID] == null) 
+                                    ? resObj.items[t_dItem.ItemID] : main.Game.world.invTree[t_dItem.ItemID], 
+                                    int(t_dItem.iQty));                               
+                            }
+                        break;
+                        case "ccqr":
+                            if(resObj.bSuccess != 0)
+                                showQuestpopup(resObj);
                         break;
                     }
                 }

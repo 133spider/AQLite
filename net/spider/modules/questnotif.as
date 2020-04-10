@@ -34,7 +34,7 @@ package net.spider.modules{
                         {
                             _loc7_ = _loc4_.turnin[_loc6_].ItemID;
                             _loc8_ = _loc4_.turnin[_loc6_].iQty;
-                            if(param2.ItemID == _loc7_ && main.Game.world.invTree[_loc7_] != null)
+                            if(param2.ItemID == _loc7_ && main.Game.world.invTree[_loc7_] != null && main.Game.world.invTree[_loc7_].iQty > _loc8_)
                             {
                                 _loc9_ = main.Game.world.invTree[_loc7_];
                                 main.Game.addUpdate(_loc4_.sName + ": " + _loc9_.sName + " " + main.Game.world.invTree[_loc7_].iQty + "/" + _loc8_);

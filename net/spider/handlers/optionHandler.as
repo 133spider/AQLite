@@ -60,6 +60,8 @@ package net.spider.handlers{
         public static var bBankKey:Boolean;
         public static var bDisPetAnim:Boolean;
         public static var bTransQuest:Boolean;
+        public static var bBetterMounts:Boolean;
+        public static var bDisChatScroll:Boolean;
 
         public static var filterChecks:Object = new Object();
         public static var blackListed:Array = new Array();
@@ -138,6 +140,16 @@ package net.spider.handlers{
                 main.sharedObject.flush();
             }
             filterChecks["chkTimestamp"] = main.sharedObject.data.filterChecks["chkTimestamp"];
+            if(main.sharedObject.data.filterChecks["chkBasicRiderAnim"] == null){
+                main.sharedObject.data.filterChecks["chkBasicRiderAnim"] = false;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkBasicRiderAnim"] = main.sharedObject.data.filterChecks["chkBasicRiderAnim"];
+            if(main.sharedObject.data.filterChecks["chkHorseRiderAnim"] == null){
+                main.sharedObject.data.filterChecks["chkHorseRiderAnim"] = false;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkHorseRiderAnim"] = main.sharedObject.data.filterChecks["chkHorseRiderAnim"];
             cDrops = main.sharedObject.data.cDrops;
             if(cDrops){
                 dropmenuMC = new dropmenu();
@@ -237,6 +249,14 @@ package net.spider.handlers{
             bTransQuest = main.sharedObject.data.bTransQuest;
             if(bTransQuest)
                 dispatch(transquest);
+
+            bBetterMounts = main.sharedObject.data.bBetterMounts;
+            if(bBetterMounts)
+                dispatch(bettermounts);
+
+            bDisChatScroll = main.sharedObject.data.bDisChatScroll;
+            if(bDisChatScroll)
+                dispatch(dischatscroll);
 
             bBankKey = main.sharedObject.data.bBankKey;
             draggable = main.sharedObject.data.draggable;
@@ -627,7 +647,8 @@ package net.spider.handlers{
                 case "Travel Menu":
                     if(!travelMenuMC){
                         travelMenuMC = new travelMenu();
-                        main._stage.addChild(travelMenuMC);
+                        travelMenuMC.name = "travelMenuMC";
+                        main.Game.ui.addChild(travelMenuMC);
                     }else{
                         travelMenuMC.visible = !travelMenuMC.visible;
                     }
@@ -641,6 +662,29 @@ package net.spider.handlers{
                 case "Message Timestamps":
                     filterChecks["chkTimestamp"] = !filterChecks["chkTimestamp"];
                     main.sharedObject.data.filterChecks["chkTimestamp"] = filterChecks["chkTimestamp"];
+                    main.sharedObject.flush();
+                    break;
+                case "Better Mounts":
+                    bBetterMounts = !bBetterMounts;
+                    main.Game.ui.mcPortrait.getChildByName("iconMount").visible = bBetterMounts;
+                    dispatch(bettermounts);
+                    main.sharedObject.data.bBetterMounts = bBetterMounts;
+                    main.sharedObject.flush();
+                    break;
+                case "Force Basic Rider Animation":
+                    filterChecks["chkBasicRiderAnim"] = !filterChecks["chkBasicRiderAnim"];
+                    main.sharedObject.data.filterChecks["chkBasicRiderAnim"] = filterChecks["chkBasicRiderAnim"];
+                    main.sharedObject.flush();
+                    break;
+                case "Force Horse Rider Animation":
+                    filterChecks["chkHorseRiderAnim"] = !filterChecks["chkHorseRiderAnim"];
+                    main.sharedObject.data.filterChecks["chkHorseRiderAnim"] = filterChecks["chkHorseRiderAnim"];
+                    main.sharedObject.flush();
+                    break;
+                case "Disable Chat Mouse Scrolling":
+                    bDisChatScroll = !bDisChatScroll;
+                    dispatch(dischatscroll);
+                    main.sharedObject.data.bDisChatScroll = bDisChatScroll;
                     main.sharedObject.flush();
                     break;
                 default: break;

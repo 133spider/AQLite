@@ -36,9 +36,9 @@ package net.spider.draw{
             AvatarDisplay.gotoAndPlay("in2");
             AvatarDisplay.mcChar.gotoAndPlay("Idle");
 
-            AvatarDisplay.scale(scaleAvt);
-
             this.addChild(AvatarDisplay);
+
+            AvatarDisplay.scale(scaleAvt);
 
             this.cameratoolUI.primary.txtClassName.text = main.Game.world.myAvatar.objData.strClassName;
 
@@ -1209,9 +1209,9 @@ package net.spider.draw{
             AvatarDisplay.gotoAndPlay("in2");
             AvatarDisplay.mcChar.gotoAndPlay("Idle");
 
-            AvatarDisplay.scale(scaleAvt);
-
             this.addChild(AvatarDisplay);
+
+            AvatarDisplay.scale(scaleAvt);
         }
 
         public function onColGlow(e:*):void{

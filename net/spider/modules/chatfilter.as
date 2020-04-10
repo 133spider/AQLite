@@ -31,8 +31,10 @@ package net.spider.modules{
 					if(eventInitialized){
 						main._stage.addEventListener(KeyboardEvent.KEY_UP, main.Game.key_actBar, false, 0, true);
 						for(var k:* = 1; k < 6; k++){
-							main.Game.ui.mcInterface.actBar.getChildByName("i" + k).removeEventListener(MouseEvent.CLICK, actIconClick);
-							main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, main.Game.actIconClick, false, 0, true);
+							if(main.Game.ui.mcInterface.actBar.getChildByName("i" + k)){
+								main.Game.ui.mcInterface.actBar.getChildByName("i" + k).removeEventListener(MouseEvent.CLICK, actIconClick);
+								main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, main.Game.actIconClick, false, 0, true);
+							}
 						}
 						eventInitialized = false;
 					}
@@ -43,8 +45,10 @@ package net.spider.modules{
 					if(!eventInitialized){
 						main._stage.removeEventListener(KeyboardEvent.KEY_UP, main.Game.key_actBar);
 						for(var j:* = 1; j < 6; j++){
-							main.Game.ui.mcInterface.actBar.getChildByName("i" + j).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
-							main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, main.Game.actIconClick);
+							if(main.Game.ui.mcInterface.actBar.getChildByName("i" + j)){
+								main.Game.ui.mcInterface.actBar.getChildByName("i" + j).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+								main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, main.Game.actIconClick);
+							}
 						}
 						eventInitialized = true;
 					}

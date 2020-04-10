@@ -20,7 +20,8 @@ package net.spider.modules{
 				if(main.Game.ui){
 					if(!eventInitialized){
 						for(var i:* = 2; i < 6; i++){
-							main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+							if(main.Game.ui.mcInterface.actBar.getChildByName("i" + i))
+								main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 						}
 						eventInitialized = true;
 					}
@@ -28,7 +29,8 @@ package net.spider.modules{
 			}else{
 				if(eventInitialized){
 					for(var j:* = 2; j < 6; j++){
-						main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
+						if(main.Game.ui.mcInterface.actBar.getChildByName("i" + j))
+							main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
 					}
 					eventInitialized = false;
 				}
@@ -168,7 +170,8 @@ package net.spider.modules{
 						case "sAct":
 							if(!eventInitialized){
 								for(var i:* = 2; i < 6; i++){
-									main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+									if(main.Game.ui.mcInterface.actBar.getChildByName("i" + i))
+										main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 								}
 								eventInitialized = true;
 							}

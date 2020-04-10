@@ -33,7 +33,7 @@ package net.spider.modules{
 		public var pos:int;
 		public var i:int;
 
-		public var optionGet:Array;
+		public var optionGet:Vector.<Object>;
 
 		private var toolTip:ToolTipMC;
 		private var toolTipMC:*;
@@ -62,7 +62,7 @@ package net.spider.modules{
 		}
 
 		public function initOptions():void{
-			optionGet = [
+			optionGet = new <Object>[
 				{
 					strName: "Draggable Drops",
 					bEnabled: main.sharedObject.data.draggable,
@@ -373,6 +373,28 @@ package net.spider.modules{
 					strName: "Transparent Quest Box",
 					bEnabled: main.sharedObject.data.bTransQuest,
 					sDesc: "If you are in combat and you have the quest window open, it will allow you to click through it while being transparent"
+				},
+				{
+					strName: "Better Mounts",
+					bEnabled: main.sharedObject.data.bBetterMounts,
+					sDesc: "Gives mount armors a 160% movement speed (Disabled in PvP)\nSummon Mount icon will appear on the top left and will revert back to your original armor when struck in combat\nSet your primary mount by going to your inventory, selecting a mount armor, and clicking on the Set Mount button icon! If there is no Set Mount button icon, the armor is not a mount.\nPrimary mounts are saved by your username.",
+					extra: [
+						{
+							strName: "Force Basic Rider Animation",
+							bEnabled: main.sharedObject.data.filterChecks["chkBasicRiderAnim"],
+							sDesc: "Some mount armors do not have a default rider animation (Dread Gryphon Rider armors) so you can choose to force those animations here!\nYou can also force these animations if you do not like the default rider animation (although it may be buggy)\nOnly one of these options can be turned on."
+						},
+						{
+							strName: "Force Horse Rider Animation",
+							bEnabled: main.sharedObject.data.filterChecks["chkHorseRiderAnim"],
+							sDesc: "Some mount armors do not have a default rider animation (Dread Gryphon Rider armors) so you can choose to force those animations here!\nYou can also force these animations if you do not like the default rider animation (although it may be buggy)\nOnly one of these options can be turned on."
+						}
+					]
+				},
+				{
+					strName: "Disable Chat Mouse Scrolling",
+					bEnabled: main.sharedObject.data.bDisChatScroll,
+					sDesc: "Disables the mouse scroll wheel on the Chat"
 				}
 			];
 		}
@@ -398,7 +420,25 @@ package net.spider.modules{
             toolTip.close();
         }
 
-		public function redraw(filteredArray:Array):void{
+		public function orderName(a, b):int 
+		{ 
+			var name1 = a["strName"]; 
+			var name2 = b["strName"]; 
+			if (name1 < name2) 
+			{ 
+				return -1; 
+			} 
+			else if (name1 > name2) 
+			{ 
+				return 1; 
+			} 
+			else 
+			{ 
+				return 0; 
+			} 
+		} 
+
+		public function redraw(filteredArray:Vector.<Object>):void{
 			SBar.h.y = 0;
 			if(optionList != null){
 				this.removeChild(optionList);
@@ -407,7 +447,7 @@ package net.spider.modules{
 			optionList = this.addChild(new MovieClip());
 			setChildIndex(toolTipMC, numChildren-1);
 			Len = filteredArray.length;
-			filteredArray.sortOn("strName");
+			filteredArray.sort(orderName);
 			i = 0;
 			var item:*;
 			var posI:* = 0;
@@ -475,7 +515,7 @@ package net.spider.modules{
 		public function onSearch(e:Event):void{
 			this.txtSearch.textField.setTextFormat(new TextFormat("Arial", 16, 0xFFFFFF), this.txtSearch.textField.caretIndex-1);
 			initOptions();
-			var _tempArray:Array = new Array();
+			var _tempArray:Vector.<Object> = new Vector.<Object>();
 			for(var k:int = 0; k < optionGet.length; k++){
 				if(optionGet[k].strName.toLowerCase().indexOf(txtSearch.text.toLowerCase()) > -1){
 					_tempArray.push(optionGet[k]);

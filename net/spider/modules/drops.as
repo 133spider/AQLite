@@ -14,6 +14,14 @@ package net.spider.modules{
 	
 	public class drops extends MovieClip{
 
+		public static function customDropsEnabled():Boolean{
+			return (optionHandler.cDrops || optionHandler.sbpcDrops);
+		}
+
+		public static function getDropUI():*{
+			return (customDropsEnabled() ? main.Game.ui.getChildByName("dsUI") : main.Game.ui.dropStack);
+		}
+
 		static var incr:int = 0;
         public static function onExtensionResponseHandler(e:*):void{
 			if(!optionHandler.draggable)
@@ -27,6 +35,8 @@ package net.spider.modules{
                     switch (cmd)
                     {
                         case "dropItem":
+							if(customDropsEnabled())
+								return;
 							if(main.Game.ui.dropStack.numChildren <= 2)
 								return;
 							var itemA:MovieClip;
@@ -49,11 +59,17 @@ package net.spider.modules{
         }
 
         public static function onFrameUpdate():void{
-			if(!optionHandler.draggable || !main.Game.sfc.isConnected || (main.Game.ui.dropStack.numChildren < 1))
+			if(!optionHandler.draggable || !main.Game.sfc.isConnected)
 				return;
-			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+			if(!main.Game.ui)
+				return;
+			try{
+				if(getDropUI().numChildren < 1)
+					return;
+			}catch(exception){return;}
+			for(var i:int = 0; i < getDropUI().numChildren; i++){
 				try{
-					var mcDrop:* = (main.Game.ui.dropStack.getChildAt(i) as MovieClip);
+					var mcDrop:* = (getDropUI().getChildAt(i) as MovieClip);
 					if(!mcDrop.hasEventListener(MouseEvent.MOUSE_DOWN)){
 						mcDrop.addEventListener(MouseEvent.MOUSE_DOWN, drops.startDrag, false, 0, true);
 						mcDrop.addEventListener(MouseEvent.MOUSE_UP, drops.stopDrag, false, 0, true);

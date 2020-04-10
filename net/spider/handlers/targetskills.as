@@ -30,7 +30,8 @@ package net.spider.handlers{
 				if(main.Game.ui){
 					if(!eventInitialized){
 						for(var i:* = 2; i < 6; i++){
-							main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+							if(main.Game.ui.mcInterface.actBar.getChildByName("i" + i))
+								main.Game.ui.mcInterface.actBar.getChildByName("i" + i).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 						}
 						eventInitialized = true;
 					}
@@ -43,7 +44,8 @@ package net.spider.handlers{
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 				if(eventInitialized){
 					for(var j:* = 2; j < 6; j++){
-						main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
+						if(main.Game.ui.mcInterface.actBar.getChildByName("i" + j))
+							main.Game.ui.mcInterface.actBar.getChildByName("i" + j).removeEventListener(MouseEvent.CLICK, actIconClick);
 					}
 					eventInitialized = false;
 				}
@@ -86,7 +88,7 @@ package net.spider.handlers{
 		public function createIconMC(auraName:String, auraStacks:Number, isEnemy:Boolean):void{
 			if(icons == null){
 				icons = new Object();
-				iconPriority = new Array();
+				iconPriority = new Vector.<String>();
 			}
 			if(main.Game.ui.mcPortraitTarget)
 				if(!main.Game.ui.mcPortraitTarget.getChildByName("auraUI")){
@@ -148,7 +150,7 @@ package net.spider.handlers{
             toolTip.close();
         }
 
-		var iconPriority:Array;
+		var iconPriority:Vector.<String>;
 		public function rearrangeIconMC():void{
 			var nextRow:Number = 0;
 			var rowCtr:Number = 0;
@@ -164,12 +166,18 @@ package net.spider.handlers{
 		}
 
 		public function clearMCs():void{
+			if(!main.Game)
+				return;
+			if(!main.Game.ui)
+				return;
+			if(!main.Game.ui.mcPortraitTarget)
+				return;
 			while(main.Game.ui.mcPortraitTarget.getChildByName("auraUI").numChildren > 0){
 				main.Game.ui.mcPortraitTarget.getChildByName("auraUI").removeChildAt(0);
 			}
 			toolTip.close();
 			icons = new Object();
-			iconPriority = new Array();
+			iconPriority = new Vector.<String>();
 		}
 
 		public var auras:Object;
@@ -256,7 +264,8 @@ package net.spider.handlers{
                             break;
 						case "sAct":
 							for(var k:* = 2; k < 6; k++){
-								main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
+								if(main.Game.ui.mcInterface.actBar.getChildByName("i" + k))
+									main.Game.ui.mcInterface.actBar.getChildByName("i" + k).addEventListener(MouseEvent.CLICK, actIconClick, false, 0, true);
 							}
 							lastSkill = main.Game.world.actions.active[0];
 							//eventInitialized = true;

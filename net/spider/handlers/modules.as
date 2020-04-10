@@ -6,6 +6,7 @@
 	import flash.system.*;
 	import flash.ui.*;
 	import flash.utils.*;
+	import flash.geom.*;
 	import net.spider.draw.theArchive;
     import net.spider.modules.*;
 	import net.spider.handlers.*;
@@ -16,12 +17,12 @@
 	public class modules extends MovieClip{
 
 		private static var maintainTimer:Timer;
-		private static var moduleList:Array;
+		private static var moduleList:Vector.<Object>;
 		public static function create():void{
 
 			//optionHandler.onCreate();
 
-			moduleList = [
+			moduleList = new <Object>[
 				{
 					moduleClass: passives,
 					moduleType: "Frame",
@@ -213,6 +214,12 @@
 					moduleType: "Frame",
 					responseHandler: false,
 					keyHandler: false
+				},
+				{
+					moduleClass: bettermounts,
+					moduleType: "Timer",
+					responseHandler: true,
+					keyHandler: false
 				}
 			]
 			
@@ -387,6 +394,24 @@
                     return false;
             }
         }
+
+		public static function isMount():Boolean{
+			if(!main.Game.ui.mcPopup.getChildByName("mcInventory"))
+				return false;
+			if(main.Game.ui.mcPopup.getChildByName("mcInventory"))
+                if(main.Game.ui.mcPopup.getChildByName("mcInventory").splitPanel.visible)
+                    return false;
+            if(!main.Game.ui.mcPopup.getChildByName("mcInventory").iSel)
+                return false;
+            switch(main.Game.ui.mcPopup.getChildByName("mcInventory").iSel.sES)
+            {
+                case "ar":
+                case "co":
+                    return true;
+                default:
+                    return false;
+            }
+		}
 
 		static var mDown:Boolean = false;
 		static var hRun:int = 0;
@@ -568,72 +593,10 @@
 						if(!MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[8].mc).hasEventListener(MouseEvent.MOUSE_WHEEL)){
 							MovieClip(main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[8].mc).addEventListener(MouseEvent.MOUSE_WHEEL, onInvWheel, false, 0, true);
 						}
-					if(main.Game.ui.mcPopup.getChildByName("mcShop").iSel && main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel)
-						if(main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[10].mc.iList.height >= 208.4 && !mergeScrollFlag){
-							var t_mc:MovieClip = main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[10].mc;
-							t_mc.bg.height = 186;
-							if(!t_mc.getChildByName("maskMC")){
-								var maskMC:Shape = new Shape();
-								maskMC.graphics.beginFill(0);
-								maskMC.graphics.drawRect(0, 0, t_mc.bg.width, t_mc.bg.height);
-								maskMC.graphics.endFill();
-								t_mc.addChild(maskMC);
-								maskMC.name = "maskMC";
-								maskMC.x = t_mc.bg.x;
-								maskMC.y = t_mc.bg.y;
-								t_mc.iList.mask = maskMC;
-
-								var scrollMC:mergeScroll = new mergeScroll();
-								t_mc.addChild(scrollMC);
-								scrollMC.name = "scrollMC";
-								scrollMC.x = (t_mc.bg.x + t_mc.bg.width) - scrollMC.width/2;
-								scrollMC.y = t_mc.bg.y + 5;
-								scrollMC.height = t_mc.bg.height - 10;
-								scrollMC.h.height /= 2;
-							}else{
-								t_mc.getChildByName("maskMC").height = t_mc.bg.height;
-								t_mc.getChildByName("maskMC").width = t_mc.bg.width;
-								t_mc.getChildByName("maskMC").x = t_mc.bg.x;
-								t_mc.getChildByName("maskMC").y = t_mc.bg.y;
-
-								t_mc.getChildByName("scrollMC").visible = true;
-								t_mc.getChildByName("scrollMC").x = (t_mc.bg.x + t_mc.bg.width) - t_mc.getChildByName("scrollMC").width/2;
-								t_mc.getChildByName("scrollMC").y = t_mc.bg.y + 5;
-								t_mc.getChildByName("scrollMC").height = t_mc.bg.height - 10;
-							}
-							var t_scrollMC:MovieClip = MovieClip(t_mc.getChildByName("scrollMC"));
-
-							hRun = t_scrollMC.b.height - t_scrollMC.h.height;
-							dRun = (int(t_mc.iList.height + t_mc.iList.y * 2) + 1) - t_mc.getChildByName("maskMC").height + 5;
-							t_scrollMC.h.y = 0;
-							t_mc.iList.oy = t_mc.iList.y;
-							t_scrollMC.hit.alpha = 0;
-							mDown = false;
-
-							t_scrollMC.hit.addEventListener(MouseEvent.MOUSE_DOWN,merge_scrDown,false,0,true);
-							t_scrollMC.h.addEventListener(Event.ENTER_FRAME,merge_hEF,false,0,true);
-							t_mc.iList.addEventListener(Event.ENTER_FRAME,merge_dEF,false,0,true);
-							t_mc.ti.y = t_mc.bg.height + 2;
-							cachedItem = main.Game.ui.mcPopup.getChildByName("mcShop").iSel.ItemID;
-
-							t_mc.addEventListener(MouseEvent.MOUSE_WHEEL, onMergeBoxScroll, false, 0, true);
-							mergeScrollFlag = true;
-						}else if(mergeScrollFlag && main.Game.ui.mcPopup.getChildByName("mcShop").iSel.ItemID != cachedItem){
-							var t2_mc:MovieClip = main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[10].mc;
-							if(t2_mc.getChildByName("scrollMC")){
-								t2_mc.getChildByName("scrollMC").visible = false;
-								MovieClip(t2_mc.getChildByName("scrollMC")).hit.removeEventListener(MouseEvent.MOUSE_DOWN, merge_scrDown);
-								MovieClip(t2_mc.getChildByName("scrollMC")).h.removeEventListener(Event.ENTER_FRAME, merge_hEF);
-							}
-							t2_mc.iList.y = 0;
-							t2_mc.iList.removeEventListener(Event.ENTER_FRAME, merge_dEF);
-							t2_mc.removeEventListener(MouseEvent.MOUSE_WHEEL, onMergeBoxScroll);
-							t2_mc.bg.height = t2_mc.iList.height + 1;
-							t2_mc.ti.y = t2_mc.bg.height + 2;
-							mergeScrollFlag = false;
-							cachedItem = -1;
-						}
+					drawMergePanel();
 				}
+			}else{
+				mergeScrollFlag = false;
 			}
 
 			if (main.Game.ui.ModalStack.numChildren)
@@ -672,6 +635,98 @@
 				main.Game.ui.mcOFrame.t1.txtTitle.text = "Friends List (" + main.Game.world.myAvatar.friends.length + "/40)";
 			}
 
+			drawPreviewInterface();
+
+			if((main.Game.ui.dropStack.numChildren < 1) || (optionHandler.blackListed.length < 1))
+				return;
+			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
+				try{
+					if(!main.Game.ui.dropStack.getChildAt(i))
+                    	continue;
+					var mcDrop:* = (main.Game.ui.dropStack.getChildAt(i) as MovieClip);
+					if(main.Game.ui.dropStack.getChildAt(i).cnt && main.Game.ui.dropStack.getChildAt(i).cnt.strName)
+						if(isBlacklisted(mcDrop.cnt.strName.text.toUpperCase())){
+							mcDrop.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						}
+				}catch(exception){
+					trace("Error handling drops: " + exception);
+				}
+			}
+		}
+
+		public static function drawMergePanel():void{
+			if(main.Game.ui.mcPopup.getChildByName("mcShop").iSel && main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel){
+				if(main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[10].mc.iList.height >= 208.4 && !mergeScrollFlag){
+					//208.4
+					var t_mc:MovieClip = main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[10].mc;
+					t_mc.bg.height = 186;
+					if(!t_mc.getChildByName("maskMC")){
+						var maskMC:Shape = new Shape();
+						maskMC.graphics.beginFill(0);
+						maskMC.graphics.drawRect(0, 0, t_mc.bg.width, t_mc.bg.height);
+						maskMC.graphics.endFill();
+						t_mc.addChild(maskMC);
+						maskMC.name = "maskMC";
+						maskMC.x = t_mc.bg.x;
+						maskMC.y = t_mc.bg.y;
+						t_mc.iList.mask = maskMC;
+
+						var scrollMC:mergeScroll = new mergeScroll();
+						t_mc.addChild(scrollMC);
+						scrollMC.name = "scrollMC";
+						scrollMC.x = (t_mc.bg.x + t_mc.bg.width) - scrollMC.width/2;
+						scrollMC.y = t_mc.bg.y + 5;
+						scrollMC.height = t_mc.bg.height - 10;
+						scrollMC.h.height /= 2;
+					}else{
+						t_mc.getChildByName("maskMC").height = t_mc.bg.height;
+						t_mc.getChildByName("maskMC").width = t_mc.bg.width;
+						t_mc.getChildByName("maskMC").x = t_mc.bg.x;
+						t_mc.getChildByName("maskMC").y = t_mc.bg.y;
+
+						t_mc.getChildByName("scrollMC").visible = true;
+						t_mc.getChildByName("scrollMC").x = (t_mc.bg.x + t_mc.bg.width) - t_mc.getChildByName("scrollMC").width/2;
+						t_mc.getChildByName("scrollMC").y = t_mc.bg.y + 5;
+						t_mc.getChildByName("scrollMC").height = t_mc.bg.height - 10;
+					}
+					var t_scrollMC:MovieClip = MovieClip(t_mc.getChildByName("scrollMC"));
+
+					hRun = t_scrollMC.b.height - t_scrollMC.h.height;
+					dRun = (int(t_mc.iList.height + t_mc.iList.y * 2) + 1) - t_mc.getChildByName("maskMC").height + 5;
+					t_scrollMC.h.y = 0;
+					t_mc.iList.oy = t_mc.iList.y;
+					t_scrollMC.hit.alpha = 0;
+					mDown = false;
+
+					t_scrollMC.hit.addEventListener(MouseEvent.MOUSE_DOWN,merge_scrDown,false,0,true);
+					t_scrollMC.h.addEventListener(Event.ENTER_FRAME,merge_hEF,false,0,true);
+					t_mc.iList.addEventListener(Event.ENTER_FRAME,merge_dEF,false,0,true);
+					t_mc.ti.y = t_mc.bg.height + 2;
+					cachedItem = main.Game.ui.mcPopup.getChildByName("mcShop").iSel.ItemID;
+
+					t_mc.addEventListener(MouseEvent.MOUSE_WHEEL, onMergeBoxScroll, false, 0, true);
+					mergeScrollFlag = true;
+				}else if(mergeScrollFlag && main.Game.ui.mcPopup.getChildByName("mcShop").iSel.ItemID != cachedItem){
+					var t2_mc:MovieClip = main.Game.ui.mcPopup.getChildByName("mcShop").mergePanel.frames[10].mc;
+					if(t2_mc.getChildByName("scrollMC")){
+						t2_mc.getChildByName("scrollMC").visible = false;
+						MovieClip(t2_mc.getChildByName("scrollMC")).hit.removeEventListener(MouseEvent.MOUSE_DOWN, merge_scrDown);
+						MovieClip(t2_mc.getChildByName("scrollMC")).h.removeEventListener(Event.ENTER_FRAME, merge_hEF);
+					}
+					t2_mc.iList.y = 0;
+					t2_mc.iList.removeEventListener(Event.ENTER_FRAME, merge_dEF);
+					t2_mc.removeEventListener(MouseEvent.MOUSE_WHEEL, onMergeBoxScroll);
+					t2_mc.bg.height = t2_mc.iList.height + 1;
+					t2_mc.ti.y = t2_mc.bg.height + 2;
+					mergeScrollFlag = false;
+					cachedItem = -1;
+				}
+			}
+		}
+
+		private static var f_itemsDrawn:Boolean = false;
+		private static var f_savedISel:Number;
+		public static function drawPreviewInterface():void{
 			var mcFocus:MovieClip;
             var mcTarget:String;
             var mcUI:MovieClip;
@@ -706,7 +761,9 @@
             }
 
             mcUI = main.Game.ui.mcPopup.getChildByName(mcTarget);
-            if(!(mcTarget == "None" || !mcUI)){
+            if(!(mcTarget == "None" || !mcUI) && !f_itemsDrawn){
+				f_itemsDrawn = true;
+				f_savedISel = mcUI.iSel.ItemID;
 				if(mcFocus.tInfo.textHeight > mcFocus.tInfo.height){
 					mcUI.iSel.sDesc = StringUtil.trim(mcUI.iSel.sDesc);
 					mcFocus.tInfo.htmlText = main.Game.getItemInfoStringB(mcUI.iSel);
@@ -714,13 +771,13 @@
 						mcFocus.tInfo.y = int((mcFocus.btnDelete.y + mcFocus.btnDelete.height) - 
 							(mcFocus.tInfo.height - ((mcFocus.tInfo.textHeight == 109.8 || mcFocus.tInfo.textHeight == 122.95) ? 15 : 3)));
 				}
-
+				
 				if(isGender(mcTarget)){
 					if(!mcFocus.getChildByName("btGender")){
 						var btGenderMC:* = new btGender();
 						btGenderMC.name = "btGender";
-						btGenderMC.height = 20;
-						btGenderMC.width = 25;
+						btGenderMC.height = 22;
+						btGenderMC.width = 26;
 						mcFocus.addChild(btGenderMC);
 					}
 					if((main.Game.ui.mcPopup.currentLabel == "Shop") && mcUI.previewPanel.visible && !(mcUI.splitPanel.visible)){
@@ -730,12 +787,30 @@
 						mcFocus.getChildByName("btGender").x = 255;
 						mcFocus.getChildByName("btGender").y = 175;
 					}else if((main.Game.ui.mcPopup.currentLabel == "Inventory") && !(mcUI.splitPanel.visible)){
-						mcFocus.getChildByName("btGender").x = 253;
+						mcFocus.getChildByName("btGender").x = 252;
 						mcFocus.getChildByName("btGender").y = 150;
 					}
 				}else{
 					if(mcFocus.getChildByName("btGender")){
 						mcFocus.removeChild(mcFocus.getChildByName("btGender"));
+					}
+				}
+
+				if(isMount()){
+					if(!mcFocus.getChildByName("btSetMount")){
+						var btSetMountMC:* = new btSetMount();
+						btSetMountMC.name = "btSetMount";
+						btSetMountMC.height = 22;
+						btSetMountMC.width = 26;
+						mcFocus.addChild(btSetMountMC);
+					}
+					if((main.Game.ui.mcPopup.currentLabel == "Inventory") && !(mcUI.splitPanel.visible)){
+						mcFocus.getChildByName("btSetMount").x = 252;
+						mcFocus.getChildByName("btSetMount").y = 127;
+					}
+				}else{
+					if(mcFocus.getChildByName("btSetMount")){
+						mcFocus.removeChild(mcFocus.getChildByName("btSetMount"));
 					}
 				}
 
@@ -779,21 +854,15 @@
 						mcFocus.removeChild(mcFocus.getChildByName("showBt"));
 					}
 				}
-			}
-
-			if((main.Game.ui.dropStack.numChildren < 1) || (optionHandler.blackListed.length < 1))
-				return;
-			for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
-				try{
-					if(!main.Game.ui.dropStack.getChildAt(i))
-                    	continue;
-					var mcDrop:* = (main.Game.ui.dropStack.getChildAt(i) as MovieClip);
-					if(main.Game.ui.dropStack.getChildAt(i).cnt && main.Game.ui.dropStack.getChildAt(i).cnt.strName)
-						if(isBlacklisted(mcDrop.cnt.strName.text.toUpperCase())){
-							mcDrop.cnt.nbtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-						}
-				}catch(exception){
-					trace("Error handling drops: " + exception);
+			}else if(f_itemsDrawn){
+				if(mcUI){
+					if(f_savedISel != mcUI.iSel.ItemID){
+						f_itemsDrawn = false;
+						f_savedISel = 0;
+					}
+				}else if(mcTarget == "None"){
+					f_itemsDrawn = false;
+					f_savedISel = 0;
 				}
 			}
 		}
@@ -809,10 +878,6 @@
             return false;
         }
 		
-		//static var prevPet:String;
-		//static var petPos:int;
-		//static var shadowPos:int;
-		//static var petFlag:Boolean = false;
 		public static function onMaintainTimer(e:TimerEvent):void{
 			if(!main.Game || !main.Game.ui)
 				return;
@@ -850,24 +915,6 @@
 				main.Game.ui.mcInterface.mcGold.addEventListener(MouseEvent.ROLL_OVER, onMcGoldMouseOver, false, 0, true);
 				main.Game.ui.mcInterface.mcGold.addEventListener(MouseEvent.ROLL_OUT, onMcGoldMouseOut, false, 0, true);
 			}
-
-			/**if(main.Game.world.myAvatar)
-				if(main.Game.world.myAvatar.objData.eqp["pe"] && main.Game.world.myAvatar.petMC)
-					if(main.Game.world.myAvatar.pMC.mcChar.scaleX < 0 && main.Game.world.myAvatar.petMC.mcChar.scaleX < 0 && !petFlag){
-						petPos = main.Game.world.myAvatar.pMC.mcChar.width/7;
-						shadowPos = main.Game.world.myAvatar.petMC.mcChar.width/2;
-						main.Game.world.myAvatar.petMC.mcChar.x += petPos;
-						main.Game.world.myAvatar.petMC.shadow.x += shadowPos;
-						prevPet = main.Game.world.myAvatar.objData.eqp["pe"].sFile;
-						petFlag = true;
-					}else if(main.Game.world.myAvatar.pMC.mcChar.scaleX > 0 && main.Game.world.myAvatar.petMC.mcChar.scaleX > 0 && petFlag){
-						if(main.Game.world.myAvatar.objData.eqp["pe"].sFile == prevPet){
-							main.Game.world.myAvatar.petMC.mcChar.x -= petPos;
-							main.Game.world.myAvatar.petMC.shadow.x -= shadowPos;
-							prevPet = "";
-						}
-						petFlag = false;
-					}**/
 		}
 
 		public static function onItemRollOver(param1:Event) : void
@@ -921,6 +968,16 @@
 			for each(var _module:* in moduleList){
 				if(_module.keyHandler == true){
 					_module.moduleClass.onKey(e);
+				}
+			}
+
+			if(main.Game.ui.getChildByName("travelMenuMC")){
+				if(!("text" in e.target))
+				{
+					if(String.fromCharCode(e.charCode) == "t")
+					{
+						main.Game.ui.getChildByName("travelMenuMC").dispatchTravel();
+					}
 				}
 			}
 		}
