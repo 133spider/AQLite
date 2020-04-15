@@ -22,7 +22,7 @@ If you'd like to donate some money to help out a College kid like me, that would
 * Goto this link https://github.com/133spider/AQLite/releases/
 * Click the text that says "CLICK ME FOR LAUNCHER DOWNLOAD OPTIONS"
 * Choose and Download the .zip file according to your operating system
-* Extract the file and run the program (The latest version is Version 14!)
+* Extract the file and run the program (The latest version is Version 14.1!)
 
 ## OBS Studio Black Screen
 

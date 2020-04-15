@@ -17,7 +17,7 @@
         private var isRunning:Boolean = false;
 		public function iconMount() {
 			this.buttonMode = true;
-			this.addEventListener(MouseEvent.CLICK, onBtMount);
+			this.addEventListener(MouseEvent.CLICK, onBtMount, false, 0, true);
 		}
 
 		public function onBtMount(e:MouseEvent):void{

@@ -66,18 +66,20 @@ package net.spider.handlers{
             itemCount = {};
             invTree = new Vector.<Object>();
             ldr = new Loader();
-            main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
-            main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame);
+            main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
+            main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame, false, 0, true);
             createUIStack();
         }
 
         public function createUIStack():void{
-            var dsUI:MovieClip;
-            dsUI = new MovieClip();
-            dsUI.name = "dsUI";
-            main.Game.ui.addChild(dsUI);
-            dsUI.x = main.Game.ui.dropStack.x;
-            dsUI.y = main.Game.ui.dropStack.y;
+            if(!main.Game.ui.getChildByName("dsUI")){
+                var dsUI:MovieClip;
+                dsUI = new MovieClip();
+                dsUI.name = "dsUI";
+                main.Game.ui.addChild(dsUI);
+                dsUI.x = main.Game.ui.dropStack.x;
+                dsUI.y = main.Game.ui.dropStack.y;
+            }
         }
 
         function onUpdate(){
@@ -125,6 +127,8 @@ package net.spider.handlers{
         private var achvmnt_timer:Timer;
         public function onDropFrame(e:*):void{
             if(!main.Game.sfc.isConnected){
+                main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+                main._stage.removeEventListener(Event.ENTER_FRAME, onDropFrame);
                 itemCount = {};
                 invTree.length = 0;
                 if(achvmnt_timer && achvmnt_timer.running){

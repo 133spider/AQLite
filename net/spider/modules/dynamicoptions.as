@@ -377,7 +377,7 @@ package net.spider.modules{
 				{
 					strName: "Better Mounts",
 					bEnabled: main.sharedObject.data.bBetterMounts,
-					sDesc: "Gives mount armors a 160% movement speed (Disabled in PvP)\nSummon Mount icon will appear on the top left and will revert back to your original armor when struck in combat\nSet your primary mount by going to your inventory, selecting a mount armor, and clicking on the Set Mount button icon! If there is no Set Mount button icon, the armor is not a mount.\nPrimary mounts are saved by your username.",
+					sDesc: "Gives mount armors a client-sided 160% movement speed (Disabled in PvP)\nOther players will still see you with regular walking speed!\nSummon Mount icon will appear on the top left and will revert back to your original armor when struck in combat\nSet your primary mount by going to your inventory, selecting a mount armor, and clicking on the Set Mount button icon! If there is no Set Mount button icon, the armor is not a mount.\nPrimary mounts are saved by your username.",
 					extra: [
 						{
 							strName: "Force Basic Rider Animation",

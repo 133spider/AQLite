@@ -183,6 +183,11 @@ package net.spider.handlers{
 		public var auras:Object;
 		public var dateObj:Date;
 		public function onExtensionResponseHandler(e:*):void{
+			if(!main.Game.sfc.isConnected){
+				main._stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
+				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
+				return;
+			}
 			var aura:*;
             var protocol:* = e.params.type;
             if (protocol == "json")

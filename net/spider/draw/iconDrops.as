@@ -13,7 +13,7 @@ package net.spider.draw{
         private var iconTimer:Timer;
         public function iconDrops(){
             this.buttonMode = true;
-            this.addEventListener(MouseEvent.CLICK, onBtDrop);
+            this.addEventListener(MouseEvent.CLICK, onBtDrop, false, 0, true);
         }
 
         public function onBtDrop(e:MouseEvent):void{
