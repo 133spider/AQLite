@@ -113,10 +113,6 @@ package net.spider.draw{
             this.btYes.addEventListener(MouseEvent.CLICK, onBtYes, false, 0, true);
             this.btNo.addEventListener(MouseEvent.CLICK, onBtNo, false, 0, true);
             this.btPreview.addEventListener(MouseEvent.CLICK, onBtPreview, false, 0, true);
-
-            this.btYes.addEventListener(MouseEvent.ROLL_OUT, onDeHighlight, false, 0, true);
-            this.btNo.addEventListener(MouseEvent.ROLL_OUT, onDeHighlight, false, 0, true);
-            this.btPreview.addEventListener(MouseEvent.ROLL_OUT, onDeHighlight, false, 0, true);
         }
 
         function onShiftClick(e:MouseEvent):void{
