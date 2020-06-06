@@ -38,7 +38,8 @@ package net.spider.modules{
 				if(optionHandler.filterChecks["chkDisWepAnim"])
 					if(main.Game.world.avatars[playerMC].isMyAvatar)
 						continue;
-				if(main.Game.world.avatars[playerMC].pMC.mcChar.weapon.mcWeapon){
+				if(main.Game.world.avatars[playerMC].pMC.isLoaded &&
+					main.Game.world.avatars[playerMC].pMC.mcChar.weapon.mcWeapon){
 					try{
 						main.Game.world.avatars[playerMC].pMC.mcChar.weapon.mcWeapon.gotoAndStop(0);
 						(main.Game.world.avatars[playerMC].pMC.mcChar.weaponOff.getChildAt(0) as MovieClip).gotoAndStop(0);

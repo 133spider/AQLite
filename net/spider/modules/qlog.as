@@ -35,7 +35,6 @@ package net.spider.modules{
                 {
                     if (main._stage.focus != ui.mcInterface.te)
                     {
-
 						var delay:* = new Timer(100, 1);
 						delay.addEventListener(TimerEvent.TIMER_COMPLETE,
 							function(e:TimerEvent):void{

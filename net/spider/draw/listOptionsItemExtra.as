@@ -67,6 +67,20 @@
 						return;
 					}
 					break;
+				case "Warn When Declining A Drop":
+					if(!optionHandler.sbpcDrops && !optionHandler.cDrops){
+						modalClass= main.Game.world.getClass("ModalMC");
+						modal = new modalClass();
+						modalO = {};
+						modalO.strBody = "You must enable the feature before changing this setting.";
+						modalO.params = {};
+						modalO.glow = "red,medium";
+						modalO.btns = "mono";
+						main._stage.addChild(modal);
+						modal.init(modalO);
+						return;
+					}
+					break;
 				default: break;
 			}
 			chkActive.checkmark.visible = !chkActive.checkmark.visible;

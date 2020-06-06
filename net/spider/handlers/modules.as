@@ -12,6 +12,7 @@
 	import net.spider.handlers.*;
 	import net.spider.main;
 	import net.spider.draw.*;
+	import net.spider.avatar.*;
 	import com.adobe.utils.StringUtil;
 
 	public class modules extends MovieClip{
@@ -219,6 +220,12 @@
 					moduleClass: bettermounts,
 					moduleType: "Timer",
 					responseHandler: true,
+					keyHandler: false
+				},
+				{
+					moduleClass: hidewep,
+					moduleType: "Frame",
+					responseHandler: false,
 					keyHandler: false
 				}
 			]
@@ -499,21 +506,17 @@
 					mcDynamicOptions.x = 133.35;
 					mcDynamicOptions.y = -20.40;
 				}
-			}else{
-				if(main.Game.ui.mcPopup.getChildByName("dynamicoptions")){
-					main.Game.ui.mcPopup.removeChild(main.Game.ui.mcPopup.getChildByName("dynamicoptions"));
-				}
+			}else if(main.Game.ui.mcPopup.getChildByName("dynamicoptions")){
+				main.Game.ui.mcPopup.removeChild(main.Game.ui.mcPopup.getChildByName("dynamicoptions"));
 			}
 
 			if(main.Game.ui.mcPopup.currentLabel == "Book"){
 				if(main.Game.ui.mcPopup.mcBook){
 					var book:MovieClip = MovieClip(main.Game.ui.mcPopup.mcBook.getChildAt(0).content);
 					if(book){
-						if(book.btnRight){
-							if(!book.btnRight.hasEventListener(MouseEvent.MOUSE_WHEEL)){
-								book.addEventListener(MouseEvent.MOUSE_WHEEL,onWheel,false,0,true);
-							}
-						}else{
+						if(book.btnRight && !book.btnRight.hasEventListener(MouseEvent.MOUSE_WHEEL)){
+							book.addEventListener(MouseEvent.MOUSE_WHEEL,onWheel,false,0,true);
+						}else if(book.btnRight.hasEventListener(MouseEvent.MOUSE_WHEEL)){
 							book.removeEventListener(MouseEvent.MOUSE_WHEEL,onWheel);
 						}
 						if(book.btnQuests && !book.btnQuests.hasEventListener(MouseEvent.DOUBLE_CLICK)){
@@ -521,6 +524,11 @@
 								book.btnQuests.addEventListener(MouseEvent.CLICK, onBtArchive, false, 0, true);
 							}
 							book.btnQuests.addEventListener(MouseEvent.DOUBLE_CLICK, _func_flag, false, 0, true);
+						}else if(book.btnQuests.hasEventListener(MouseEvent.DOUBLE_CLICK)){
+							if(optionHandler.bTheArchive){
+								book.btnQuests.removeEventListener(MouseEvent.CLICK, onBtArchive);
+							}
+							book.btnQuests.removeEventListener(MouseEvent.DOUBLE_CLICK, _func_flag);
 						}
 					}
 				}
@@ -568,10 +576,8 @@
 						invSearchMC.x = 32;
 						invSearchMC.y = 12;
 					}
-				}else{
-					if(invBackdrop.getChildByName("invSearch")){
-						invBackdrop.removeChild(invBackdrop.getChildByName("invSearch"));
-					}
+				}else if(invBackdrop.getChildByName("invSearch")){
+					invBackdrop.removeChild(invBackdrop.getChildByName("invSearch"));
 				}
 			}
 
@@ -596,6 +602,7 @@
 					drawMergePanel();
 				}
 			}else{
+
 				mergeScrollFlag = false;
 			}
 
@@ -632,10 +639,14 @@
 
 			if(main.Game.ui.mcOFrame.currentLabel == "Idle" && main.Game.ui.mcOFrame.t1.txtTitle.text == "Friends List"
 				&& main.Game.ui.mcOFrame.t1.txtTitle.text.indexOf("(") == -1){
-				main.Game.ui.mcOFrame.t1.txtTitle.text = "Friends List (" + main.Game.world.myAvatar.friends.length + "/40)";
+				main.Game.ui.mcOFrame.t1.txtTitle.text = "Friends List (" + main.Game.world.myAvatar.friends.length + "/50)";
 			}
 
-			drawPreviewInterface();
+			if(main.Game.ui.mcPopup.currentLabel == "MergeShop" || main.Game.ui.mcPopup.currentLabel == "Shop" || main.Game.ui.mcPopup.currentLabel == "Inventory")
+				drawPreviewInterface();
+
+			if(main.Game.ui.mcPopup.currentLabel == "Bank")
+				drawBankFilters();
 
 			if((main.Game.ui.dropStack.numChildren < 1) || (optionHandler.blackListed.length < 1))
 				return;
@@ -652,6 +663,21 @@
 					trace("Error handling drops: " + exception);
 				}
 			}
+		}
+		private static var inCombat:Boolean = false;
+		public static var relCombatMC:CombatMC;
+
+		public static function drawBankFilters():void{
+			if(!main.Game.ui.mcPopup.getChildByName("mcBank"))
+				return;
+			var mcFocus:MovieClip = MovieClip(main.Game.ui.mcPopup.getChildByName("mcBank")).bankPanel.frames[8].mc;
+			if(mcFocus.getChildByName("bankFiltersMC"))
+				return;
+			mcFocus.ti.visible = false;
+			var bankfiltersMC:bankfilters = new bankfilters();
+			mcFocus.addChild(bankfiltersMC);
+			bankfiltersMC.y += 5;
+			bankfiltersMC.name = "bankFiltersMC";
 		}
 
 		public static function drawMergePanel():void{
@@ -838,6 +864,7 @@
 				}
 
 				if(isShowable()){
+					MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory")).previewPanel.frames[5].mc.visible = false;
 					if(!mcFocus.getChildByName("showBt")){
 						var t_showBt:* = new showBt();
 						t_showBt.name = "showBt";
@@ -848,7 +875,6 @@
 						if(mcFocus.getChildByName("showBt"))
 							MovieClip(mcFocus.getChildByName("showBt")).bt_update();
 					}
-					MovieClip(main.Game.ui.mcPopup.getChildByName("mcInventory")).previewPanel.getChildAt(6).visible = false;
 				}else{
 					if(mcFocus.getChildByName("showBt")){
 						mcFocus.removeChild(mcFocus.getChildByName("showBt"));
@@ -856,7 +882,7 @@
 				}
 			}else if(f_itemsDrawn){
 				if(mcUI){
-					if(f_savedISel != mcUI.iSel.ItemID){
+					if(mcUI.iSel && f_savedISel != mcUI.iSel.ItemID){
 						f_itemsDrawn = false;
 						f_savedISel = 0;
 					}
@@ -977,6 +1003,16 @@
 					if(String.fromCharCode(e.charCode) == "t")
 					{
 						main.Game.ui.getChildByName("travelMenuMC").dispatchTravel();
+					}
+				}
+			}
+
+			if(optionHandler.bBetterMounts){
+				if(!("text" in e.target))
+				{
+					if(String.fromCharCode(e.charCode) == "m")
+					{
+						main.Game.ui.mcPortrait.getChildByName("iconMount").dispatchMount();
 					}
 				}
 			}

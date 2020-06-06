@@ -325,9 +325,14 @@ package net.spider.handlers{
                         break;
                         case "addItems":
                             for (dID in resObj.items)
-                                showItemDS((main.Game.world.invTree[dID] == null) ? resObj.items[dID] : main.Game.world.invTree[dID], int(resObj.items[dID].iQty));
+                                if(optionHandler.filterChecks["chkCTempDropNotification"])
+                                    showItemDS((main.Game.world.invTree[dID] == null) ? resObj.items[dID] : main.Game.world.invTree[dID], int(resObj.items[dID].iQty));
                             break;
                         case "getDrop":
+                            if(resObj.bSuccess == 1){
+                                if("showDrop" in resObj && resObj.showDrop == 1)
+                                    showItemDS(main.Game.world.invTree[resObj.ItemID], int(resObj.iQty));
+                            }
                             for(var val:* in invTree){
                                 if (invTree[val].ItemID == resObj.ItemID)
                                 {
@@ -357,6 +362,12 @@ package net.spider.handlers{
                         case "ccqr":
                             if(resObj.bSuccess != 0)
                                 showQuestpopup(resObj);
+                        break;
+                        case "Wheel":
+                            showItemDS(resObj.dropItems["18927"], resObj.dropQty != null ? int(resObj.dropQty) : 1);
+                            showItemDS(resObj.dropItems["19189"], 1);
+                            if(resObj.Item != null)
+                                showItemDS(resObj.Item, 1);
                         break;
                     }
                 }
@@ -1067,7 +1078,33 @@ package net.spider.handlers{
             main._stage.focus = null;
         }
 
+        function onAcceptDrop(o:Object):void{
+            if(o.accept){
+                alreadyClicked = false;
+                this.preview.bAdd.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+            }
+        }
+
+        var alreadyClicked:Boolean = false;
         public function onItemAddClick(e:MouseEvent):void{
+            if(alreadyClicked){
+                var modalClass:Class;
+                var modal:*;
+                var modalO:*;
+                modalClass= main.Game.world.getClass("ModalMC");
+                modal = new modalClass();
+                modalO = {};
+                modalO.strBody = "Are you sure you want to accept the drop for " + MovieClip(e.currentTarget.parent).item.sName + " again? You might get disconnected!";
+                modalO.callback = onAcceptDrop;
+                modalO.params = {
+                    "sName": MovieClip(e.currentTarget.parent).item.sName
+                };
+                modalO.glow = "red,medium";
+                modalO.btns = "dual";
+                main._stage.addChild(modal);
+                modal.init(modalO);
+                return;
+            }
             var item:Object;
             item = MovieClip(e.currentTarget.parent).item;
             for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
@@ -1077,6 +1114,7 @@ package net.spider.handlers{
                     if(main.Game.ui.dropStack.getChildAt(i).cnt && main.Game.ui.dropStack.getChildAt(i).cnt.strName)
                         if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == item.sName){
                             main.Game.ui.dropStack.getChildAt(i).cnt.ybtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                            alreadyClicked = true;
                             break;
                         }
                 }else{
@@ -1084,6 +1122,7 @@ package net.spider.handlers{
                     nutext = nutext.substring(0, nutext.lastIndexOf(" x"));
                     if(nutext == item.sName){
                         main.Game.ui.dropStack.getChildAt(i).cnt.ybtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                        alreadyClicked = true;
                         break;
                     }
                 }
@@ -1091,7 +1130,35 @@ package net.spider.handlers{
             main._stage.focus = null;
         }
 
+        function onDeclineDrop(o:Object):void{
+            if(o.accept){
+                allowPass = true;
+                this.preview.bDel.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+            }
+        }
+
+        var allowPass:Boolean = false;
         public function onItemDelClick(e:MouseEvent):void{
+            if(optionHandler.filterChecks["chkCDecline"]){
+                if(!allowPass){
+                    var modalClass:Class;
+                    var modal:*;
+                    var modalO:*;
+                    modalClass= main.Game.world.getClass("ModalMC");
+                    modal = new modalClass();
+                    modalO = {};
+                    modalO.strBody = "Are you sure you want to decline the drop for " + MovieClip(e.currentTarget.parent).item.sName + "?";
+                    modalO.callback = onDeclineDrop;
+                    modalO.params = {
+                        "sName": MovieClip(e.currentTarget.parent).item.sName
+                    };
+                    modalO.glow = "red,medium";
+                    modalO.btns = "dual";
+                    main._stage.addChild(modal);
+                    modal.init(modalO);
+                    return;
+                }
+            }
             var item:Object;
             item = MovieClip(e.currentTarget.parent).item;
             for(var val:* in invTree){ //add this to onItemAddClick!!!
@@ -1115,6 +1182,7 @@ package net.spider.handlers{
                 }
             }
             fOpen();
+            allowPass = false;
             main._stage.focus = null;
         }
 

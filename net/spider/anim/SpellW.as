@@ -3,6 +3,7 @@ package net.spider.anim
     import flash.display.*;
     import flash.events.*;
     import flash.utils.*;
+    import net.spider.handlers.modules;
 
     public class SpellW extends MovieClip
     {
@@ -55,6 +56,7 @@ package net.spider.anim
             removeEventListener(Event.ENTER_FRAME, this.trackTC);
             if (parent != null)
             {
+                modules.relCombatMC.groundRupture = false;
                 MovieClip(parent).removeChild(this);
             }
             stop();

@@ -164,6 +164,19 @@ package net.spider.handlers{
 			}
 		}
 
+		public function clearMCs():void{
+			if(!main.Game)
+				return;
+			if(!main.Game.ui)
+				return;
+			while(main.Game.ui.mcPortrait.getChildByName("auraUI").numChildren > 0){
+				main.Game.ui.mcPortrait.getChildByName("auraUI").removeChildAt(0);
+			}
+			toolTip.close();
+			icons = new Object();
+			iconPriority = new Vector.<String>();
+		}
+
 		public var auras:Object;
 		public function onExtensionResponseHandler(e:*):void{
 			if(!main.Game.sfc.isConnected){
@@ -245,6 +258,8 @@ package net.spider.handlers{
 								auraUI.y = 82;
 								//main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_DOWN, onHold, false, 0, true);
 								//main.Game.ui.mcPortrait.getChildByName("auraUI").addEventListener(MouseEvent.MOUSE_UP, onMouseRelease, false, 0, true);
+							}else{
+								clearMCs();
 							}
 							for(var k:* = 2; k < 6; k++){
 								if(main.Game.ui.mcInterface.actBar.getChildByName("i" + k))
@@ -373,21 +388,25 @@ package net.spider.handlers{
 			}
 			else
 			{
-				iMask = ct2.mask;
-				ct2.mask = null;
-				ct2.parent.removeChild(iMask);
-				ct1.removeEventListener(Event.ENTER_FRAME, countDownAct);
-				icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OVER, onOver);
-				icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OUT, onOut);
-				main.Game.ui.mcPortrait.getChildByName("auraUI").stopDrag();
-				toolTip.close();
-				ct2.parent.removeChild(ct2);
-				ct2.bitmapData.dispose();
-				ct1.icon2 = null;
-				main.Game.ui.mcPortrait.getChildByName("auraUI").removeChild(icons[ct1.auraName]);
-				iconPriority.splice(iconPriority.indexOf(ct1.auraName), 1);
-				delete icons[ct1.auraName];
-				rearrangeIconMC();
+				try{
+					iMask = ct2.mask;
+					ct2.mask = null;
+					ct2.parent.removeChild(iMask);
+					ct1.removeEventListener(Event.ENTER_FRAME, countDownAct);
+					icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OVER, onOver);
+					icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OUT, onOut);
+					main.Game.ui.mcPortrait.getChildByName("auraUI").stopDrag();
+					toolTip.close();
+					ct2.parent.removeChild(ct2);
+					ct2.bitmapData.dispose();
+					ct1.icon2 = null;
+					main.Game.ui.mcPortrait.getChildByName("auraUI").removeChild(icons[ct1.auraName]);
+					iconPriority.splice(iconPriority.indexOf(ct1.auraName), 1);
+					delete icons[ct1.auraName];
+					rearrangeIconMC();
+				}catch(exception){
+					trace("Skill Auras UI Error: " + exception);
+				}
 			}
         }
 		

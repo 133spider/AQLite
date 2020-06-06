@@ -54,6 +54,12 @@ package net.spider.modules{
 							main.Game.world.myAvatar.pMC.spFX.fx = "w";
 							main.Game.world.myAvatar.pMC.spFX.tgt = "h";
 							break;
+						case "SwordMaster Assassin":
+							main.Game.world.myAvatar.pMC.spFX.strl2 = "floatingrocks";
+							main.Game.world.myAvatar.pMC.spFX.fx = "w";
+							main.Game.world.myAvatar.pMC.spFX.tgt = "s";
+							main.Game.world.myAvatar.pMC.spellDur = 60;
+							break;
 						/**default: 
 							main.Game.world.myAvatar.pMC.spFX.strl = "shadowstrike";
 							main.Game.world.myAvatar.pMC.spFX.fx = "w";
@@ -69,6 +75,12 @@ package net.spider.modules{
 							main.Game.world.myAvatar.pMC.spFX.strl2 = "firedragon";
 							main.Game.world.myAvatar.pMC.spFX.fx = "w";
 							main.Game.world.myAvatar.pMC.spFX.tgt = "h";
+							break;
+						case "SwordMaster Assassin":
+							main.Game.world.myAvatar.pMC.spFX.strl2 = "thunderclap";
+							main.Game.world.myAvatar.pMC.spFX.fx = "w";
+							main.Game.world.myAvatar.pMC.spFX.tgt = "s";
+							main.Game.world.myAvatar.pMC.spellDur = 60;
 							break;
 						/**default: 
 							main.Game.world.myAvatar.pMC.spFX.strl = "onyxcombustion";
@@ -125,10 +137,10 @@ package net.spider.modules{
 		{
 			if(!optionHandler.cSkillAnim)
 				return;
-			if(main.Game.world.myAvatar.objData.strClassName == "Void Highlord")
+			/**if(main.Game.world.myAvatar.objData.strClassName == "Void Highlord")
 				return;
 			if(main.Game.world.myAvatar.objData.strClassName != "Dragonlord")
-				return;
+				return;**/
 			if(stage.focus == null || stage.focus != null && !("text" in stage.focus))
 			{
 				if(param1.charCode > 49 && param1.charCode < 55)

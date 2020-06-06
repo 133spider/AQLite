@@ -12,21 +12,59 @@ package net.spider.draw{
     import fl.controls.TextInput;
     import fl.managers.StyleManager;
     import net.spider.handlers.optionHandler;
+    import com.adobe.utils.StringUtil;
 
     public class blackList extends MovieClip {
         public function blackList(){
-            this.ui.addEventListener(MouseEvent.MOUSE_DOWN, onDrag, false, 0, true);
-            this.ui.addEventListener(MouseEvent.MOUSE_UP, onMRelease, false, 0, true);
+            this.frame.addEventListener(MouseEvent.MOUSE_DOWN, onDrag, false, 0, true);
+            this.frame.addEventListener(MouseEvent.MOUSE_UP, onMRelease, false, 0, true);
         
-            this.btnAddBlacklist.addEventListener(MouseEvent.CLICK, onBtnAddBlacklist, false, 0, true);
-            this.btnRemoveBlacklist.addEventListener(MouseEvent.CLICK, onBtnRemoveBlacklist, false, 0, true);
-            this.btnClearBlacklist.addEventListener(MouseEvent.CLICK, onBtnClearBlacklist, false, 0, true);
+            this.btnAdd.addEventListener(MouseEvent.CLICK, onBtnAddBlacklist, false, 0, true);
+            this.btnDel.addEventListener(MouseEvent.CLICK, onBtnRemoveBlacklist, false, 0, true);
+            this.btnClear.addEventListener(MouseEvent.CLICK, onBtnClearBlacklist, false, 0, true);
             
-            this.ui.btnClose.addEventListener(MouseEvent.CLICK, onClose, false, 0, true);
+            this.btnSave.addEventListener(MouseEvent.CLICK, onBtnSave, false, 0, true);
+			this.btnDelSave.addEventListener(MouseEvent.CLICK, onBtnDelSave, false, 0, true);
+			this.cbSave.addEventListener(MouseEvent.CLICK, onCbSaveChange, false, 0, true);
+			this.cbSave.addEventListener(Event.CHANGE, onCbSaveChange, false, 0, true);
+
+            this.btnClose.addEventListener(MouseEvent.CLICK, onClose, false, 0, true);
 
             if(main.sharedObject.data.listBlack)
                 this.listBlack.dataProvider = new DataProvider(main.sharedObject.data.listBlack);
+            if(main.sharedObject.data.blacklistSaves)
+				this.cbSave.dataProvider = new DataProvider(main.sharedObject.data.blacklistSaves);
         }
+
+        public function onBtnSave(e:MouseEvent):void{
+			if(this.txtSave.length < 1)
+				return;
+			if(this.listBlack.dataProvider.length < 1)
+				return;
+			this.cbSave.dataProvider.addItem({label: StringUtil.trim(this.txtSave.text), data: this.listBlack.dataProvider.toArray()});
+			main.sharedObject.data.blacklistSaves = this.cbSave.dataProvider.toArray();
+			main.sharedObject.flush();
+			this.cbSave.dataProvider.invalidate();
+            this.txtSave.text = "";
+			main._stage.focus = null;
+		}
+
+		public function onBtnDelSave(e:MouseEvent):void{
+			if(!main.sharedObject.data.blacklistSaves)
+				return;
+			this.cbSave.dataProvider.removeItemAt(this.cbSave.selectedIndex);
+			main.sharedObject.data.blacklistSaves = this.cbSave.dataProvider.toArray();
+			main.sharedObject.flush();
+			this.cbSave.dataProvider.invalidate();
+			main._stage.focus = null;
+		}
+
+		public function onCbSaveChange(e:*):void{
+			if(this.cbSave.selectedIndex < 0)
+				return;
+			this.listBlack.dataProvider = new DataProvider(this.cbSave.selectedItem.data);
+            optionHandler.blackListed = this.listBlack.dataProvider.toArray();
+		}
 
         private function onClose(e:MouseEvent):void{
             optionHandler.blackListMC = null;

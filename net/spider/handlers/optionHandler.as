@@ -62,6 +62,7 @@ package net.spider.handlers{
         public static var bTransQuest:Boolean;
         public static var bBetterMounts:Boolean;
         public static var bDisChatScroll:Boolean;
+        public static var bHideWep:Boolean;
 
         public static var filterChecks:Object = new Object();
         public static var blackListed:Array = new Array();
@@ -72,6 +73,11 @@ package net.spider.handlers{
         public static var memoryusageMC:memoryusage;
         public static var skillsMC:skills;
         public static var targetskillsMC:targetskills;
+
+        public static var colorPickerMC:colorPicker;
+        public static var blackListMC:blackList;
+        public static var travelMenuMC:travelMenu;
+        public static var worldCameraMC:worldCamera;
 
         public static function onCreate():void{
             optionHandler.events.addEventListener(ClientEvent.onEnable, readSettings);
@@ -150,6 +156,31 @@ package net.spider.handlers{
                 main.sharedObject.flush();
             }
             filterChecks["chkHorseRiderAnim"] = main.sharedObject.data.filterChecks["chkHorseRiderAnim"];
+            if(main.sharedObject.data.filterChecks["chkCTempDropNotification"] == null){
+                main.sharedObject.data.filterChecks["chkCTempDropNotification"] = false;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkCTempDropNotification"] = main.sharedObject.data.filterChecks["chkCTempDropNotification"];
+            if(main.sharedObject.data.filterChecks["chkSBPDropNotification"] == null){
+                main.sharedObject.data.filterChecks["chkSBPDropNotification"] = false;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkSBPDropNotification"] = main.sharedObject.data.filterChecks["chkSBPDropNotification"];
+            if(main.sharedObject.data.filterChecks["chkHideOtherWep"] == null){
+                main.sharedObject.data.filterChecks["chkHideOtherWep"] = false;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkHideOtherWep"] = main.sharedObject.data.filterChecks["chkHideOtherWep"];
+            if(main.sharedObject.data.filterChecks["chkSBPDecline"] == null){
+                main.sharedObject.data.filterChecks["chkSBPDecline"] = true;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkSBPDecline"] = main.sharedObject.data.filterChecks["chkSBPDecline"];
+            if(main.sharedObject.data.filterChecks["chkCDecline"] == null){
+                main.sharedObject.data.filterChecks["chkCDecline"] = true;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkCDecline"] = main.sharedObject.data.filterChecks["chkCDecline"];
             cDrops = main.sharedObject.data.cDrops;
             if(cDrops){
                 dropmenuMC = new dropmenu();
@@ -277,11 +308,9 @@ package net.spider.handlers{
             cleanRep = main.sharedObject.data.cleanRep;
             bDisQuestTracker = main.sharedObject.data.bDisQuestTracker;
             bQuestNotif = main.sharedObject.data.bQuestNotif;
+            bHideWep = main.sharedObject.data.bHideWep;
         }
 
-        public static var colorPickerMC:colorPicker;
-        public static var blackListMC:blackList;
-        public static var travelMenuMC:travelMenu;
         public static function cmd(id:String):void{
             switch(id){
                 case "Draggable Drops":
@@ -686,6 +715,47 @@ package net.spider.handlers{
                     dispatch(dischatscroll);
                     main.sharedObject.data.bDisChatScroll = bDisChatScroll;
                     main.sharedObject.flush();
+                    break;
+                case "Hide Temp Drop Notifications":
+                    filterChecks["chkCTempDropNotification"] = !filterChecks["chkCTempDropNotification"];
+                    main.sharedObject.data.filterChecks["chkCTempDropNotification"] = filterChecks["chkCTempDropNotification"];
+                    main.sharedObject.flush();
+                    break;
+                case "Hide All Drop Notifications":
+                    filterChecks["chkSBPDropNotification"] = !filterChecks["chkSBPDropNotification"];
+                    main.sharedObject.data.filterChecks["chkSBPDropNotification"] = filterChecks["chkSBPDropNotification"];
+                    main.sharedObject.flush();
+                    break;
+                case "World Camera":
+                    if(!worldCameraMC){
+                        worldCameraMC = new worldCamera();
+                        worldCameraMC.name = "worldCameraMC";
+                        main._stage.addChild(worldCameraMC);
+                    }else{
+                        worldCameraMC.visible = !worldCameraMC.visible;
+                    }
+                    break;
+                case "Hide Weapon If Not In-Combat":
+                    bHideWep = !bHideWep;
+                    dispatch(hidewep);
+                    main.sharedObject.data.bHideWep = bHideWep;
+                    main.sharedObject.flush();
+                    break;
+                case "Hide Other Players' Weapons":
+                    filterChecks["chkHideOtherWep"] = !filterChecks["chkHideOtherWep"];
+                    main.sharedObject.data.filterChecks["chkHideOtherWep"] = filterChecks["chkHideOtherWep"];
+                    main.sharedObject.flush();
+                    break;
+                case "Warn When Declining A Drop":
+                    if(sbpcDrops){
+                        filterChecks["chkSBPDecline"] = !filterChecks["chkSBPDecline"];
+                        main.sharedObject.data.filterChecks["chkSBPDecline"] = filterChecks["chkSBPDecline"];
+                        main.sharedObject.flush();
+                    }else{
+                        filterChecks["chkCDecline"] = !filterChecks["chkCDecline"];
+                        main.sharedObject.data.filterChecks["chkCDecline"] = filterChecks["chkCDecline"];
+                        main.sharedObject.flush();
+                    }
                     break;
                 default: break;
             }

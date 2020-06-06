@@ -16,7 +16,7 @@ package net.spider.modules{
 
         public static function isAllowed():Boolean{
             for each(var item:* in main.Game.world.myAvatar.items){
-                if(item.sName.indexOf(" Bank") > -1)
+                if((item.sName.indexOf(" Bank") > -1) || (item.sType == "Pet" && item.sName.indexOf(" Moglin Plush Pet") > -1))
                     return true;
             }
             return false;

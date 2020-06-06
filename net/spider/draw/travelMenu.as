@@ -53,6 +53,7 @@
 			main.sharedObject.data.travelSaves = this.cbSave.dataProvider.toArray();
 			main.sharedObject.flush();
 			this.cbSave.dataProvider.invalidate();
+			this.txtSave.text = "";
 			main._stage.focus = null;
 		}
 

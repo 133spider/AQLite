@@ -1,8 +1,10 @@
-![](https://i.imgur.com/thc90hc.png)  |  ![](https://i.imgur.com/skyHR2P.png)
+![](https://i.imgur.com/g8IDT3j.png)  |  ![](https://i.imgur.com/IqHNki8.png)
 
-![](https://i.imgur.com/oZPPsqZ.png)  |  ![](https://i.imgur.com/RXHyFYH.png)
+![](https://i.imgur.com/xvm8dFZ.png)  |  ![](https://i.imgur.com/4ybTsfc.png)
 
-![](https://i.imgur.com/A2iJ6zH.png)  |  ![](https://i.imgur.com/1Gq6lsc.png)
+![](https://i.imgur.com/KqkqVSz.png)  |  ![](https://i.imgur.com/GA1Z4jZ.png)
+
+![](https://i.imgur.com/9dsdFIf.png)  |  ![](https://i.imgur.com/MSdJQJ4.png)
 
 ![](https://i.imgur.com/GwstQQS.png)  |  ![](https://i.imgur.com/8xwqXbU.png)
 
@@ -22,7 +24,7 @@ If you'd like to donate some money to help out a College kid like me, that would
 * Goto this link https://github.com/133spider/AQLite/releases/
 * Click the text that says "CLICK ME FOR LAUNCHER DOWNLOAD OPTIONS"
 * Choose and Download the .zip file according to your operating system
-* Extract the file and run the program (The latest version is Version 14.1!)
+* Extract the file and run the program (The latest version is Version 15!)
 
 ## OBS Studio Black Screen
 

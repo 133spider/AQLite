@@ -24,20 +24,7 @@ package net.spider.modules{
 						}catch(exception){}
 					}
 				}
-			}else{
-                if(main.Game.sfc.isConnected && main.Game.world.myAvatar){
-                    for(var t_playerMC:* in main.Game.world.avatars){
-                        if(!main.Game.world.avatars[t_playerMC].objData)
-                            continue;
-                        if(main.Game.world.avatars[t_playerMC].petMC){
-                            try{
-                                main.Game.world.avatars[t_playerMC].petMC.mcChar.gotoAndPlay(0);
-                                movieClipPlayAll(main.Game.world.avatars[t_playerMC].petMC.mcChar);
-                            }catch(exception){}
-                        }
-                    }
-                }
-            }
+			}
 		}
 
         public static function onFrameUpdate():void{
@@ -49,7 +36,7 @@ package net.spider.modules{
 				if(optionHandler.filterChecks["chkDisPetAnim"])
 					if(main.Game.world.avatars[playerMC].isMyAvatar)
 						continue;
-				if(main.Game.world.avatars[playerMC].petMC){
+				if(main.Game.world.avatars[playerMC].petMC && main.Game.world.avatars[playerMC].petMC.mcChar){
 					try{
 						main.Game.world.avatars[playerMC].petMC.mcChar.gotoAndStop(0);
 						movieClipStopAll(main.Game.world.avatars[playerMC].petMC.mcChar);

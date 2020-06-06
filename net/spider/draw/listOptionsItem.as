@@ -62,6 +62,19 @@
 						return;
 					}
 					break;
+				case "Disable Map Animations":
+					if(!optionHandler.disMapAnim){
+						modalClass = main.Game.world.getClass("ModalMC");
+						modal = new modalClass();
+						modalO = {};
+						modalO.strBody = "Enabling \"Disable Map Animations\" will cause SOME map buttons to NOT work!";
+						modalO.params = {};
+						modalO.glow = "red,medium";
+						modalO.btns = "mono";
+						main._stage.addChild(modal);
+						modal.init(modalO);
+					}
+					break;
 				default: break;
 			}
 			bEnabled = !bEnabled;

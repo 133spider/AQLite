@@ -398,21 +398,25 @@ package net.spider.handlers{
 			}
 			else
 			{
-				iMask = ct2.mask;
-				ct2.mask = null;
-				ct2.parent.removeChild(iMask);
-				ct1.removeEventListener(Event.ENTER_FRAME, countDownAct);
-				icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OVER, onOver);
-				icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OUT, onOut);
-				main.Game.ui.mcPortraitTarget.getChildByName("auraUI").stopDrag();
-				toolTip.close();
-				ct2.parent.removeChild(ct2);
-				ct2.bitmapData.dispose();
-				ct1.icon2 = null;
-				main.Game.ui.mcPortraitTarget.getChildByName("auraUI").removeChild(icons[ct1.auraName]);
-				iconPriority.splice(iconPriority.indexOf(ct1.auraName), 1);
-				delete icons[ct1.auraName];
-				rearrangeIconMC();
+				try{
+					iMask = ct2.mask;
+					ct2.mask = null;
+					ct2.parent.removeChild(iMask);
+					ct1.removeEventListener(Event.ENTER_FRAME, countDownAct);
+					icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OVER, onOver);
+					icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OUT, onOut);
+					main.Game.ui.mcPortraitTarget.getChildByName("auraUI").stopDrag();
+					toolTip.close();
+					ct2.parent.removeChild(ct2);
+					ct2.bitmapData.dispose();
+					ct1.icon2 = null;
+					main.Game.ui.mcPortraitTarget.getChildByName("auraUI").removeChild(icons[ct1.auraName]);
+					iconPriority.splice(iconPriority.indexOf(ct1.auraName), 1);
+					delete icons[ct1.auraName];
+					rearrangeIconMC();
+				}catch(exception){
+					trace("Skills Target UI Error: " + exception);
+				}
 			}
         }
 		

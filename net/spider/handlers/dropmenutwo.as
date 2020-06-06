@@ -331,12 +331,19 @@ package net.spider.handlers{
                                 }
                             }
                         reDraw();
+                        if(!this.visible)
+                            main.Game.ui.mcPortrait.getChildByName("iconDrops").onAlert();
                         break;
                         case "addItems":
                             for (dID in resObj.items)
-                                showItemDS((main.Game.world.invTree[dID] == null) ? resObj.items[dID] : main.Game.world.invTree[dID], int(resObj.items[dID].iQty));
+                                if(optionHandler.filterChecks["chkSBPDropNotification"])
+                                    showItemDS((main.Game.world.invTree[dID] == null) ? resObj.items[dID] : main.Game.world.invTree[dID], int(resObj.items[dID].iQty));
                             break;
                         case "getDrop":
+                            if(resObj.bSuccess == 1){
+                                if("showDrop" in resObj && resObj.showDrop == 1)
+                                    showItemDS(main.Game.world.invTree[resObj.ItemID], int(resObj.iQty));
+                            }
                             for(var val:* in invTree){
                                 if (invTree[val].ItemID == resObj.ItemID)
                                 {
@@ -366,6 +373,12 @@ package net.spider.handlers{
                         case "ccqr":
                             if(resObj.bSuccess != 0)
                                 showQuestpopup(resObj);
+                        break;
+                        case "Wheel":
+                            showItemDS(resObj.dropItems["18927"], resObj.dropQty != null ? int(resObj.dropQty) : 1);
+                            showItemDS(resObj.dropItems["19189"], 1);
+                            if(resObj.Item != null)
+                                showItemDS(resObj.Item, 1);
                         break;
                     }
                 }

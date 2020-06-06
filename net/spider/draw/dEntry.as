@@ -113,6 +113,10 @@ package net.spider.draw{
             this.btYes.addEventListener(MouseEvent.CLICK, onBtYes, false, 0, true);
             this.btNo.addEventListener(MouseEvent.CLICK, onBtNo, false, 0, true);
             this.btPreview.addEventListener(MouseEvent.CLICK, onBtPreview, false, 0, true);
+
+            this.btYes.addEventListener(MouseEvent.ROLL_OUT, onDeHighlight, false, 0, true);
+            this.btNo.addEventListener(MouseEvent.ROLL_OUT, onDeHighlight, false, 0, true);
+            this.btPreview.addEventListener(MouseEvent.ROLL_OUT, onDeHighlight, false, 0, true);
         }
 
         function onShiftClick(e:MouseEvent):void{
@@ -162,7 +166,33 @@ package net.spider.draw{
             this.txtDrop.setTextFormat( format );
         }
 
+        function onAcceptDrop(o:Object):void{
+            if(o.accept){
+                alreadyClicked = false;
+                this.btYes.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+            }
+        }
+
+        var alreadyClicked:Boolean = false;
         function onBtYes(e:MouseEvent):void{
+            if(alreadyClicked){
+                var modalClass:Class;
+                var modal:*;
+                var modalO:*;
+                modalClass= main.Game.world.getClass("ModalMC");
+                modal = new modalClass();
+                modalO = {};
+                modalO.strBody = "Are you sure you want to accept the drop for " + itemObj.sName + " again? You might get disconnected!";
+                modalO.callback = onAcceptDrop;
+                modalO.params = {
+                    "sName": itemObj.sName
+                };
+                modalO.glow = "red,medium";
+                modalO.btns = "dual";
+                main._stage.addChild(modal);
+                modal.init(modalO);
+                return;
+            }
             for(var i:int = 0; i < main.Game.ui.dropStack.numChildren; i++){
                 if(!main.Game.ui.dropStack.getChildAt(i))
                     continue;
@@ -170,6 +200,7 @@ package net.spider.draw{
                     if(main.Game.ui.dropStack.getChildAt(i).cnt && main.Game.ui.dropStack.getChildAt(i).cnt.strName)
                         if(main.Game.ui.dropStack.getChildAt(i).cnt.strName.text == itemObj.sName){
                             main.Game.ui.dropStack.getChildAt(i).cnt.ybtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                            alreadyClicked = true;
                             break;
                         }
                 }else{
@@ -177,6 +208,7 @@ package net.spider.draw{
                     nutext = nutext.substring(0, nutext.lastIndexOf(" x"));
                     if(nutext == itemObj.sName){
                         main.Game.ui.dropStack.getChildAt(i).cnt.ybtn.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                        alreadyClicked = true;
                         break;
                     }
                 }
@@ -184,8 +216,37 @@ package net.spider.draw{
             main._stage.focus = null;
         }
 
+        function onDeclineDrop(o:Object):void{
+            if(o.accept){
+                allowPass = true;
+                this.btNo.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+            }
+        }
+
+        var allowPass:Boolean = false;
         function onBtNo(e:MouseEvent):void{
+            if(optionHandler.filterChecks["chkSBPDecline"]){
+                if(!allowPass){
+                    var modalClass:Class;
+                    var modal:*;
+                    var modalO:*;
+                    modalClass= main.Game.world.getClass("ModalMC");
+                    modal = new modalClass();
+                    modalO = {};
+                    modalO.strBody = "Are you sure you want to decline the drop for " + itemObj.sName + "?";
+                    modalO.callback = onDeclineDrop;
+                    modalO.params = {
+                        "sName": itemObj.sName
+                    };
+                    modalO.glow = "red,medium";
+                    modalO.btns = "dual";
+                    main._stage.addChild(modal);
+                    modal.init(modalO);
+                    return;
+                }
+            }
             optionHandler.dropmenutwoMC.onBtNo(itemObj);
+            allowPass = false;
             main._stage.focus = null;
         }
 

@@ -163,7 +163,17 @@ package net.spider.modules{
 						{
 							strName: "Drop Notifications",
 							bEnabled: main.sharedObject.data.filterChecks["chkCDropNotification"],
-							sDesc: "Every new item drop will have a drop notification accompanied with it"
+							sDesc: "Every new non-temporary item drop will have a drop notification accompanied with it"
+						},
+						{
+							strName: "Hide Temp Drop Notifications",
+							bEnabled: main.sharedObject.data.filterChecks["chkCTempDropNotification"],
+							sDesc: "This will hide temporary item drop notifications"
+						},
+						{
+							strName: "Warn When Declining A Drop",
+							bEnabled: main.sharedObject.data.filterChecks["chkCDecline"],
+							sDesc: "This will spawn a pop-up box that will ask you to confirm if you want to decline the item drop"
 						}
 					]
 				},
@@ -176,6 +186,16 @@ package net.spider.modules{
 							strName: "Invert Menu",
 							bEnabled: main.sharedObject.data.filterChecks["chkInvertDrop"],
 							sDesc: "This will change SBP's Custom Drops UI's drop menu from having the list go downward to having the list go upward instead"
+						},
+						{
+							strName: "Warn When Declining A Drop",
+							bEnabled: main.sharedObject.data.filterChecks["chkSBPDecline"],
+							sDesc: "This will spawn a pop-up box that will ask you to confirm if you want to decline the item drop"
+						},
+						{
+							strName: "Hide All Drop Notifications",
+							bEnabled: main.sharedObject.data.filterChecks["chkSBPDropNotification"],
+							sDesc: "This will hide temporary item drop notifications"
 						},
 						{
 							strName: "Reset Position",
@@ -377,7 +397,7 @@ package net.spider.modules{
 				{
 					strName: "Better Mounts",
 					bEnabled: main.sharedObject.data.bBetterMounts,
-					sDesc: "Gives mount armors a client-sided 160% movement speed (Disabled in PvP)\nOther players will still see you with regular walking speed!\nSummon Mount icon will appear on the top left and will revert back to your original armor when struck in combat\nSet your primary mount by going to your inventory, selecting a mount armor, and clicking on the Set Mount button icon! If there is no Set Mount button icon, the armor is not a mount.\nPrimary mounts are saved by your username.",
+					sDesc: "Keybind: M\nGives mount armors a client-sided 160% movement speed (Disabled in PvP)\nOther players will still see you with regular walking speed!\nSummon Mount icon will appear on the top left and will revert back to your original armor when struck in combat\nSet your primary mount by going to your inventory, selecting a mount armor, and clicking on the Set Mount button icon! If there is no Set Mount button icon, the armor is not a mount.\nPrimary mounts are saved by your username.",
 					extra: [
 						{
 							strName: "Force Basic Rider Animation",
@@ -395,6 +415,23 @@ package net.spider.modules{
 					strName: "Disable Chat Mouse Scrolling",
 					bEnabled: main.sharedObject.data.bDisChatScroll,
 					sDesc: "Disables the mouse scroll wheel on the Chat"
+				},
+				{
+					strName: "World Camera",
+					extra: "btn",
+					sDesc: "WIP\nYou can have Color Picker open while using this feature"
+				},
+				{
+					strName: "Hide Weapon If Not In-Combat",
+					bEnabled: main.sharedObject.data.bHideWep,
+					sDesc: "Hides your weapon when you're not in combat",
+					extra: [
+						{
+							strName: "Hide Other Players' Weapons",
+							bEnabled: main.sharedObject.data.filterChecks["chkHideOtherWep"],
+							sDesc: "Hide other players' weapons when they're not in combat"
+						}
+					]
 				}
 			];
 		}
@@ -515,17 +552,19 @@ package net.spider.modules{
 		public function onSearch(e:Event):void{
 			this.txtSearch.textField.setTextFormat(new TextFormat("Arial", 16, 0xFFFFFF), this.txtSearch.textField.caretIndex-1);
 			initOptions();
+			var element_ctr:Number = 0;
 			var _tempArray:Vector.<Object> = new Vector.<Object>();
 			for(var k:int = 0; k < optionGet.length; k++){
 				if(optionGet[k].strName.toLowerCase().indexOf(txtSearch.text.toLowerCase()) > -1){
 					_tempArray.push(optionGet[k]);
+					element_ctr += (optionGet[k].extra ? (1 + (optionGet[k].extra.length)) : 1);
 				}
 			}
-			if(_tempArray.length <= 9){
+			if(element_ctr <= 9){
 				SBar.h.removeEventListener(MouseEvent.MOUSE_DOWN,onScrDown);
 				this.removeEventListener(MouseEvent.MOUSE_UP,onScrUp);
 				this.removeEventListener(MouseEvent.MOUSE_WHEEL,onWheel);
-			}else if(_tempArray.length > 9 && !SBar.h.hasEventListener(MouseEvent.MOUSE_DOWN)){
+			}else if(element_ctr > 9 && !SBar.h.hasEventListener(MouseEvent.MOUSE_DOWN)){
 				SBar.h.addEventListener(MouseEvent.MOUSE_DOWN,onScrDown,false,0,true);
 				this.addEventListener(MouseEvent.MOUSE_UP,onScrUp,false,0,true);
 				this.addEventListener(MouseEvent.MOUSE_WHEEL,onWheel,false,0,true);
