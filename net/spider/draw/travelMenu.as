@@ -76,6 +76,7 @@
 			if(this.cbSave.selectedIndex < 0)
 				return;
 			this.listTravel.dataProvider = new DataProvider(this.cbSave.selectedItem.data);
+			this.listTravel.dataProvider.invalidate();
 		}
 
 		public function onBtnExpand(e:MouseEvent):void{

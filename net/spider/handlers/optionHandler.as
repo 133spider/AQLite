@@ -747,15 +747,14 @@ package net.spider.handlers{
                     main.sharedObject.flush();
                     break;
                 case "Warn When Declining A Drop":
-                    if(sbpcDrops){
-                        filterChecks["chkSBPDecline"] = !filterChecks["chkSBPDecline"];
-                        main.sharedObject.data.filterChecks["chkSBPDecline"] = filterChecks["chkSBPDecline"];
-                        main.sharedObject.flush();
-                    }else{
-                        filterChecks["chkCDecline"] = !filterChecks["chkCDecline"];
-                        main.sharedObject.data.filterChecks["chkCDecline"] = filterChecks["chkCDecline"];
-                        main.sharedObject.flush();
-                    }
+                    filterChecks["chkCDecline"] = !filterChecks["chkCDecline"];
+                    main.sharedObject.data.filterChecks["chkCDecline"] = filterChecks["chkCDecline"];
+                    main.sharedObject.flush();
+                    break;
+                case "(SBP)Warn When Declining A Drop":
+                    filterChecks["chkSBPDecline"] = !filterChecks["chkSBPDecline"];
+                    main.sharedObject.data.filterChecks["chkSBPDecline"] = filterChecks["chkSBPDecline"];
+                    main.sharedObject.flush();
                     break;
                 default: break;
             }

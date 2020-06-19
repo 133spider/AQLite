@@ -63,6 +63,8 @@ package net.spider.draw{
 			if(this.cbSave.selectedIndex < 0)
 				return;
 			this.listBlack.dataProvider = new DataProvider(this.cbSave.selectedItem.data);
+            main.sharedObject.data.listBlack = this.listBlack.dataProvider.toArray();
+			main.sharedObject.flush();
             optionHandler.blackListed = this.listBlack.dataProvider.toArray();
 		}
 

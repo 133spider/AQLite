@@ -188,7 +188,7 @@ package net.spider.modules{
 							sDesc: "This will change SBP's Custom Drops UI's drop menu from having the list go downward to having the list go upward instead"
 						},
 						{
-							strName: "Warn When Declining A Drop",
+							strName: "(SBP)Warn When Declining A Drop",
 							bEnabled: main.sharedObject.data.filterChecks["chkSBPDecline"],
 							sDesc: "This will spawn a pop-up box that will ask you to confirm if you want to decline the item drop"
 						},

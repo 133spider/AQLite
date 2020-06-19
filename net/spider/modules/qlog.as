@@ -38,8 +38,7 @@ package net.spider.modules{
 						var delay:* = new Timer(100, 1);
 						delay.addEventListener(TimerEvent.TIMER_COMPLETE,
 							function(e:TimerEvent):void{
-								main.Game.world.toggleQuestLog();
-								main.Game.world.showQuests(main.Game.world.getActiveQuests(), "q");
+								showQuestsList();
 							}, false, 0, true);
 						delay.start();
                     }
@@ -61,10 +60,17 @@ package net.spider.modules{
 			var delay:* = new Timer(100, 1);
 			delay.addEventListener(TimerEvent.TIMER_COMPLETE,
 				function(e:TimerEvent):void{
-					main.Game.world.toggleQuestLog();
-					main.Game.world.showQuests(main.Game.world.getActiveQuests(), "q");
+					showQuestsList();
 				}, false, 0, true);
 			delay.start();
+		}
+
+		public static function showQuestsList():void{
+
+			for each(var q_item:* in main.Game.world.questTree)
+				delete q_item.hasEventReward;
+			main.Game.world.toggleQuestLog();
+			main.Game.world.showQuests(main.Game.world.getActiveQuests(), "q");
 		}
 	}
 	
