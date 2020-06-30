@@ -43,6 +43,13 @@ package net.spider.modules{
 						main.Game.world.map.getChildAt(ctr).visible){
 						main.Game.world.map.getChildAt(ctr).visible = false;
 					}
+				if(main.Game.world.strMapName.toLowerCase() == "dwarfhold")
+					if((main.Game.world.map.getChildAt(ctr) is MovieClip &&
+						main.Game.world.map.getChildAt(ctr).numChildren > 0 &&
+						main.Game.world.map.getChildAt(ctr).getChildAt(0).name.indexOf("shadow") > -1) &&
+						main.Game.world.map.getChildAt(ctr).visible){
+						main.Game.world.map.getChildAt(ctr).visible = false;
+					}
 				ctr++;
             }
 		}

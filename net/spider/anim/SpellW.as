@@ -56,7 +56,7 @@ package net.spider.anim
             removeEventListener(Event.ENTER_FRAME, this.trackTC);
             if (parent != null)
             {
-                modules.relCombatMC.groundRupture = false;
+                //modules.relCombatMC.groundRupture = false;
                 MovieClip(parent).removeChild(this);
             }
             stop();

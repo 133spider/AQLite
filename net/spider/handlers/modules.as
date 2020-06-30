@@ -516,7 +516,7 @@
 					if(book){
 						if(book.btnRight && !book.btnRight.hasEventListener(MouseEvent.MOUSE_WHEEL)){
 							book.addEventListener(MouseEvent.MOUSE_WHEEL,onWheel,false,0,true);
-						}else if(book.btnRight.hasEventListener(MouseEvent.MOUSE_WHEEL)){
+						}else if(book.btnRight && book.btnRight.hasEventListener(MouseEvent.MOUSE_WHEEL)){
 							book.removeEventListener(MouseEvent.MOUSE_WHEEL,onWheel);
 						}
 						if(book.btnQuests && !book.btnQuests.hasEventListener(MouseEvent.DOUBLE_CLICK)){
@@ -524,7 +524,7 @@
 								book.btnQuests.addEventListener(MouseEvent.CLICK, onBtArchive, false, 0, true);
 							}
 							book.btnQuests.addEventListener(MouseEvent.DOUBLE_CLICK, _func_flag, false, 0, true);
-						}else if(book.btnQuests.hasEventListener(MouseEvent.DOUBLE_CLICK)){
+						}else if(book.btnQuests && book.btnQuests.hasEventListener(MouseEvent.DOUBLE_CLICK)){
 							if(optionHandler.bTheArchive){
 								book.btnQuests.removeEventListener(MouseEvent.CLICK, onBtArchive);
 							}
