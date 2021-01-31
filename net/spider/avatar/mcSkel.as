@@ -119,24 +119,26 @@
       
       public function showIdleFoot() : *
       {
-         if(!optionHandler.cameratoolMC.isCharHidden){
-            this.frontfoot.visible = false;
-            this.idlefoot.visible = true;
-         }else{
-            this.frontfoot.visible = false;
-            this.idlefoot.visible = false;
-         }
+         if(optionHandler.cameratoolMC)
+            if(!optionHandler.cameratoolMC.isCharHidden){
+               this.frontfoot.visible = false;
+               this.idlefoot.visible = true;
+            }else{
+               this.frontfoot.visible = false;
+               this.idlefoot.visible = false;
+            }
       }
       
       public function showFrontFoot() : *
       {
-         if(!optionHandler.cameratoolMC.isCharHidden){
-            this.idlefoot.visible = false;
-            this.frontfoot.visible = true;
-         }else{
-            this.frontfoot.visible = false;
-            this.idlefoot.visible = false;
-         }
+         if(optionHandler.cameratoolMC)
+            if(!optionHandler.cameratoolMC.isCharHidden){
+               this.idlefoot.visible = false;
+               this.frontfoot.visible = true;
+            }else{
+               this.frontfoot.visible = false;
+               this.idlefoot.visible = false;
+            }
       }
       
       override public function gotoAndPlay(param1:Object, param2:String = null) : void

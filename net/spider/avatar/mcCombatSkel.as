@@ -83,7 +83,7 @@ package net.spider.avatar
       {
          super();
          addFrameScript(0,this.frame1,7,this.frame8,8,this.frame9,16,this.frame17,20,this.frame21,29,this.frame30,43,this.frame44,44,this.frame45,60,this.frame61,61,this.frame62,68,this.frame69,74,this.frame75,75,this.frame76,92,this.frame93,93,this.frame94,106,this.frame107,107,this.frame108,131,this.frame132,141,this.frame142,142,this.frame143,161,this.frame162,162,this.frame163,176,this.frame177,185,this.frame186,186,this.frame187,220,this.frame221,221,this.frame222,237,this.frame238,238,this.frame239,247,this.frame248,256,this.frame257,264,this.frame265,265,this.frame266,285,this.frame286,288,this.frame289,289,this.frame290,321,this.frame322,322,this.frame323,340,this.frame341,342,this.frame343,343,this.frame344,368,this.frame369,369,this.frame370,433,this.frame434,434,this.frame435,451,this.frame452,470,this.frame471,478,this.frame479,486,this.frame487,487,this.frame488,488,this.frame489,534,this.frame535,535,this.frame536,565,this.frame566,566,this.frame567,574,this.frame575,575,this.frame576,583,this.frame584,596,this.frame597,597,this.frame598,608,this.frame609,609,this.frame610,612,this.frame613,628,this.frame629,629,this.frame630,632,this.frame633,658,this.frame659,659,this.frame660,663,this.frame664,687,this.frame688,688,this.frame689,692,this.frame693,715,this.frame716,716,this.frame717,733,this.frame734,734,this.frame735,755,this.frame756,756,this.frame757,762,this.frame763,763,this.frame764,792,this.frame793,793,this.frame794,816,this.frame817,817,this.frame818,820,this.frame821,837,this.frame838,838,this.frame839,841,this.frame842,864,this.frame865,865,this.frame866,868,this.frame869,890,this.frame891,891,this.frame892,894,this.frame895,908,this.frame909,909,this.frame910,920,this.frame921,921,this.frame922,924,this.frame925,940,this.frame941,941,this.frame942,944,this.frame945,955,this.frame956,956,this.frame957,977,this.frame978,978,this.frame979,989,this.frame990,990,this.frame991,994,this.frame995,1003,this.frame1004,1004,this.frame1005,1007,this.frame1008,1018,this.frame1019,1019,this.frame1020,1029,this.frame1030,1033,this.frame1034,1042,this.frame1043,1043,this.frame1044,1046,this.frame1047,1057,this.frame1058,1058,this.frame1059,1069,this.frame1070,1070,this.frame1071,1073,this.frame1074,1085,this.frame1086,1086,this.frame1087,1089,this.frame1090,1098,this.frame1099,1099,this.frame1100,1110,this.frame1111,1111,this.frame1112,1113,this.frame1114,1114,this.frame1115,1128,this.frame1129,1129,this.frame1130,1133,this.frame1134,1150,this.frame1151,1154,this.frame1155,1160,this.frame1161,1161,this.frame1162,1164,this.frame1165,1173,this.frame1174,1174,this.frame1175,1176,this.frame1177,1190,this.frame1191,1191,this.frame1192,1202,this.frame1203,1203,this.frame1204,1204,this.frame1205,1214,this.frame1215,1226,this.frame1227,1227,this.frame1228,1246,this.frame1247,1247,this.frame1248,1261,this.frame1262,1262,this.frame1263,1277,this.frame1278,1278,this.frame1279,1311,this.frame1312,1312,this.frame1313,1349,this.frame1350,1350,this.frame1351,1358,this.frame1359,1359,this.frame1360,1431,this.frame1432,1432,this.frame1433,1469,this.frame1470,1470,this.frame1471,1485,this.frame1486,1486,this.frame1487,1495,this.frame1496,1496,this.frame1497,1527,this.frame1528,1528,this.frame1529,1531,this.frame1532,1554,this.frame1555,1555,this.frame1556,1558,this.frame1559,1580,this.frame1581,1581,this.frame1582,1597,this.frame1598,1598,this.frame1599,1611,this.frame1612,1612,this.frame1613,1631,this.frame1632,1632,this.frame1633,1673,this.frame1674,
-         1682,this.frame1683,1690,this.frame1691);
+         1682,this.frame1683,1690,this.frame1691,1751,this.frame1752, 1768, this.frame1769, 1779, this.frame1780);
         this.gotoAndPlay("Idle");
         if(this.weaponTemp)
             this.weaponTemp.visible = false;
@@ -1275,6 +1275,23 @@ package net.spider.avatar
       {
           this.gotoAndPlay("KatanaFight");
           stop();
+      }
+
+      function frame1752() : *
+      {
+         //this.gotoAndPlay("Idle");
+         stop();
+      }
+
+      function frame1769() : *
+      {
+         stop();
+      }
+
+      function frame1780() : *
+      {
+         stop();
+         //this.gotoAndPlay("Idle");
       }
    }
 }

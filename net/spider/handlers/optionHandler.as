@@ -45,7 +45,7 @@ package net.spider.handlers{
         public static var disMonAnim:Boolean;
         public static var disMapAnim:Boolean;
         public static var bitmapP:Boolean;
-        public static var chatFilter:Boolean;
+        //public static var chatFilter:Boolean = false; //chatfilter
         public static var disableFX:Boolean;
         public static var smoothBG:Boolean;
         public static var bColorSets:Boolean;
@@ -63,6 +63,7 @@ package net.spider.handlers{
         public static var bBetterMounts:Boolean;
         public static var bDisChatScroll:Boolean;
         public static var bHideWep:Boolean;
+        public static var bCChat:Boolean;
 
         public static var filterChecks:Object = new Object();
         public static var blackListed:Array = new Array();
@@ -73,6 +74,7 @@ package net.spider.handlers{
         public static var memoryusageMC:memoryusage;
         public static var skillsMC:skills;
         public static var targetskillsMC:targetskills;
+        public static var chatuiMC:chatui;
 
         public static var colorPickerMC:colorPicker;
         public static var blackListMC:blackList;
@@ -90,12 +92,17 @@ package net.spider.handlers{
                 main.sharedObject.data.filterChecks["chkRed"] = true;
                 main.sharedObject.flush();
             }
-            filterChecks["chkRed"] = main.sharedObject.data.filterChecks["chkRed"];
+            /**filterChecks["chkRed"] = main.sharedObject.data.filterChecks["chkRed"];
             if(main.sharedObject.data.filterChecks["chkBlue"] == null){
                 main.sharedObject.data.filterChecks["chkBlue"] = false;
                 main.sharedObject.flush();
             }
             filterChecks["chkBlue"] = main.sharedObject.data.filterChecks["chkBlue"];
+            if(main.sharedObject.data.filterChecks["chkRedSkills"] == null){
+                main.sharedObject.data.filterChecks["chkRedSkills"] = true;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkRedSkills"] = main.sharedObject.data.filterChecks["chkRedSkills"];**/
             if(main.sharedObject.data.filterChecks["chkName"] == null){
                 main.sharedObject.data.filterChecks["chkName"] = false;
                 main.sharedObject.flush();
@@ -121,11 +128,6 @@ package net.spider.handlers{
                 main.sharedObject.flush();
             }
             filterChecks["chkShadow"] = main.sharedObject.data.filterChecks["chkShadow"];
-            if(main.sharedObject.data.filterChecks["chkRedSkills"] == null){
-                main.sharedObject.data.filterChecks["chkRedSkills"] = true;
-                main.sharedObject.flush();
-            }
-            filterChecks["chkRedSkills"] = main.sharedObject.data.filterChecks["chkRedSkills"];
             if(main.sharedObject.data.filterChecks["chkCDropNotification"] == null){
                 main.sharedObject.data.filterChecks["chkCDropNotification"] = true;
                 main.sharedObject.flush();
@@ -181,6 +183,12 @@ package net.spider.handlers{
                 main.sharedObject.flush();
             }
             filterChecks["chkCDecline"] = main.sharedObject.data.filterChecks["chkCDecline"];
+            if(main.sharedObject.data.filterChecks["chkAttachMenu"] == null){
+                main.sharedObject.data.filterChecks["chkAttachMenu"] = true;
+                main.sharedObject.flush();
+            }
+            filterChecks["chkAttachMenu"] = main.sharedObject.data.filterChecks["chkAttachMenu"];
+
             cDrops = main.sharedObject.data.cDrops;
             if(cDrops){
                 dropmenuMC = new dropmenu();
@@ -213,6 +221,13 @@ package net.spider.handlers{
                 main.Game.ui.addChild(targetskillsMC);
             }
 
+            bCChat = main.sharedObject.data.bCChat;
+            if(bCChat){
+                chatuiMC = new chatui();
+                chatuiMC.name = "chatui";
+                main.Game.ui.mcInterface.addChild(chatuiMC);
+            }
+
             //passive = main.sharedObject.data.passive;
             passive = true;
             if(passive)
@@ -225,10 +240,6 @@ package net.spider.handlers{
             disWepAnim = main.sharedObject.data.disWepAnim;
             if(disWepAnim)
                 dispatch(diswepanim);
-
-            chatFilter = main.sharedObject.data.chatFilter;
-            if(chatFilter)
-                dispatch(chatfilter);
 
             disableFX = main.sharedObject.data.disableFX;
             if(disableFX)
@@ -495,22 +506,6 @@ package net.spider.handlers{
                     main.sharedObject.data.bitmapP = bitmapP;
                     main.sharedObject.flush();
                     break;
-                case "Chat Filter":
-                    chatFilter = !chatFilter;
-                    dispatch(chatfilter);
-                    main.sharedObject.data.chatFilter = chatFilter;
-                    main.sharedObject.flush();
-                    break;
-                case "Hide Red Warning Messages":
-                    filterChecks["chkRed"] = !filterChecks["chkRed"];
-                    main.sharedObject.data.filterChecks["chkRed"] = filterChecks["chkRed"];
-                    main.sharedObject.flush();
-                    break;
-                case "Hide Blue Server Messages":
-                    filterChecks["chkBlue"] = !filterChecks["chkBlue"];
-                    main.sharedObject.data.filterChecks["chkBlue"] = filterChecks["chkBlue"];
-                    main.sharedObject.flush();
-                    break;
                 case "Disable Sound FX":
                     disableFX = !disableFX;
                     if(disableFX){
@@ -614,11 +609,6 @@ package net.spider.handlers{
                     hidePNames = !hidePNames;
                     dispatch(hidepnames);
                     main.sharedObject.data.hidePNames = hidePNames;
-                    main.sharedObject.flush();
-                    break;
-                case "Disable Skill Warning Messages":
-                    filterChecks["chkRedSkills"] = !filterChecks["chkRedSkills"];
-                    main.sharedObject.data.filterChecks["chkRedSkills"] = filterChecks["chkRedSkills"];
                     main.sharedObject.flush();
                     break;
                 case "Drop Notifications":
@@ -755,6 +745,26 @@ package net.spider.handlers{
                     filterChecks["chkSBPDecline"] = !filterChecks["chkSBPDecline"];
                     main.sharedObject.data.filterChecks["chkSBPDecline"] = filterChecks["chkSBPDecline"];
                     main.sharedObject.flush();
+                    break;
+                case "Custom Chat UI":
+                    bCChat = !bCChat;
+                    if(bCChat){
+                        chatuiMC = new chatui();
+                        chatuiMC.name = "chatui";
+                        main.Game.ui.mcInterface.addChild(chatuiMC);
+                    }else{
+                        chatuiMC.cleanup();
+                        chatuiMC = null;
+                    }
+                    main.sharedObject.data.bCChat = bCChat;
+                    main.sharedObject.flush();
+                    break;
+                case "Attached Menu":
+                    filterChecks["chkAttachMenu"] = !filterChecks["chkAttachMenu"];
+                    main.sharedObject.data.filterChecks["chkAttachMenu"] = filterChecks["chkAttachMenu"];
+                    main.sharedObject.flush();
+                    if(sbpcDrops)
+                        dropmenutwoMC.onChangeReset(filterChecks["chkAttachMenu"]);
                     break;
                 default: break;
             }

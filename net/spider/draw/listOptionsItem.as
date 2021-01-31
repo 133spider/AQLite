@@ -67,7 +67,7 @@
 						modalClass = main.Game.world.getClass("ModalMC");
 						modal = new modalClass();
 						modalO = {};
-						modalO.strBody = "Enabling \"Disable Map Animations\" will cause SOME map buttons to NOT work!";
+						modalO.strBody = "Enabling \"Disable Map Animations\" will cause map buttons (e.g. Quest Heads) to NOT work!";
 						modalO.params = {};
 						modalO.glow = "red,medium";
 						modalO.btns = "mono";

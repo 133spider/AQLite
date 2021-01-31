@@ -188,6 +188,11 @@ package net.spider.modules{
 							sDesc: "This will change SBP's Custom Drops UI's drop menu from having the list go downward to having the list go upward instead"
 						},
 						{
+							strName: "Attached Menu",
+							bEnabled: main.sharedObject.data.filterChecks["chkAttachMenu"],
+							sDesc: "Attaches SBP's UI to the Game's UI"
+						},
+						{
 							strName: "(SBP)Warn When Declining A Drop",
 							bEnabled: main.sharedObject.data.filterChecks["chkSBPDecline"],
 							sDesc: "This will spawn a pop-up box that will ask you to confirm if you want to decline the item drop"
@@ -242,33 +247,6 @@ package net.spider.modules{
 					strName: "Cache Players",
 					bEnabled: main.sharedObject.data.bitmapP,
 					sDesc: "Reduces the graphics of other players and freezes them in place. Useful if you still want to see other players, but want increased performance that \"Hide Players\" gives.\n!WARNING! Having this enabled may or may not show some of other player's equipments (Missing helmets, etc). You will not be able to see their equipment changes with this enabled either. You can not click on other players with this enabled."
-				},
-				{
-					strName: "Chat Filter",
-					bEnabled: main.sharedObject.data.chatFilter,
-					sDesc: "Hide chat messages depending on the checkmarked settings below (Red Warning messages, Blue Server messages)\nThis will NOT hide server shutdown messages!",
-					extra: [
-						{
-							strName: "Hide Red Warning Messages",
-							bEnabled: main.sharedObject.data.filterChecks["chkRed"],
-							sDesc: "Hides red warning messages"
-						},
-						{
-							strName: "Hide Blue Server Messages",
-							bEnabled: main.sharedObject.data.filterChecks["chkBlue"],
-							sDesc: "Hides blue server messages"
-						},
-						{
-							strName: "Disable Skill Warning Messages",
-							bEnabled: main.sharedObject.data.filterChecks["chkRedSkills"],
-							sDesc: "You must retoggle Chat Filter for this to work!\nDisables the skill not available warning messages"
-						},
-						{
-							strName: "Message Timestamps",
-							bEnabled: main.sharedObject.data.filterChecks["chkTimestamp"],
-							sDesc: "Suggested by u/chickeniggets from r/AQW"
-						}
-					]
 				},
 				{
 					strName: "Disable Sound FX",
@@ -432,6 +410,23 @@ package net.spider.modules{
 							sDesc: "Hide other players' weapons when they're not in combat"
 						}
 					]
+				},
+				{
+					strName: "Custom Chat UI",
+					bEnabled: main.sharedObject.data.bCChat,
+					sDesc: "WIP",
+					extra: [
+						{
+							strName: "Message Timestamps",
+							bEnabled: main.sharedObject.data.filterChecks["chkTimestamp"],
+							sDesc: "Suggested by u/chickeniggets from r/AQW"
+						}
+					]
+				},
+				{
+					special: 1,
+					strName: "Char Page",
+					sDesc: "Search Character Pages"
 				}
 			];
 		}
@@ -492,6 +487,15 @@ package net.spider.modules{
 			{
 				optObj = filteredArray[i];
 				switch(true){
+					case (optObj.hasOwnProperty("special")):
+						optItem = new listOptionsItemTxt(optObj.sDesc);
+						optItem.txtName.text = optObj.strName;
+						item = optionList.addChild(optItem);
+						item.x = cntMask.x;
+						item.y = cntMask.y+(35 * posI);
+						item.addEventListener(MouseEvent.MOUSE_OVER, onOver, false, 0, true);
+						item.addEventListener(MouseEvent.MOUSE_OUT, onOut, false, 0, true);
+					break;
 					case (optObj.hasOwnProperty("extra") && optObj.extra is String):
 						optItem = new listOptionsItemBtn(optObj.sDesc);
 						optItem.txtName.text = optObj.strName;

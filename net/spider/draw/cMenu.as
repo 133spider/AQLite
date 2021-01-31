@@ -7,6 +7,7 @@ package net.spider.draw{
     import net.spider.main;
     import net.spider.handlers.optionHandler;
     import net.spider.modules.hidemonsters;
+    import net.spider.draw.charPage;
 
     public class cMenu extends MovieClip {
 
@@ -267,7 +268,9 @@ package net.spider.draw{
                     break;
                 case "char page":
                     rootClass.mixer.playSound("Click");
-                    navigateToURL(new URLRequest(("http://www.aq.com/character.asp?id=" + _local4)), "_blank");
+                    //navigateToURL(new URLRequest(("http://www.aq.com/character.asp?id=" + _local4)), "_blank");
+                    var mcCharPage:charPage = new charPage(_local4);
+                    main.Game.ui.addChild(mcCharPage);
                     break;
                 case "is staff?":
                     rootClass.world.isModerator(_local4);

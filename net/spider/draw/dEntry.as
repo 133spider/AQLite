@@ -18,6 +18,8 @@ package net.spider.draw{
         public var itemObj:Object;
         var format:TextFormat = new TextFormat();
         public function dEntry(resObj:Object, relQty:int):void{ //X: 2.5 Y: 3
+            alreadyClicked = false;
+            allowPass = false;
             this.gotoAndStop("idle");
             this.btYes.visible = false;
             this.btNo.visible = false;

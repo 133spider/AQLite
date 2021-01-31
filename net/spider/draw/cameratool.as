@@ -39,6 +39,7 @@ package net.spider.draw{
             this.addChild(AvatarDisplay);
 
             AvatarDisplay.scale(scaleAvt);
+            AvatarDisplay.shadow.visible = false;
 
             this.cameratoolUI.primary.txtClassName.text = main.Game.world.myAvatar.objData.strClassName;
 

@@ -493,14 +493,14 @@ package net.spider.avatar
             testMC = mcChar.head.addChildAt(new AssetClass(),0);
             testMC.name = "face";
          }
-         if(this.pAV == this.world.myAvatar)
+         /**if(this.pAV == this.world.myAvatar)
          {
             this.world.rootClass.showPortrait(this.pAV);
          }
          else if(this.pAV == this.world.myAvatar.target)
          {
             this.world.rootClass.showPortraitTarget(this.pAV);
-         }
+         }**/
          try
          {
             AssetClass = this.world.getClass(strSkinLinkage + this.strGender + "Chest") as Class;
@@ -798,10 +798,10 @@ package net.spider.avatar
                this.mcChar.backhair.visible = false;
                this.bBackHair = false;
             }
-            if(this.pAV.isMyAvatar && !MovieClip(parent.parent.parent).ui.mcPortrait.visible && !this.bLoadingHelm)
+            /**if(this.pAV.isMyAvatar && !MovieClip(parent.parent.parent).ui.mcPortrait.visible && !this.bLoadingHelm)
             {
                this.world.rootClass.showPortrait(this.pAV);
-            }
+            }**/
             if("he" in this.pAV.objData.eqp && this.pAV.objData.eqp.he != null)
             {
                if(this.pAV.dataLeaf.showHelm)
@@ -863,7 +863,7 @@ package net.spider.avatar
          }
          this.mcChar.weapon.visible = true;
          this.mcChar.weaponOff.visible = false;
-         var wItem:Object = this.pAV.getItemByEquipSlot("Weapon");
+         var wItem:Object = this.pAV.objData.eqp.Weapon;
          if(wItem != null && wItem.sType != null)
          {
             if(wItem.sType == "Dagger")
@@ -1008,14 +1008,14 @@ package net.spider.avatar
                this.mcChar.backhair.visible = this.mcChar.head.hair.visible && this.bBackHair;
             }
             this.mcChar.head.helm.addChild(new _loc2_());
-            if(this.pAV == this.world.myAvatar)
+            /**if(this.pAV == this.world.myAvatar)
             {
                this.world.rootClass.showPortrait(this.pAV);
             }
             if(this.pAV == this.world.myAvatar.target)
             {
                this.world.rootClass.showPortraitTarget(this.pAV);
-            }
+            }**/
          }
          this.bLoadingHelm = false;
       }
@@ -1037,14 +1037,14 @@ package net.spider.avatar
                this.mcChar.head.hair.visible = true;
                this.mcChar.backhair.visible = this.bBackHair;
             }
-            if(this.pAV == this.world.myAvatar)
+            /**if(this.pAV == this.world.myAvatar)
             {
                this.world.rootClass.showPortrait(this.pAV);
             }
             if(this.pAV == this.world.myAvatar.target)
             {
                this.world.rootClass.showPortraitTarget(this.pAV);
-            }
+            }**/
          }
       }
       
@@ -1154,16 +1154,7 @@ package net.spider.avatar
          {
             _loc2_ = param1;
          }
-         var _loc3_:* = main.Game.ui;
          this.scanColor(this,_loc2_);
-         if(this.pAV != null && _loc3_.mcPortrait.pAV != null && _loc3_.mcPortrait.pAV == this.pAV)
-         {
-            this.scanColor(_loc3_.mcPortrait.mcHead,_loc2_);
-         }
-         if(this.pAV != null && _loc3_.mcPortraitTarget.pAV != null && _loc3_.mcPortraitTarget.pAV == this.pAV)
-         {
-            this.scanColor(_loc3_.mcPortraitTarget.mcHead,_loc2_);
-         }
       }
       
       private function scanColor(param1:MovieClip, param2:*) : void

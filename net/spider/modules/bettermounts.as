@@ -19,6 +19,9 @@ package net.spider.modules{
 			var sES:String;
             if(optionHandler.bBetterMounts){
                 if(main.Game.world.myAvatar.pMC.artLoaded()){
+					if(main.Game.world.myAvatar.objData.eqp.co.sFile == "ResAttire.swf" || 
+						main.Game.world.myAvatar.objData.eqp.co.sFile == "ResSportyWear.swf")
+						return;
                     var mnt:MovieClip = main.Game.world.myAvatar.pMC.mcChar.robe.getChildAt(0);
                     for(var mnt_i = 0; mnt_i < mnt.currentLabels.length; mnt_i++){
                         trace(mnt.currentLabels[mnt_i].name);
@@ -194,6 +197,9 @@ package net.spider.modules{
 
         public static function onMountArmorCheck(e:TimerEvent):void{
 			if(main.Game.world.myAvatar.pMC.artLoaded()){
+				if(main.Game.world.myAvatar.objData.eqp.co.sFile == "ResAttire.swf" || 
+						main.Game.world.myAvatar.objData.eqp.co.sFile == "ResSportyWear.swf")
+						return;
 				var mnt:MovieClip = main.Game.world.myAvatar.pMC.mcChar.robe.getChildAt(0);
 				for(var i = 0; i < mnt.currentLabels.length; i++){
 					trace(mnt.currentLabels[i].name);

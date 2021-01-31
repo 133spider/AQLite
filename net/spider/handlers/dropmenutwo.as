@@ -16,6 +16,7 @@ package net.spider.handlers{
     import flash.utils.getQualifiedClassName;
     import com.adobe.utils.StringUtil;
     import net.spider.handlers.optionHandler;
+    import net.spider.draw.dAttached;
 
     public class dropmenutwo extends MovieClip {
         public function dropmenutwo(){
@@ -38,6 +39,66 @@ package net.spider.handlers{
             main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
             main._stage.addEventListener(Event.ENTER_FRAME, onDropFrame, false, 0, true);
             createUIStack();
+            onChangeReset(optionHandler.filterChecks["chkAttachMenu"]);
+        }
+
+        private var bAttachedOpen:Boolean = false;
+        private var mcAttached:dAttached;
+        public function onChangeReset(mode:Boolean):void{
+            //mode: true; clear out sbp and switch over, mode: false; clean out current attach and update it
+            //TODO: handle mode var
+            bAttachedOpen = false;
+            if(!mcAttached){
+                mcAttached = new dAttached(); //252.45 x 157.70
+                mcAttached.name = "mcAttached";
+                main.Game.ui.mcInterface.addChild(mcAttached);
+
+                main.Game.ui.mcInterface.setChildIndex(main.Game.ui.mcInterface.getChildByName("mcAttached"), 0);
+
+                mcAttached.x = 352;
+                mcAttached.y = (optionHandler.filterChecks["chkInvertDrop"]) ? -530 : -19; //-28 (hovered)
+                mcAttached.visible = true;
+
+                mcAttached.inner_menu.height = (optionHandler.filterChecks["chkInvertDrop"]) ? 42.80 : 157.70;
+                mcAttached.inner_menu.addEventListener(MouseEvent.ROLL_OVER, onRollOverAttached, false, 0, true);
+                mcAttached.inner_menu.addEventListener(MouseEvent.ROLL_OUT, onRollOutAttached, false, 0, true);
+                mcAttached.inner_menu.addEventListener(MouseEvent.CLICK, onToggleAttached, false, 0, true);
+                this.visible = false;
+            }else{ //TODO: account for regular sbp custom drop ui being open, etc
+                while (mcAttached.numChildren > 1)
+                    mcAttached.removeChildAt(1);
+                mcAttached.inner_menu.removeEventListener(MouseEvent.CLICK, onToggleAttached);
+                mcAttached.inner_menu.removeEventListener(MouseEvent.ROLL_OVER, onRollOverAttached);
+                mcAttached.inner_menu.removeEventListener(MouseEvent.ROLL_OUT, onRollOutAttached);
+                main.Game.ui.mcInterface.removeChild(main.Game.ui.mcInterface.getChildByName("mcAttached"));
+                mcAttached = null;
+                this.visible = true;
+            }
+        }
+
+        public function onRollOverAttached(e:MouseEvent):void{
+            if(bAttachedOpen)
+                return;
+            mcAttached.y = (optionHandler.filterChecks["chkInvertDrop"]) ? -521 : -28;
+        }
+
+        public function onRollOutAttached(e:MouseEvent):void{
+            if(bAttachedOpen)
+                return;
+            mcAttached.y = (optionHandler.filterChecks["chkInvertDrop"]) ? -530 : -19;
+        }
+
+        public function onToggleAttached(e:MouseEvent):void{
+            bAttachedOpen = !bAttachedOpen;
+            if(!bAttachedOpen){
+                while (this.mcAttached.numChildren > 1)
+                    this.mcAttached.removeChildAt(1);
+                mcAttached.inner_menu.height = (optionHandler.filterChecks["chkInvertDrop"]) ? 42.80 : 157.70;
+                mcAttached.inner_menu.y = 0;
+                mcAttached.y = (optionHandler.filterChecks["chkInvertDrop"]) ? -530 : -19;
+            }else{
+                reDraw();
+            }
         }
 
         public function createUIStack():void{
@@ -59,7 +120,11 @@ package net.spider.handlers{
         }
 
         public function onShow():void{
-            this.visible = !this.visible;
+            if(mcAttached){
+                mcAttached.inner_menu.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+            }else{
+                this.visible = !this.visible;
+            }
         }
 
         private function onHold(e:MouseEvent):void{
@@ -292,6 +357,7 @@ package net.spider.handlers{
             cleanDSUI();
         }
 
+        var itemWasAdded:Boolean;
         var itemCount:Object;
         var invTree:Vector.<Object>;
         public function onExtensionResponseHandler(e:*):void{
@@ -329,14 +395,18 @@ package net.spider.handlers{
                                 }else{
                                     itemCount[dID] += int(resObj.items[dID].iQty);
                                 }
+                                itemWasAdded = true;
                             }
-                        reDraw();
-                        if(!this.visible)
+                        if(!mcAttached || (mcAttached && bAttachedOpen))
+                            reDraw();
+                        if(itemWasAdded && (!this.visible && !mcAttached) || (mcAttached && !bAttachedOpen)){ 
                             main.Game.ui.mcPortrait.getChildByName("iconDrops").onAlert();
+                            itemWasAdded = false;
+                        }
                         break;
                         case "addItems":
                             for (dID in resObj.items)
-                                if(optionHandler.filterChecks["chkSBPDropNotification"])
+                                if(!optionHandler.filterChecks["chkSBPDropNotification"])
                                     showItemDS((main.Game.world.invTree[dID] == null) ? resObj.items[dID] : main.Game.world.invTree[dID], int(resObj.items[dID].iQty));
                             break;
                         case "getDrop":
@@ -386,30 +456,42 @@ package net.spider.handlers{
 
         public function reDraw():void{
             var qtyCtr:int = 0;
-            while (this.menu.numChildren > 1)
-                this.menu.removeChildAt(1);
+            while ((this.mcAttached ? this.mcAttached : this.menu).numChildren > 1)
+                (this.mcAttached ? this.mcAttached : this.menu).removeChildAt(1);
             var ctr:int = 0;
             for each(var item:* in invTree){
                 var dropItemGet:* = new dEntry(item, itemCount[item.dID]);
                 if(optionHandler.filterChecks["chkInvertDrop"]){
-                    dropItemGet.x = 2;
-                    dropItemGet.y = (161)+(21.5*ctr);
+                    dropItemGet.x = 1.5;
+                    dropItemGet.y = (this.mcAttached ? 24+(21.5*ctr) - 0.5: (161)+(21.5*ctr));
                 }else{
-                    dropItemGet.x = 2;
-                    dropItemGet.y = (108)-(21.5*ctr);
+                    dropItemGet.x = 1.5;
+                    dropItemGet.y = (this.mcAttached ? (-16)-(21.5*(ctr)) + 0.5: (108)-(21.5*ctr));
                 }
                 dropItemGet.name = item.sName;
-                this.menu.addChild(dropItemGet);
+                (this.mcAttached ? this.mcAttached : this.menu).addChild(dropItemGet);
                 qtyCtr += itemCount[item.dID];
                 ctr++;
             }
-            this.txtQty.text = " x " + qtyCtr;
-            if(optionHandler.filterChecks["chkInvertDrop"]){
-                this.menu.menuBG.y = ((158)); 
-                this.menu.menuBG.height = 21.5*(ctr) + 6;
+            if(this.mcAttached){
+                if(optionHandler.filterChecks["chkInvertDrop"]){
+                    this.mcAttached.inner_menu.y = 0;
+                    this.mcAttached.inner_menu.height = (ctr == 0) ? 47.50 : (47.50) + (21.5*(ctr-1));
+                    mcAttached.y = -521;
+                }else{
+                    this.mcAttached.inner_menu.y = 4-(21.5*(ctr)); //26
+                    this.mcAttached.inner_menu.height = (ctr == 0) ? 157.70 : (157.70) + (21.5*(ctr-1));
+                    mcAttached.y = -28;
+                }
             }else{
-                this.menu.menuBG.y = ((108)-(21.5*(ctr-1))) - 3; //26
-                this.menu.menuBG.height = 21.5*(ctr) + 6;
+                this.txtQty.text = " x " + qtyCtr;
+                if(optionHandler.filterChecks["chkInvertDrop"]){
+                    this.menu.menuBG.y = ((158)); 
+                    this.menu.menuBG.height = 21.5*(ctr) + 6;
+                }else{
+                    this.menu.menuBG.y = ((108)-(21.5*(ctr-1))) - 3; //26
+                    this.menu.menuBG.height = 21.5*(ctr) + 6;
+                }
             }
         }
     }

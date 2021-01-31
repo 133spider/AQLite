@@ -79,12 +79,6 @@
 					keyHandler: false
 				},
 				{
-					moduleClass: chatfilter,
-					moduleType: "Frame",
-					responseHandler: false,
-					keyHandler: true
-				},
-				{
 					moduleClass: untargetself,
 					moduleType: "Timer",
 					responseHandler: false,
@@ -639,7 +633,7 @@
 
 			if(main.Game.ui.mcOFrame.currentLabel == "Idle" && main.Game.ui.mcOFrame.t1.txtTitle.text == "Friends List"
 				&& main.Game.ui.mcOFrame.t1.txtTitle.text.indexOf("(") == -1){
-				main.Game.ui.mcOFrame.t1.txtTitle.text = "Friends List (" + main.Game.world.myAvatar.friends.length + "/50)";
+				main.Game.ui.mcOFrame.t1.txtTitle.text = "Friends List (" + main.Game.world.myAvatar.friends.length + "/125)";
 			}
 
 			if(main.Game.ui.mcPopup.currentLabel == "MergeShop" || main.Game.ui.mcPopup.currentLabel == "Shop" || main.Game.ui.mcPopup.currentLabel == "Inventory")
@@ -822,7 +816,7 @@
 					}
 				}
 
-				if(isMount()){
+				if(optionHandler.bBetterMounts && isMount()){
 					if(!mcFocus.getChildByName("btSetMount")){
 						var btSetMountMC:* = new btSetMount();
 						btSetMountMC.name = "btSetMount";
@@ -904,6 +898,7 @@
             return false;
         }
 		
+		public static var _tempMC:CombatMC;
 		public static function onMaintainTimer(e:TimerEvent):void{
 			if(!main.Game || !main.Game.ui)
 				return;
@@ -941,6 +936,77 @@
 				main.Game.ui.mcInterface.mcGold.addEventListener(MouseEvent.ROLL_OVER, onMcGoldMouseOver, false, 0, true);
 				main.Game.ui.mcInterface.mcGold.addEventListener(MouseEvent.ROLL_OUT, onMcGoldMouseOut, false, 0, true);
 			}
+
+			/**
+			THIS IS PURELY FOR A TEST
+			private static var justWalked:Boolean;
+		private static var justRan:Boolean;
+		private static var justRan2:Boolean;
+		private static var justRan3:Boolean;
+			if(!_tempMC && main.Game.world.myAvatar.pMC.artLoaded){
+				_tempMC = new CombatMC();
+				_tempMC.name = "CombatMC";
+				main.Game.world.myAvatar.pMC.addChild(_tempMC);
+				_tempMC.strGender = "M";
+				_tempMC.loadHair();
+				_tempMC.loadArmor();
+				_tempMC.loadWeapon();
+				_tempMC.loadCape();
+				_tempMC.loadHelm();
+				_tempMC.mcChar.gotoAndStop("GunFight1");
+				_tempMC.hideOptionalParts();
+				_tempMC.loadHair();
+				_tempMC.loadArmor();
+				_tempMC.loadWeapon();
+				_tempMC.loadCape();
+				_tempMC.loadHelm();
+				_tempMC.mcChar.gotoAndStop("RobeReveal");
+				_tempMC.hideOptionalParts();
+				_tempMC.loadHair();
+				_tempMC.loadArmor();
+				_tempMC.loadWeapon();
+				_tempMC.loadCape();
+				_tempMC.loadHelm();
+				_tempMC.x = main.Game.world.myAvatar.pMC.mcChar.x;
+				_tempMC.y = main.Game.world.myAvatar.pMC.mcChar.y;
+			}
+
+			if(main.Game.world.myAvatar && main.Game.world.myAvatar.dataLeaf.intState > 1){
+				_tempMC.mcChar.scaleX = main.Game.world.myAvatar.pMC.mcChar.scaleX;
+				_tempMC.mcChar.scaleY = main.Game.world.myAvatar.pMC.mcChar.scaleY;
+				main.Game.world.myAvatar.pMC.mcChar.visible = false;
+				_tempMC.visible = true;
+			}else if(_tempMC){
+				if(main.Game.world.myAvatar.pMC.mcChar.currentLabel == "Walk" && !justRan){
+					main.Game.world.myAvatar.pMC.mcChar.visible = false;
+					_tempMC.visible = true;
+					_tempMC.mcChar.gotoAndPlay("RobeMove");
+					justWalked = true;
+					justRan = true;
+				}else if(main.Game.world.myAvatar.pMC.mcChar.currentLabel == "Idle" && justWalked && !justRan2){
+					main.Game.world.myAvatar.pMC.mcChar.visible = false;
+					_tempMC.visible = true;
+					_tempMC.mcChar.gotoAndPlay("RobeReveal");
+					_tempMC.mcChar.scaleX = main.Game.world.myAvatar.pMC.mcChar.scaleX;
+					_tempMC.mcChar.scaleY = main.Game.world.myAvatar.pMC.mcChar.scaleY;
+					_tempMC.hideOptionalParts();
+					_tempMC.loadHair();
+					_tempMC.loadArmor();
+					_tempMC.loadWeapon();
+					_tempMC.loadCape();
+					_tempMC.loadHelm();
+					justWalked = false;
+					justRan2 = true;
+				}else if(justRan3){
+					main.Game.world.myAvatar.pMC.mcChar.visible = true;
+					_tempMC.visible = false;
+					justRan = false;
+					justRan2 = false;
+					justRan3 = false;
+				}else if(_tempMC.mcChar.currentFrame == 1780){
+					justRan3 = true;
+				}
+			}**/
 		}
 
 		public static function onItemRollOver(param1:Event) : void
@@ -984,6 +1050,17 @@
 								main.Game.world.bookData.AchBadge.sortOn("strName");
 							}
 							break;
+						/**case "ct":
+							for each(var o:* in resObj.anims)
+							{
+								if(o.cInf){
+									var cTyp:String = String(o.cInf.split(":")[0]);
+									main.debug("Passed: " + cTyp);
+									if(cTyp == "p" && _tempMC)
+										_tempMC.mcChar.gotoAndPlay("GunFight1");
+								}
+							}
+							break;**/
                     }
                 }
         }

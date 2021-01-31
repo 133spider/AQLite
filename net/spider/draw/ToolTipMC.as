@@ -22,7 +22,7 @@ package net.spider.draw{
         public var cnt:MovieClip;
         private var neutralCT:ColorTransform;
         var mc:MovieClip;
-        var isOpen:Boolean = false;
+        public var isOpen:Boolean = false;
         private var blackCT:ColorTransform;
         var data:Object;
         var tWidth:int;

@@ -47,7 +47,11 @@ package net.spider.handlers{
 				}
 				main._stage.addEventListener(KeyboardEvent.KEY_UP, key_actBar, false, 0, true);
 				main.Game.sfc.addEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler, false, 0, true);
+				main.Game.ui.addEventListener(MouseEvent.MOUSE_OVER, onOver, false, 0, true);
+				main.Game.ui.addEventListener(MouseEvent.MOUSE_OUT, onExit, false, 0, true);
 			}else{
+				main.Game.ui.removeEventListener(MouseEvent.MOUSE_OVER, onOver);
+				main.Game.ui.removeEventListener(MouseEvent.MOUSE_OUT, onExit);
 				main._stage.removeEventListener(KeyboardEvent.KEY_UP, key_actBar);
 				main.Game.sfc.removeEventListener(SFSEvent.onExtensionResponse, onExtensionResponseHandler);
 				if(eventInitialized){
@@ -114,6 +118,7 @@ package net.spider.handlers{
 				var base:MovieClip = new skillIcon();
 
 				icons[auraName] = main.Game.ui.mcPortrait.getChildByName("auraUI").addChild(base);
+				icons[auraName].name = "aura@" + auraName;
 				icons[auraName].auraName = auraName;
 				icons[auraName].width = 42;
 				icons[auraName].height = 39;
@@ -133,21 +138,30 @@ package net.spider.handlers{
 				}
 				visual.x = ((icons[auraName].bg.width / 2) - (visual.width / 2));
                 visual.y = ((icons[auraName].bg.height / 2) - (visual.height / 2));
-				icons[auraName].mouseChildren = false;
-				icons[auraName].addEventListener(MouseEvent.MOUSE_OVER, onOver, false, 0, true);
-				icons[auraName].addEventListener(MouseEvent.MOUSE_OUT, onOut, false, 0, true);
+				icons[auraName].mouseEnabled = icons[auraName].mouseChildren = false;
 				iconPriority.push(auraName);
 			}
 			icons[auraName].auraStacks = auraStacks;
 		}
 
 		public function onOver(e:MouseEvent):void{
-			toolTip.openWith({str:e.target.auraName + " (" + e.target.auraStacks + ")"});
+			if(toolTip.isOpen)
+				toolTip.close();
+			if(!(e.target.name.indexOf("auraUI") > -1))
+				return;
+			for each(var auraObj:* in icons){
+				if(auraObj.hitTestPoint(e.stageX, e.stageY)){
+					toolTip.openWith({str:auraObj.auraName + " (" + auraObj.auraStacks + ")"});
+					break;
+				}
+			}
 		}
 
-		public function onOut(e:MouseEvent){
-            toolTip.close();
-        }
+		public function onExit(e:MouseEvent):void{
+			if(e.target.name.indexOf("auraUI") > -1){
+				toolTip.close();
+			}
+		}
 
 		var iconPriority:Vector.<String>;
 		public function rearrangeIconMC():void{
@@ -393,8 +407,6 @@ package net.spider.handlers{
 					ct2.mask = null;
 					ct2.parent.removeChild(iMask);
 					ct1.removeEventListener(Event.ENTER_FRAME, countDownAct);
-					icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OVER, onOver);
-					icons[ct1.auraName].removeEventListener(MouseEvent.MOUSE_OUT, onOut);
 					main.Game.ui.mcPortrait.getChildByName("auraUI").stopDrag();
 					toolTip.close();
 					ct2.parent.removeChild(ct2);

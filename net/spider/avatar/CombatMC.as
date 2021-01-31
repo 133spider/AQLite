@@ -121,7 +121,7 @@ package net.spider.avatar
             return false;
         }
         
-        private function hideOptionalParts() : void
+        public function hideOptionalParts() : void
         {
             var _loc1_:* = ["cape","backhair","robe","backrobe","pvpFlag"];
             var _loc2_:* = ["weapon","weaponOff","weaponFist","weaponFistOff","shield"];
@@ -130,14 +130,16 @@ package net.spider.avatar
             {
                 if(typeof this.mcChar[_loc1_[_loc3_]] != undefined)
                 {
-                    this.mcChar[_loc1_[_loc3_]].visible = false;
+                    if(this.mcChar[_loc1_[_loc3_]])
+                        this.mcChar[_loc1_[_loc3_]].visible = false;
                 }
             }
             for(_loc3_ in _loc2_)
             {
                 if(typeof this.mcChar[_loc2_[_loc3_]] != undefined)
                 {
-                    this.mcChar[_loc2_[_loc3_]].visible = false;
+                    if(this.mcChar[_loc2_[_loc3_]])
+                        this.mcChar[_loc2_[_loc3_]].visible = false;
                 }
             }
         }
@@ -465,7 +467,8 @@ package net.spider.avatar
                 mcChar.weapon.addChild(main.Game.world.myAvatar.pMC.mcChar.weapon.mcWeapon);
             }
             this.mcChar.weapon.visible = true;
-            this.mcChar.weaponOff.visible = false;
+            if(this.mcChar.weaponOff)
+                this.mcChar.weaponOff.visible = false;
             var wItem:Object = main.Game.world.myAvatar.pMC.pAV.getItemByEquipSlot("Weapon");
             if(wItem != null && wItem.sType != null)
             {
