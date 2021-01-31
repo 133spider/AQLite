@@ -48,7 +48,7 @@ package net.spider.handlers{
             //mode: true; clear out sbp and switch over, mode: false; clean out current attach and update it
             //TODO: handle mode var
             bAttachedOpen = false;
-            if(!mcAttached){
+            if(mode){
                 mcAttached = new dAttached(); //252.45 x 157.70
                 mcAttached.name = "mcAttached";
                 main.Game.ui.mcInterface.addChild(mcAttached);
@@ -64,7 +64,7 @@ package net.spider.handlers{
                 mcAttached.inner_menu.addEventListener(MouseEvent.ROLL_OUT, onRollOutAttached, false, 0, true);
                 mcAttached.inner_menu.addEventListener(MouseEvent.CLICK, onToggleAttached, false, 0, true);
                 this.visible = false;
-            }else{ //TODO: account for regular sbp custom drop ui being open, etc
+            }else if(mcAttached){ //TODO: account for regular sbp custom drop ui being open, etc
                 while (mcAttached.numChildren > 1)
                     mcAttached.removeChildAt(1);
                 mcAttached.inner_menu.removeEventListener(MouseEvent.CLICK, onToggleAttached);
